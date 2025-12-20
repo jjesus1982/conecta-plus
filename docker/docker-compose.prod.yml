@@ -1,0 +1,169 @@
+version: '3.8'
+
+# ============================================
+# Conecta Plus - Docker Compose Produção
+# Stack Completa: DB + Backend + Frontend + Nginx
+# ============================================
+
+services:
+  # ============= BANCO DE DADOS =============
+
+  # PostgreSQL - Banco principal
+  postgres:
+    image: postgres:16-alpine
+    container_name: conecta-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-conecta}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-conecta_secret_2024}
+      POSTGRES_DB: ${POSTGRES_DB:-conecta_plus}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-db:/docker-entrypoint-initdb.d
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-conecta} -d ${POSTGRES_DB:-conecta_plus}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - conecta-network
+
+  # Redis - Cache e sessões
+  redis:
+    image: redis:7-alpine
+    container_name: conecta-redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD:-redis_secret_2024}
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD:-redis_secret_2024}", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - conecta-network
+
+  # MongoDB - Logs e eventos
+  mongodb:
+    image: mongo:7
+    container_name: conecta-mongodb
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER:-conecta}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD:-mongo_secret_2024}
+      MONGO_INITDB_DATABASE: conecta_plus
+    volumes:
+      - mongodb_data:/data/db
+    ports:
+      - "27017:27017"
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - conecta-network
+
+  # ============= BACKEND =============
+
+  # API Backend (FastAPI)
+  backend:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    container_name: conecta-backend
+    restart: unless-stopped
+    env_file:
+      - ../.env
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-conecta}:${POSTGRES_PASSWORD:-conecta_secret_2024}@postgres:5432/${POSTGRES_DB:-conecta_plus}
+      REDIS_URL: redis://:${REDIS_PASSWORD:-redis_secret_2024}@redis:6379/0
+      MONGO_URL: mongodb://${MONGO_USER:-conecta}:${MONGO_PASSWORD:-mongo_secret_2024}@mongodb:27017/conecta_plus?authSource=admin
+    volumes:
+      - uploads_data:/app/data/uploads
+      - ../logs:/app/logs
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - conecta-network
+
+  # ============= FRONTEND =============
+
+  # Frontend (Next.js)
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+    container_name: conecta-frontend
+    restart: unless-stopped
+    environment:
+      NEXT_PUBLIC_API_URL: http://backend:8000/api/v1
+      NODE_ENV: production
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - conecta-network
+
+  # ============= PROXY REVERSO =============
+
+  # Nginx - Proxy reverso com SSL
+  nginx:
+    image: nginx:alpine
+    container_name: conecta-nginx
+    restart: unless-stopped
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+      - ../frontend/public:/var/www/static:ro
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - frontend
+      - backend
+    healthcheck:
+      test: ["CMD", "nginx", "-t"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - conecta-network
+
+# ============= VOLUMES =============
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  mongodb_data:
+    driver: local
+  uploads_data:
+    driver: local
+
+# ============= REDES =============
+networks:
+  conecta-network:
+    driver: bridge

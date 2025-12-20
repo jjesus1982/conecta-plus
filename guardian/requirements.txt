@@ -1,0 +1,34 @@
+# ============================================
+# Conecta Plus - Guardian - Dependências Python
+# ============================================
+
+# Framework web
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+python-multipart>=0.0.6
+
+# Detecção de objetos
+ultralytics>=8.0.0
+opencv-python-headless>=4.8.0
+
+# Processamento
+numpy>=1.24.0
+Pillow>=10.0.0
+
+# Streaming
+aiofiles>=23.0.0
+
+# Configuração
+pyyaml>=6.0.0
+python-dotenv>=1.0.0
+
+# Async
+asyncio-mqtt>=0.16.0
+aiohttp>=3.9.0
+
+# Câmeras ONVIF
+onvif-zeep>=0.2.12
+wsdiscovery>=2.0.0
+
+# Utilitários
+python-dateutil>=2.8.0

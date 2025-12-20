@@ -1,0 +1,253 @@
+# Conecta Plus Edge Computing - Docker Compose
+# Deploy simplificado para edge nodes em condomínios
+# Ideal para: Raspberry Pi 4/5, Intel NUC, Mini PCs
+
+version: '3.8'
+
+services:
+  # Edge Gateway - API local e proxy
+  edge-gateway:
+    image: conectaplus/edge-gateway:latest
+    build:
+      context: ../..
+      dockerfile: edge/docker/Dockerfile.gateway
+    container_name: edge-gateway
+    restart: unless-stopped
+    ports:
+      - "80:8080"
+      - "443:8443"
+    environment:
+      - NODE_ID=${NODE_ID:-edge-001}
+      - NODE_NAME=${NODE_NAME:-Condomínio Principal}
+      - CLOUD_API_URL=${CLOUD_API_URL:-https://api.conectaplus.com.br}
+      - CLOUD_API_KEY=${CLOUD_API_KEY}
+      - LOCAL_API_PORT=8080
+      - REDIS_URL=redis://redis:6379
+      - MQTT_BROKER=mqtt://mqtt:1883
+      - SYNC_INTERVAL=30
+      - OFFLINE_MODE_ENABLED=true
+      - LOG_LEVEL=INFO
+    volumes:
+      - edge-data:/data
+      - ./config/gateway:/config
+    depends_on:
+      - redis
+      - mqtt
+    networks:
+      - edge-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Edge AI Worker - Inferência local YOLO/Face Recognition
+  edge-ai:
+    image: conectaplus/edge-ai:latest
+    build:
+      context: ../..
+      dockerfile: edge/docker/Dockerfile.ai
+    container_name: edge-ai
+    restart: unless-stopped
+    ports:
+      - "5001:5000"
+    environment:
+      - YOLO_MODEL=yolov8n
+      - FACE_RECOGNITION_ENABLED=true
+      - REDIS_URL=redis://redis:6379
+      - MQTT_BROKER=mqtt://mqtt:1883
+      - USE_GPU=${USE_GPU:-false}
+      - LOG_LEVEL=INFO
+    volumes:
+      - edge-models:/models
+      - edge-data:/data
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+        reservations:
+          memory: 1G
+    networks:
+      - edge-network
+    # GPU support (uncomment if available)
+    # runtime: nvidia
+    # environment:
+    #   - NVIDIA_VISIBLE_DEVICES=all
+
+  # Sync Agent - Sincronização cloud-edge
+  edge-sync:
+    image: conectaplus/edge-sync:latest
+    build:
+      context: ../..
+      dockerfile: edge/docker/Dockerfile.sync
+    container_name: edge-sync
+    restart: unless-stopped
+    environment:
+      - NODE_ID=${NODE_ID:-edge-001}
+      - CLOUD_API_URL=${CLOUD_API_URL:-https://api.conectaplus.com.br}
+      - CLOUD_API_KEY=${CLOUD_API_KEY}
+      - REDIS_URL=redis://redis:6379
+      - SYNC_INTERVAL=30
+      - BATCH_SIZE=100
+      - ENCRYPTION_KEY=${ENCRYPTION_KEY}
+    volumes:
+      - edge-data:/data
+      - edge-sync-queue:/queue
+    depends_on:
+      - redis
+    networks:
+      - edge-network
+
+  # Frigate NVR - Gravação e detecção de objetos
+  frigate:
+    image: ghcr.io/blakeblackshear/frigate:stable
+    container_name: edge-frigate
+    restart: unless-stopped
+    privileged: true
+    ports:
+      - "5000:5000"    # Web UI
+      - "8554:8554"    # RTSP
+      - "8555:8555/tcp" # WebRTC
+      - "8555:8555/udp"
+    environment:
+      - FRIGATE_RTSP_PASSWORD=${FRIGATE_RTSP_PASSWORD:-conectaplus}
+    volumes:
+      - ./config/frigate/config.yml:/config/config.yml:ro
+      - edge-frigate-media:/media/frigate
+      - /dev/bus/usb:/dev/bus/usb # USB Coral TPU
+      - type: tmpfs
+        target: /tmp/cache
+        tmpfs:
+          size: 1000000000 # 1GB
+    shm_size: 256mb
+    devices:
+      - /dev/dri/renderD128 # Intel GPU (VA-API)
+      # - /dev/apex_0:/dev/apex_0 # Coral TPU
+    networks:
+      - edge-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/api/version"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Redis - Cache local e queue
+  redis:
+    image: redis:7-alpine
+    container_name: edge-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - edge-redis-data:/data
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+    networks:
+      - edge-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # MQTT Broker - Comunicação IoT
+  mqtt:
+    image: eclipse-mosquitto:2
+    container_name: edge-mqtt
+    restart: unless-stopped
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    volumes:
+      - ./config/mosquitto:/mosquitto/config:ro
+      - edge-mqtt-data:/mosquitto/data
+      - edge-mqtt-log:/mosquitto/log
+    networks:
+      - edge-network
+    healthcheck:
+      test: ["CMD", "mosquitto_sub", "-t", "$$SYS/#", "-C", "1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # Device Manager - Gerenciamento de dispositivos locais
+  device-manager:
+    image: conectaplus/edge-device-manager:latest
+    build:
+      context: ../..
+      dockerfile: edge/docker/Dockerfile.device-manager
+    container_name: edge-device-manager
+    restart: unless-stopped
+    network_mode: host
+    privileged: true
+    environment:
+      - REDIS_URL=redis://localhost:6379
+      - MQTT_BROKER=mqtt://localhost:1883
+      - SCAN_INTERVAL=60
+      - ONVIF_DISCOVERY_ENABLED=true
+    volumes:
+      - edge-data:/data
+      - /var/run/dbus:/var/run/dbus
+    depends_on:
+      - redis
+      - mqtt
+
+  # Monitoring - Métricas locais
+  prometheus:
+    image: prom/prometheus:v2.48.0
+    container_name: edge-prometheus
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./config/prometheus:/etc/prometheus:ro
+      - edge-prometheus-data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention.time=7d'
+      - '--web.enable-lifecycle'
+    networks:
+      - edge-network
+
+  # Grafana - Dashboards locais
+  grafana:
+    image: grafana/grafana:10.2.0
+    container_name: edge-grafana
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD:-admin}
+      - GF_USERS_ALLOW_SIGN_UP=false
+    volumes:
+      - edge-grafana-data:/var/lib/grafana
+      - ./config/grafana/provisioning:/etc/grafana/provisioning:ro
+    networks:
+      - edge-network
+
+networks:
+  edge-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+volumes:
+  edge-data:
+    driver: local
+  edge-models:
+    driver: local
+  edge-sync-queue:
+    driver: local
+  edge-frigate-media:
+    driver: local
+  edge-redis-data:
+    driver: local
+  edge-mqtt-data:
+    driver: local
+  edge-mqtt-log:
+    driver: local
+  edge-prometheus-data:
+    driver: local
+  edge-grafana-data:
+    driver: local

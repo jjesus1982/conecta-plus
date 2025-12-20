@@ -1,0 +1,51 @@
+{
+  "mcps_oficiais": {
+    "desenvolvimento": ["github", "gitlab", "filesystem", "memory", "sequential-thinking"],
+    "bancos_dados": ["postgres", "mysql", "sqlite", "redis", "mongodb", "supabase", "neon"],
+    "infraestrutura": ["docker", "kubernetes"],
+    "cloud": ["aws", "cloudflare", "vercel"],
+    "web_apis": ["fetch", "puppeteer", "playwright", "firecrawl"],
+    "comunicacao": ["slack", "discord", "telegram", "twilio", "resend"],
+    "produtividade": ["notion", "google-drive", "google-calendar", "google-sheets", "linear", "trello", "airtable"],
+    "observabilidade": ["sentry", "grafana"],
+    "ai_ml": ["openai", "langchain", "pinecone", "chromadb"],
+    "pagamentos": ["stripe"],
+    "rede": ["ssh"],
+    "midia": ["cloudinary", "youtube"],
+    "mobile": ["firebase"],
+    "integracoes": ["zapier", "n8n", "webhook"],
+    "utilidades": ["time", "weather", "search"]
+  },
+  "mcps_customizados": {
+    "seguranca_eletronica": [
+      "mcp-intelbras-cftv",
+      "mcp-hikvision-cftv", 
+      "mcp-control-id",
+      "mcp-intelbras-acesso",
+      "mcp-ppa",
+      "mcp-garen",
+      "mcp-nice",
+      "mcp-jfl",
+      "mcp-intelbras-alarme",
+      "mcp-ubiquiti",
+      "mcp-mikrotik",
+      "mcp-furukawa",
+      "mcp-asterisk",
+      "mcp-issabel",
+      "mcp-whisper",
+      "mcp-vision-ai"
+    ],
+    "gestao_condominial": [
+      "mcp-boletos",
+      "mcp-pix",
+      "mcp-nfse",
+      "mcp-esocial",
+      "mcp-ponto-rep",
+      "mcp-assinatura-digital",
+      "mcp-mqtt",
+      "mcp-medidores"
+    ]
+  },
+  "total_mcps_oficiais": 45,
+  "total_mcps_customizados": 24
+}

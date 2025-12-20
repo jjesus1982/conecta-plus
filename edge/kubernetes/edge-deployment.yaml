@@ -1,0 +1,446 @@
+# Conecta Plus Edge Computing - Kubernetes Deployment
+# Deploy para nós de borda em condomínios
+# Suporta: k3s, MicroK8s, K0s
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: conecta-edge
+  labels:
+    app.kubernetes.io/name: conecta-plus
+    app.kubernetes.io/component: edge
+
+---
+# ConfigMap com configurações do edge node
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: edge-config
+  namespace: conecta-edge
+data:
+  NODE_ID: "${NODE_ID}"
+  NODE_NAME: "${NODE_NAME}"
+  CLOUD_API_URL: "https://api.conectaplus.com.br"
+  LOCAL_API_PORT: "8080"
+  MQTT_BROKER: "mqtt://localhost:1883"
+  REDIS_URL: "redis://localhost:6379"
+  SYNC_INTERVAL: "30"
+  OFFLINE_MODE_ENABLED: "true"
+  AI_INFERENCE_ENABLED: "true"
+  YOLO_MODEL: "yolov8n"
+  FACE_RECOGNITION_ENABLED: "true"
+  LOG_LEVEL: "INFO"
+
+---
+# Secret para credenciais
+apiVersion: v1
+kind: Secret
+metadata:
+  name: edge-secrets
+  namespace: conecta-edge
+type: Opaque
+stringData:
+  CLOUD_API_KEY: "${CLOUD_API_KEY}"
+  MQTT_USERNAME: "${MQTT_USERNAME}"
+  MQTT_PASSWORD: "${MQTT_PASSWORD}"
+  ENCRYPTION_KEY: "${ENCRYPTION_KEY}"
+
+---
+# PersistentVolumeClaim para dados locais
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: edge-data-pvc
+  namespace: conecta-edge
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Gi
+  storageClassName: local-path
+
+---
+# PersistentVolumeClaim para gravações
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: edge-recordings-pvc
+  namespace: conecta-edge
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 500Gi
+  storageClassName: local-path
+
+---
+# Edge Gateway - API local
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: edge-gateway
+  namespace: conecta-edge
+  labels:
+    app: edge-gateway
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: edge-gateway
+  template:
+    metadata:
+      labels:
+        app: edge-gateway
+    spec:
+      containers:
+        - name: gateway
+          image: conectaplus/edge-gateway:latest
+          ports:
+            - containerPort: 8080
+              name: http
+            - containerPort: 8443
+              name: https
+          envFrom:
+            - configMapRef:
+                name: edge-config
+            - secretRef:
+                name: edge-secrets
+          volumeMounts:
+            - name: data
+              mountPath: /data
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "200m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 5
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: edge-data-pvc
+
+---
+# Edge AI Worker - Inferência local
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: edge-ai-worker
+  namespace: conecta-edge
+  labels:
+    app: edge-ai-worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: edge-ai-worker
+  template:
+    metadata:
+      labels:
+        app: edge-ai-worker
+    spec:
+      containers:
+        - name: ai-worker
+          image: conectaplus/edge-ai:latest
+          ports:
+            - containerPort: 5000
+              name: inference
+          envFrom:
+            - configMapRef:
+                name: edge-config
+          volumeMounts:
+            - name: models
+              mountPath: /models
+            - name: data
+              mountPath: /data
+          resources:
+            requests:
+              memory: "1Gi"
+              cpu: "1000m"
+            limits:
+              memory: "4Gi"
+              cpu: "4000m"
+              # GPU support (se disponível)
+              # nvidia.com/gpu: 1
+      volumes:
+        - name: models
+          emptyDir: {}
+        - name: data
+          persistentVolumeClaim:
+            claimName: edge-data-pvc
+
+---
+# Edge Sync Agent - Sincronização com cloud
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: edge-sync-agent
+  namespace: conecta-edge
+  labels:
+    app: edge-sync-agent
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: edge-sync-agent
+  template:
+    metadata:
+      labels:
+        app: edge-sync-agent
+    spec:
+      containers:
+        - name: sync-agent
+          image: conectaplus/edge-sync:latest
+          envFrom:
+            - configMapRef:
+                name: edge-config
+            - secretRef:
+                name: edge-secrets
+          volumeMounts:
+            - name: data
+              mountPath: /data
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "256Mi"
+              cpu: "200m"
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: edge-data-pvc
+
+---
+# Redis para cache local
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: edge-redis
+  namespace: conecta-edge
+  labels:
+    app: edge-redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: edge-redis
+  template:
+    metadata:
+      labels:
+        app: edge-redis
+    spec:
+      containers:
+        - name: redis
+          image: redis:7-alpine
+          ports:
+            - containerPort: 6379
+          volumeMounts:
+            - name: redis-data
+              mountPath: /data
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "50m"
+            limits:
+              memory: "256Mi"
+              cpu: "200m"
+      volumes:
+        - name: redis-data
+          emptyDir: {}
+
+---
+# MQTT Broker local
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: edge-mqtt
+  namespace: conecta-edge
+  labels:
+    app: edge-mqtt
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: edge-mqtt
+  template:
+    metadata:
+      labels:
+        app: edge-mqtt
+    spec:
+      containers:
+        - name: mqtt
+          image: eclipse-mosquitto:2
+          ports:
+            - containerPort: 1883
+              name: mqtt
+            - containerPort: 9001
+              name: websocket
+          volumeMounts:
+            - name: mqtt-config
+              mountPath: /mosquitto/config
+            - name: mqtt-data
+              mountPath: /mosquitto/data
+          resources:
+            requests:
+              memory: "32Mi"
+              cpu: "25m"
+            limits:
+              memory: "128Mi"
+              cpu: "100m"
+      volumes:
+        - name: mqtt-config
+          configMap:
+            name: mqtt-config
+        - name: mqtt-data
+          emptyDir: {}
+
+---
+# Frigate NVR local
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: edge-frigate
+  namespace: conecta-edge
+  labels:
+    app: edge-frigate
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: edge-frigate
+  template:
+    metadata:
+      labels:
+        app: edge-frigate
+    spec:
+      containers:
+        - name: frigate
+          image: ghcr.io/blakeblackshear/frigate:stable
+          ports:
+            - containerPort: 5000
+              name: web
+            - containerPort: 8554
+              name: rtsp
+            - containerPort: 8555
+              name: webrtc
+          envFrom:
+            - configMapRef:
+                name: frigate-config
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: recordings
+              mountPath: /media/frigate
+            - name: shm
+              mountPath: /dev/shm
+          resources:
+            requests:
+              memory: "2Gi"
+              cpu: "2000m"
+            limits:
+              memory: "8Gi"
+              cpu: "4000m"
+          securityContext:
+            privileged: true
+      volumes:
+        - name: config
+          configMap:
+            name: frigate-config
+        - name: recordings
+          persistentVolumeClaim:
+            claimName: edge-recordings-pvc
+        - name: shm
+          emptyDir:
+            medium: Memory
+            sizeLimit: 2Gi
+
+---
+# Services
+apiVersion: v1
+kind: Service
+metadata:
+  name: edge-gateway
+  namespace: conecta-edge
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 80
+      targetPort: 8080
+      name: http
+    - port: 443
+      targetPort: 8443
+      name: https
+  selector:
+    app: edge-gateway
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: edge-redis
+  namespace: conecta-edge
+spec:
+  ports:
+    - port: 6379
+  selector:
+    app: edge-redis
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: edge-mqtt
+  namespace: conecta-edge
+spec:
+  ports:
+    - port: 1883
+      name: mqtt
+    - port: 9001
+      name: websocket
+  selector:
+    app: edge-mqtt
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: edge-frigate
+  namespace: conecta-edge
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 5000
+      name: web
+    - port: 8554
+      name: rtsp
+    - port: 8555
+      name: webrtc
+  selector:
+    app: edge-frigate
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: edge-ai-worker
+  namespace: conecta-edge
+spec:
+  ports:
+    - port: 5000
+  selector:
+    app: edge-ai-worker

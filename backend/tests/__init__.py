@@ -1,0 +1,3 @@
+"""
+Conecta Plus - Testes Automatizados
+"""

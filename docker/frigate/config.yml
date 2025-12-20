@@ -1,0 +1,226 @@
+# ============================================
+# Conecta Plus - Frigate Configuration
+# Configuração de exemplo para câmeras
+# ============================================
+
+mqtt:
+  enabled: true
+  host: mqtt
+  port: 1883
+  topic_prefix: frigate
+  client_id: frigate
+  user: frigate
+  password: frigate_mqtt
+
+database:
+  path: /config/frigate.db
+
+# Configuração de detecção
+detectors:
+  # CPU (padrão)
+  cpu1:
+    type: cpu
+    num_threads: 4
+
+  # Descomente para Coral USB
+  # coral:
+  #   type: edgetpu
+  #   device: usb
+
+  # Descomente para GPU NVIDIA
+  # nvidia:
+  #   type: tensorrt
+  #   device: 0
+
+# Configuração de objetos a detectar
+objects:
+  track:
+    - person
+    - car
+    - motorcycle
+    - dog
+    - cat
+  filters:
+    person:
+      min_area: 5000
+      max_area: 100000
+      min_score: 0.5
+      threshold: 0.7
+
+# Configuração de gravação padrão
+record:
+  enabled: true
+  retain:
+    days: 7
+    mode: motion
+  events:
+    retain:
+      default: 14
+      mode: motion
+
+# Configuração de snapshots
+snapshots:
+  enabled: true
+  timestamp: true
+  bounding_box: true
+  retain:
+    default: 14
+
+# Detecção de movimento
+motion:
+  threshold: 25
+  contour_area: 100
+  delta_alpha: 0.2
+  frame_alpha: 0.2
+  frame_height: 180
+
+# Câmeras do condomínio
+cameras:
+  # Portaria Principal
+  portaria_principal:
+    ffmpeg:
+      inputs:
+        - path: rtsp://usuario:senha@192.168.1.100:554/stream1
+          roles:
+            - detect
+            - record
+    detect:
+      enabled: true
+      width: 1920
+      height: 1080
+      fps: 10
+    record:
+      enabled: true
+    snapshots:
+      enabled: true
+    zones:
+      entrada:
+        coordinates: 0,1080,960,1080,960,0,0,0
+        objects:
+          - person
+          - car
+    objects:
+      track:
+        - person
+        - car
+        - motorcycle
+      filters:
+        person:
+          mask:
+            - 0,0,100,0,100,100,0,100
+
+  # Estacionamento
+  estacionamento:
+    ffmpeg:
+      inputs:
+        - path: rtsp://usuario:senha@192.168.1.101:554/stream1
+          roles:
+            - detect
+            - record
+    detect:
+      enabled: true
+      width: 1920
+      height: 1080
+      fps: 5
+    record:
+      enabled: true
+    snapshots:
+      enabled: true
+    objects:
+      track:
+        - car
+        - person
+        - motorcycle
+
+  # Hall de Entrada
+  hall_entrada:
+    ffmpeg:
+      inputs:
+        - path: rtsp://usuario:senha@192.168.1.102:554/stream1
+          roles:
+            - detect
+            - record
+    detect:
+      enabled: true
+      width: 1280
+      height: 720
+      fps: 10
+    record:
+      enabled: true
+    snapshots:
+      enabled: true
+    objects:
+      track:
+        - person
+
+  # Área de Lazer
+  area_lazer:
+    ffmpeg:
+      inputs:
+        - path: rtsp://usuario:senha@192.168.1.103:554/stream1
+          roles:
+            - detect
+            - record
+    detect:
+      enabled: true
+      width: 1920
+      height: 1080
+      fps: 5
+    record:
+      enabled: true
+    snapshots:
+      enabled: true
+    objects:
+      track:
+        - person
+
+  # Elevador Social
+  elevador_social:
+    ffmpeg:
+      inputs:
+        - path: rtsp://usuario:senha@192.168.1.104:554/stream1
+          roles:
+            - detect
+            - record
+    detect:
+      enabled: true
+      width: 1280
+      height: 720
+      fps: 10
+    record:
+      enabled: true
+    objects:
+      track:
+        - person
+
+  # Corredor Térreo
+  corredor_terreo:
+    ffmpeg:
+      inputs:
+        - path: rtsp://usuario:senha@192.168.1.105:554/stream1
+          roles:
+            - detect
+            - record
+    detect:
+      enabled: true
+      width: 1280
+      height: 720
+      fps: 5
+    record:
+      enabled: true
+    objects:
+      track:
+        - person
+
+# UI Configuration
+ui:
+  live_mode: mse
+  timezone: America/Sao_Paulo
+  use_experimental: false
+  time_format: browser
+  date_style: short
+  time_style: medium
+
+# Telemetry
+telemetry:
+  version_check: false

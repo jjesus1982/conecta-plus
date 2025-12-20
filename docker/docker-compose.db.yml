@@ -1,0 +1,76 @@
+version: '3.8'
+
+services:
+  # PostgreSQL - Banco principal
+  postgres:
+    image: postgres:16-alpine
+    container_name: conecta-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-conecta}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-conecta_secret_2024}
+      POSTGRES_DB: ${POSTGRES_DB:-conecta_plus}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-db:/docker-entrypoint-initdb.d
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-conecta} -d ${POSTGRES_DB:-conecta_plus}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - conecta-network
+
+  # Redis - Cache e sessões
+  redis:
+    image: redis:7-alpine
+    container_name: conecta-redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD:-redis_secret_2024}
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD:-redis_secret_2024}", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - conecta-network
+
+  # MongoDB - Logs e eventos (opcional)
+  mongodb:
+    image: mongo:7
+    container_name: conecta-mongodb
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER:-conecta}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD:-mongo_secret_2024}
+      MONGO_INITDB_DATABASE: conecta_plus
+    volumes:
+      - mongodb_data:/data/db
+    ports:
+      - "27017:27017"
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - conecta-network
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  mongodb_data:
+    driver: local
+
+networks:
+  conecta-network:
+    driver: bridge

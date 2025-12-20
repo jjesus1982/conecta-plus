@@ -1,0 +1,65 @@
+version: '3.8'
+
+# ============================================
+# Conecta Plus - Frigate NVR (Câmeras com IA)
+# Ativar quando câmeras reais estiverem disponíveis
+# ============================================
+
+services:
+  # Frigate NVR com detecção de objetos
+  frigate:
+    image: ghcr.io/blakeblackshear/frigate:stable
+    container_name: conecta-frigate
+    restart: unless-stopped
+    privileged: true
+    shm_size: "256mb"
+    devices:
+      # Descomente para GPU NVIDIA
+      # - /dev/nvidia0:/dev/nvidia0
+      # - /dev/nvidiactl:/dev/nvidiactl
+      # - /dev/nvidia-uvm:/dev/nvidia-uvm
+      # Para Intel Quick Sync (iGPU)
+      # - /dev/dri/renderD128:/dev/dri/renderD128
+      - /dev/bus/usb:/dev/bus/usb  # Para Coral USB
+    volumes:
+      - ./frigate/config.yml:/config/config.yml:ro
+      - frigate_media:/media/frigate
+      - type: tmpfs
+        target: /tmp/cache
+        tmpfs:
+          size: 1000000000
+    ports:
+      - "5000:5000"  # Web UI
+      - "8554:8554"  # RTSP feeds
+      - "8555:8555"  # WebRTC
+    environment:
+      FRIGATE_RTSP_PASSWORD: ${FRIGATE_RTSP_PASSWORD:-rtsp_password}
+    networks:
+      - conecta-network
+
+  # MQTT Broker (para integração com Frigate)
+  mqtt:
+    image: eclipse-mosquitto:2
+    container_name: conecta-mqtt
+    restart: unless-stopped
+    volumes:
+      - ./mqtt/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+      - mqtt_data:/mosquitto/data
+      - mqtt_log:/mosquitto/log
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    networks:
+      - conecta-network
+
+volumes:
+  frigate_media:
+    driver: local
+  mqtt_data:
+    driver: local
+  mqtt_log:
+    driver: local
+
+networks:
+  conecta-network:
+    external: true

@@ -1,0 +1,461 @@
+# ============================================
+# Conecta Plus - Docker Compose Completo
+# Plataforma Integrada de Gestão Condominial
+# ============================================
+
+version: '3.8'
+
+services:
+  # ==========================================
+  # INFRAESTRUTURA BASE
+  # ==========================================
+
+  # PostgreSQL - Banco de Dados Principal
+  postgres:
+    image: postgres:16-alpine
+    container_name: conecta-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-conecta_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB:-conecta_db}
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=pt_BR.UTF-8"
+      TZ: America/Sao_Paulo
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./config/postgres/init:/docker-entrypoint-initdb.d:ro
+      - ./shared/backups/postgres:/backups
+    ports:
+      - "5432:5432"
+    networks:
+      - conecta-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-conecta_user} -d ${POSTGRES_DB:-conecta_db}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  # Redis - Cache e Filas
+  redis:
+    image: redis:7-alpine
+    container_name: conecta-redis
+    restart: unless-stopped
+    command: redis-server --requirepass ${REDIS_PASSWORD} --appendonly yes --maxmemory 512mb --maxmemory-policy allkeys-lru
+    environment:
+      TZ: America/Sao_Paulo
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+    networks:
+      - conecta-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD}", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # MongoDB - Documentos e Logs
+  mongodb:
+    image: mongo:7
+    container_name: conecta-mongodb
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER:-conecta}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+      TZ: America/Sao_Paulo
+    volumes:
+      - mongodb_data:/data/db
+    ports:
+      - "27017:27017"
+    networks:
+      - conecta-network
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ==========================================
+  # SERVIÇOS CORE
+  # ==========================================
+
+  # API Gateway - Backend FastAPI
+  api-gateway:
+    build:
+      context: ./services/api-gateway
+      dockerfile: Dockerfile
+    container_name: conecta-api-gateway
+    restart: unless-stopped
+    environment:
+      SECRET_KEY: ${JWT_SECRET}
+      REDIS_URL: redis://:${REDIS_PASSWORD}@redis:6379
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      TZ: America/Sao_Paulo
+    ports:
+      - "3001:3001"
+    networks:
+      - conecta-network
+    depends_on:
+      redis:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Frontend Next.js
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: http://api-gateway:3001/api
+        NEXT_PUBLIC_WS_URL: ws://api-gateway:3001/ws
+    container_name: conecta-frontend
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      NEXT_PUBLIC_API_URL: http://api-gateway:3001/api
+      NEXT_PUBLIC_WS_URL: ws://api-gateway:3001/ws
+      TZ: America/Sao_Paulo
+    ports:
+      - "3000:3000"
+    networks:
+      - conecta-network
+    depends_on:
+      - api-gateway
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Auth Service - Autenticação e Autorização
+  auth-service:
+    build:
+      context: ./services/auth-service
+      dockerfile: Dockerfile
+    container_name: conecta-auth
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      REDIS_URL: redis://:${REDIS_PASSWORD}@redis:6379
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRES_IN: 24h
+      TZ: America/Sao_Paulo
+    networks:
+      - conecta-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  # Notification Service - Notificações multi-canal
+  notification-service:
+    build:
+      context: ./services/notification-service
+      dockerfile: Dockerfile
+    container_name: conecta-notifications
+    restart: unless-stopped
+    environment:
+      REDIS_URL: redis://:${REDIS_PASSWORD}@redis:6379
+      MONGODB_URL: mongodb://${MONGO_USER}:${MONGO_PASSWORD}@mongodb:27017
+      WHATSAPP_TOKEN: ${WHATSAPP_TOKEN}
+      TELEGRAM_TOKEN: ${TELEGRAM_TOKEN}
+      SMTP_HOST: ${SMTP_HOST}
+      SMTP_PORT: ${SMTP_PORT}
+      SMTP_USER: ${SMTP_USER}
+      SMTP_PASS: ${SMTP_PASS}
+      TZ: America/Sao_Paulo
+    networks:
+      - conecta-network
+    depends_on:
+      - redis
+      - mongodb
+
+  # Media Service - Processamento de mídia
+  media-service:
+    build:
+      context: ./services/media-service
+      dockerfile: Dockerfile
+    container_name: conecta-media
+    restart: unless-stopped
+    environment:
+      REDIS_URL: redis://:${REDIS_PASSWORD}@redis:6379
+      STORAGE_PATH: /data/media
+      TZ: America/Sao_Paulo
+    volumes:
+      - media_data:/data/media
+      - ./shared/uploads:/data/uploads
+    networks:
+      - conecta-network
+    depends_on:
+      - redis
+
+  # ==========================================
+  # AI ORCHESTRATOR E AGENTES (36 Agentes)
+  # ==========================================
+
+  # AI Orchestrator V2 - Orquestrador de 36 Agentes com Message Bus
+  ai-orchestrator:
+    build:
+      context: .
+      dockerfile: services/ai-orchestrator/Dockerfile
+    image: conecta-plus/orchestrator:2.0
+    container_name: conecta-ai-orchestrator
+    restart: unless-stopped
+    environment:
+      # API
+      PORT: 8001
+      HOST: 0.0.0.0
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+
+      # LLM Providers
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      LLM_PROVIDER: ${LLM_PROVIDER:-anthropic}
+      LLM_MODEL: ${LLM_MODEL:-claude-3-5-sonnet-20241022}
+
+      # Redis (Message Bus & Cache)
+      REDIS_URL: redis://:${REDIS_PASSWORD}@redis:6379/0
+
+      # PostgreSQL
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+
+      # Serviços Internos
+      NOTIFICATION_SERVICE_URL: http://notification-service:8002
+      INTEGRATION_HUB_URL: http://integration-hub:8003
+
+      # Configurações do Orchestrator
+      EVOLUTION_LEVEL: ${EVOLUTION_LEVEL:-7}
+      MAX_AGENTS_PER_CONDOMINIO: 36
+      MESSAGE_BUS_ENABLED: "true"
+      AGENT_TIMEOUT_SECONDS: 30
+
+      TZ: America/Sao_Paulo
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./agents:/app/agents:ro
+      - orchestrator_data:/app/data
+      - orchestrator_logs:/app/logs
+    networks:
+      - conecta-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://localhost:8001/v2/status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 4G
+        reservations:
+          cpus: '0.5'
+          memory: 1G
+    labels:
+      - "com.conectaplus.service=orchestrator"
+      - "com.conectaplus.version=2.0"
+      - "com.conectaplus.agents=36"
+
+  # Guardian - Sistema de Monitoramento IA
+  guardian:
+    build:
+      context: ./apps/guardian
+      dockerfile: Dockerfile
+    container_name: conecta-guardian
+    restart: unless-stopped
+    environment:
+      REDIS_URL: redis://:${REDIS_PASSWORD}@redis:6379
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      YOLO_MODEL: yolov8n
+      TZ: America/Sao_Paulo
+    volumes:
+      - ./shared/models:/app/models
+      - ./guardian/config:/app/config:ro
+    networks:
+      - conecta-network
+    depends_on:
+      - redis
+      - postgres
+      - ai-orchestrator
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+
+  # Integration Hub - Integrações externas
+  integration-hub:
+    build:
+      context: ./services/integration-hub
+      dockerfile: Dockerfile
+    container_name: conecta-integration-hub
+    restart: unless-stopped
+    environment:
+      REDIS_URL: redis://:${REDIS_PASSWORD}@redis:6379
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      TZ: America/Sao_Paulo
+    volumes:
+      - ./mcps:/app/mcps:ro
+    networks:
+      - conecta-network
+    depends_on:
+      - redis
+      - postgres
+
+  # ==========================================
+  # NGINX - PROXY REVERSO
+  # ==========================================
+
+  nginx:
+    image: nginx:alpine
+    container_name: conecta-nginx
+    restart: unless-stopped
+    environment:
+      TZ: America/Sao_Paulo
+    volumes:
+      - ./config/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./config/nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./config/nginx/ssl:/etc/nginx/ssl:ro
+      - ./shared/logs/nginx:/var/log/nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - conecta-network
+    depends_on:
+      - api-gateway
+      - ai-orchestrator
+    healthcheck:
+      test: ["CMD", "nginx", "-t"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ==========================================
+  # MONITORAMENTO
+  # ==========================================
+
+  # Prometheus - Métricas
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: conecta-prometheus
+    restart: unless-stopped
+    volumes:
+      - ./monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    ports:
+      - "9090:9090"
+    networks:
+      - conecta-network
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.enable-lifecycle'
+
+  # Grafana - Dashboards
+  grafana:
+    image: grafana/grafana:latest
+    container_name: conecta-grafana
+    restart: unless-stopped
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD:-admin}
+      GF_INSTALL_PLUGINS: grafana-clock-panel,grafana-piechart-panel
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana/dashboards:/etc/grafana/provisioning/dashboards:ro
+      - ./monitoring/grafana/datasources:/etc/grafana/provisioning/datasources:ro
+    ports:
+      - "3002:3000"
+    networks:
+      - conecta-network
+    depends_on:
+      - prometheus
+
+  # Loki - Logs
+  loki:
+    image: grafana/loki:latest
+    container_name: conecta-loki
+    restart: unless-stopped
+    ports:
+      - "3100:3100"
+    volumes:
+      - loki_data:/loki
+      - ./monitoring/loki/loki-config.yml:/etc/loki/local-config.yaml:ro
+    networks:
+      - conecta-network
+    command: -config.file=/etc/loki/local-config.yaml
+
+  # ==========================================
+  # MESSAGE BROKER
+  # ==========================================
+
+  # RabbitMQ - Message Broker (opcional, pode usar Redis)
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: conecta-rabbitmq
+    restart: unless-stopped
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER:-conecta}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD}
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - conecta-network
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+# ==========================================
+# REDES
+# ==========================================
+networks:
+  conecta-network:
+    driver: bridge
+    name: conecta-network
+    ipam:
+      config:
+        - subnet: 172.28.0.0/16
+
+# ==========================================
+# VOLUMES
+# ==========================================
+volumes:
+  postgres_data:
+    name: conecta-postgres-data
+  redis_data:
+    name: conecta-redis-data
+  mongodb_data:
+    name: conecta-mongodb-data
+  media_data:
+    name: conecta-media-data
+  prometheus_data:
+    name: conecta-prometheus-data
+  grafana_data:
+    name: conecta-grafana-data
+  loki_data:
+    name: conecta-loki-data
+  rabbitmq_data:
+    name: conecta-rabbitmq-data
+  orchestrator_data:
+    name: conecta-orchestrator-data
+  orchestrator_logs:
+    name: conecta-orchestrator-logs

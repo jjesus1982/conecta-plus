@@ -1,0 +1,211 @@
+{
+  "version": "1.0.0",
+  "last_updated": "2025-12-19T22:10:04.419397",
+  "problems": [
+    {
+      "id": "f065256d5df4",
+      "service": "frontend",
+      "error_type": "port_not_listening",
+      "message_pattern": "Porta 3000 (Frontend) não está em uso",
+      "first_seen": "2025-12-19 21:13:31",
+      "last_seen": "2025-12-19 21:50:13",
+      "occurrences": 77,
+      "times_auto_resolved": 0,
+      "avg_resolution_time": null,
+      "known_causes": [
+        "Processo não iniciou",
+        "Porta já em uso por outro processo",
+        "Erro de binding"
+      ],
+      "prevention_tips": [
+        "Verificar conflitos de porta antes de iniciar",
+        "Usar wait-for-it scripts"
+      ]
+    },
+    {
+      "id": "2901a2f46764",
+      "service": "backend",
+      "error_type": "service_down",
+      "message_pattern": "Backend não responde (HTTP 000)",
+      "first_seen": "2025-12-19 21:20:56",
+      "last_seen": "2025-12-19 21:30:21",
+      "occurrences": 70,
+      "times_auto_resolved": 0,
+      "avg_resolution_time": null,
+      "known_causes": [
+        "Crash da aplicação",
+        "Falta de memória",
+        "Erro de código",
+        "Dependência indisponível"
+      ],
+      "prevention_tips": [
+        "Monitorar uso de memória",
+        "Implementar health checks internos",
+        "Adicionar circuit breakers"
+      ]
+    },
+    {
+      "id": "2a87b95d9b57",
+      "service": "docker",
+      "error_type": "container_stopped",
+      "message_pattern": "Container conecta-api-gateway-dev não está rodando (status: exited)",
+      "first_seen": "2025-12-19 21:20:57",
+      "last_seen": "2025-12-19 21:30:21",
+      "occurrences": 20,
+      "times_auto_resolved": 10,
+      "avg_resolution_time": 10.0,
+      "known_causes": [
+        "OOM Kill (falta de memória)",
+        "Erro no entrypoint",
+        "Dependência de rede falhou"
+      ],
+      "prevention_tips": [
+        "Configurar limites de memória adequados",
+        "Usar restart policies no Docker",
+        "Implementar graceful shutdown"
+      ]
+    },
+    {
+      "id": "c10ea4d0fd61",
+      "service": "unknown",
+      "error_type": "unknown",
+      "message_pattern": "Falha ao reiniciar backend",
+      "first_seen": "2025-12-19 21:21:04",
+      "last_seen": "2025-12-19 21:22:21",
+      "occurrences": 20,
+      "times_auto_resolved": 0,
+      "avg_resolution_time": null,
+      "known_causes": [],
+      "prevention_tips": []
+    },
+    {
+      "id": "9ae5e0a88c04",
+      "service": "frontend",
+      "error_type": "service_down",
+      "message_pattern": "Frontend não responde (HTTP 000)",
+      "first_seen": "2025-12-19 21:32:11",
+      "last_seen": "2025-12-19 21:50:43",
+      "occurrences": 95,
+      "times_auto_resolved": 18,
+      "avg_resolution_time": 18.666656494140625,
+      "known_causes": [
+        "Crash da aplicação",
+        "Falta de memória",
+        "Erro de código",
+        "Dependência indisponível"
+      ],
+      "prevention_tips": [
+        "Monitorar uso de memória",
+        "Implementar health checks internos",
+        "Adicionar circuit breakers"
+      ]
+    }
+  ],
+  "patterns": [
+    {
+      "id": "correlation_backend_frontend",
+      "type": "service_correlation",
+      "services": [
+        "backend",
+        "frontend"
+      ],
+      "description": "Problemas em backend frequentemente acompanham problemas em frontend",
+      "occurrences": 2,
+      "recommendation": "Ao detectar problema em backend, verificar preventivamente frontend"
+    },
+    {
+      "id": "correlation_docker_frontend",
+      "type": "service_correlation",
+      "services": [
+        "docker",
+        "frontend"
+      ],
+      "description": "Problemas em docker frequentemente acompanham problemas em frontend",
+      "occurrences": 2,
+      "recommendation": "Ao detectar problema em docker, verificar preventivamente frontend"
+    },
+    {
+      "id": "correlation_frontend_unknown",
+      "type": "service_correlation",
+      "services": [
+        "frontend",
+        "unknown"
+      ],
+      "description": "Problemas em frontend frequentemente acompanham problemas em unknown",
+      "occurrences": 2,
+      "recommendation": "Ao detectar problema em frontend, verificar preventivamente unknown"
+    },
+    {
+      "id": "recurring_f065256d5df4",
+      "type": "recurring_problem",
+      "problem_id": "f065256d5df4",
+      "service": "frontend",
+      "occurrences": 6,
+      "description": "Problema recorrente em frontend: port_not_listening",
+      "recommendation": "Investigar causa raiz - problema está se repetindo frequentemente"
+    },
+    {
+      "id": "recurring_2901a2f46764",
+      "type": "recurring_problem",
+      "problem_id": "2901a2f46764",
+      "service": "backend",
+      "occurrences": 7,
+      "description": "Problema recorrente em backend: service_down",
+      "recommendation": "Investigar causa raiz - problema está se repetindo frequentemente"
+    },
+    {
+      "id": "recurring_9ae5e0a88c04",
+      "type": "recurring_problem",
+      "problem_id": "9ae5e0a88c04",
+      "service": "frontend",
+      "occurrences": 7,
+      "description": "Problema recorrente em frontend: service_down",
+      "recommendation": "Investigar causa raiz - problema está se repetindo frequentemente"
+    },
+    {
+      "id": "recurring_2a87b95d9b57",
+      "type": "recurring_problem",
+      "problem_id": "2a87b95d9b57",
+      "service": "docker",
+      "occurrences": 4,
+      "description": "Problema recorrente em docker: container_stopped",
+      "recommendation": "Investigar causa raiz - problema está se repetindo frequentemente"
+    },
+    {
+      "id": "recurring_c10ea4d0fd61",
+      "type": "recurring_problem",
+      "problem_id": "c10ea4d0fd61",
+      "service": "unknown",
+      "occurrences": 4,
+      "description": "Problema recorrente em unknown: unknown",
+      "recommendation": "Investigar causa raiz - problema está se repetindo frequentemente"
+    }
+  ],
+  "solutions": [],
+  "statistics": {
+    "total_incidents": 5,
+    "auto_resolved": 0,
+    "manual_resolved": 0,
+    "prevention_success": 0,
+    "learning_cycles": 1413
+  },
+  "learned_thresholds": {
+    "cpu_warning": 11.682848270911357,
+    "cpu_critical": 40.357946256010415,
+    "memory_warning": 14.419907664135787,
+    "memory_critical": 17.026586082777406,
+    "response_time_warning": 100,
+    "response_time_critical": 500,
+    "failure_count_before_action": 2
+  },
+  "effectiveness": {
+    "preventive_memory_cleanup": {
+      "attempts": 9,
+      "success": 7
+    },
+    "preventive_cpu_optimization": {
+      "attempts": 116,
+      "success": 116
+    }
+  }
+}
