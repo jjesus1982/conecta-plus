@@ -1,5 +1,25 @@
 # CLAUDE.md - Conecta Plus
 
+## PROXIMA TAREFA PENDENTE
+
+**Arquivo de Sessao**: `/opt/conecta-plus/SESSAO_GUARDIAN_20251220.md`
+
+**Objetivo**: Completar integracao do Guardian (100%)
+
+**Status Atual**:
+- Sistema em producao: Backend, Frontend, Nginx, DBs
+- Guardian: Codigo existe mas rodando em modo degradado
+- Agentes IA: 6 agentes implementados (5.095 linhas)
+
+**Proximos Passos**:
+1. Criar modelos de banco para Guardian
+2. Atualizar service com persistencia
+3. Criar containers Docker (Guardian + AI Orchestrator)
+4. Testar todos os 20 endpoints
+5. Ativar integracao com cameras
+
+---
+
 ## Visao Geral do Projeto
 
 **Conecta Plus** e uma plataforma SaaS integrada de gestao condominial desenvolvida pela **Conecta Mais** (empresa de seguranca eletronica). O sistema oferece 14 modulos, 24 agentes de IA e 80+ submodulos para gestao completa de condominios.
