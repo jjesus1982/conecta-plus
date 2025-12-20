@@ -13,8 +13,26 @@ from pydantic import ValidationError
 import logging
 import time
 import sys
+import os
 
 from .config import settings
+
+# Detectar diretório de logs baseado no ambiente
+# Prioridade: /app/logs (dentro do container) > variável de ambiente
+_log_dir = os.environ.get('LOG_DIR', '/app/logs')
+# Verificar se podemos escrever no diretório especificado
+if os.path.exists('/app/logs'):
+    LOG_DIR = '/app/logs'
+elif os.access(os.path.dirname(_log_dir) or '/', os.W_OK):
+    LOG_DIR = _log_dir
+    try:
+        os.makedirs(LOG_DIR, exist_ok=True)
+    except PermissionError:
+        LOG_DIR = '/app/logs'
+        os.makedirs(LOG_DIR, exist_ok=True)
+else:
+    LOG_DIR = '/app/logs'
+    os.makedirs(LOG_DIR, exist_ok=True)
 from .database import init_db
 from .routers import (
     auth_router,
@@ -53,14 +71,14 @@ logging.basicConfig(
     datefmt='%Y-%m-%d %H:%M:%S',
     handlers=[
         logging.StreamHandler(sys.stdout),
-        logging.FileHandler('/opt/conecta-plus/logs/api.log', encoding='utf-8'),
+        logging.FileHandler(os.path.join(LOG_DIR, 'api.log'), encoding='utf-8'),
     ]
 )
 logger = logging.getLogger(__name__)
 
 # Logger separado para auditoria
 audit_logger = logging.getLogger("audit")
-audit_handler = logging.FileHandler('/opt/conecta-plus/logs/audit.log', encoding='utf-8')
+audit_handler = logging.FileHandler(os.path.join(LOG_DIR, 'audit.log'), encoding='utf-8')
 audit_handler.setFormatter(logging.Formatter('%(asctime)s | %(message)s'))
 audit_logger.addHandler(audit_handler)
 audit_logger.setLevel(logging.INFO)

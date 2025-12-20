@@ -187,25 +187,25 @@
     "auto_resolved": 0,
     "manual_resolved": 0,
     "prevention_success": 0,
-    "learning_cycles": 1413
+    "learning_cycles": 1442
   },
   "learned_thresholds": {
-    "cpu_warning": 11.682848270911357,
-    "cpu_critical": 40.357946256010415,
-    "memory_warning": 14.419907664135787,
-    "memory_critical": 17.026586082777406,
+    "cpu_warning": 12.84317469329255,
+    "cpu_critical": 52.49247817705392,
+    "memory_warning": 15.099007760711977,
+    "memory_critical": 17.609376245046352,
     "response_time_warning": 100,
     "response_time_critical": 500,
     "failure_count_before_action": 2
   },
   "effectiveness": {
     "preventive_memory_cleanup": {
-      "attempts": 9,
-      "success": 7
+      "attempts": 13,
+      "success": 11
     },
     "preventive_cpu_optimization": {
-      "attempts": 116,
-      "success": 116
+      "attempts": 122,
+      "success": 122
     }
   }
 }
