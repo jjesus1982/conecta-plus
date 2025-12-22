@@ -138,10 +138,12 @@ class TestAnalisadorSentimento:
         assert resultado.score == 0.0
 
     def test_texto_none(self, analisador):
-        """Testa com texto None - deve lançar erro ou tratar graciosamente."""
-        # A implementação atual não trata None, então esperamos AttributeError
-        with pytest.raises(AttributeError):
-            analisador.analisar(None)
+        """Testa com texto None - deve tratar graciosamente retornando resultado padrão."""
+        resultado = analisador.analisar(None)
+
+        assert isinstance(resultado, AnaliseSentimento)
+        assert resultado.score == 0.0
+        assert resultado.confianca == 0.0
 
     def test_texto_muito_curto(self, analisador):
         """Testa com texto muito curto."""

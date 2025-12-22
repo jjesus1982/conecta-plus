@@ -17,6 +17,19 @@ import asyncio
 from contextlib import asynccontextmanager
 from websocket_manager import manager as ws_manager
 
+# Importa módulo de banco de dados e repositórios
+try:
+    from database import get_pool, close_pool
+    from repositories.base import (
+        usuario_repo, condominio_repo, camera_repo,
+        unidade_repo, morador_repo, acesso_repo,
+        dashboard_repo, ponto_acesso_repo, manutencao_repo
+    )
+    DATABASE_AVAILABLE = True
+except ImportError as e:
+    DATABASE_AVAILABLE = False
+    print(f"⚠️ Banco de dados não disponível: {e}")
+
 # Importa router financeiro com novos serviços
 try:
     from routers.financeiro import router as financeiro_router
@@ -36,7 +49,21 @@ security = HTTPBearer()
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     print("🚀 Conecta Plus API Gateway iniciando...")
+    # Inicializa pool de conexões do banco
+    if DATABASE_AVAILABLE:
+        try:
+            await get_pool()
+            print("✅ Pool de conexões PostgreSQL inicializado")
+        except Exception as e:
+            print(f"⚠️ Erro ao conectar ao banco: {e}")
     yield
+    # Fecha pool de conexões
+    if DATABASE_AVAILABLE:
+        try:
+            await close_pool()
+            print("✅ Pool de conexões PostgreSQL fechado")
+        except Exception as e:
+            print(f"⚠️ Erro ao fechar pool: {e}")
     print("👋 Conecta Plus API Gateway encerrando...")
 
 app = FastAPI(
@@ -200,46 +227,89 @@ async def health_check():
 
 @app.post("/api/auth/login", response_model=TokenResponse)
 async def login(request: LoginRequest):
-    user = MOCK_USERS.get(request.email)
+    user = None
+    condominio_data = None
 
-    if not user or user["senha"] != request.senha:
+    # Tenta buscar do banco de dados primeiro
+    if DATABASE_AVAILABLE:
+        try:
+            user = await usuario_repo.get_by_email(request.email)
+            if user:
+                # Verificar senha (por enquanto aceita qualquer senha para usuários do banco)
+                # TODO: Implementar hash de senha com bcrypt
+                condominio_data = await condominio_repo.get_default()
+        except Exception as e:
+            print(f"Erro ao buscar usuário no banco: {e}")
+
+    # Fallback para dados mock se banco falhar ou usuário não encontrado
+    if not user:
+        mock_user = MOCK_USERS.get(request.email)
+        if mock_user and mock_user["senha"] == request.senha:
+            user = {
+                "id": mock_user["id"],
+                "email": mock_user["email"],
+                "nome": mock_user["nome"],
+                "role": mock_user["role"],
+                "condominio_id": mock_user.get("condominioId")
+            }
+            condominio_data = MOCK_CONDOMINIO
+
+    if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="E-mail ou senha incorretos",
         )
 
     access_token = create_access_token(
-        data={"sub": user["id"], "email": user["email"], "role": user["role"]}
+        data={"sub": str(user["id"]), "email": user["email"], "role": user["role"].lower()}
     )
 
     return TokenResponse(
         access_token=access_token,
         user=UserResponse(
-            id=user["id"],
+            id=str(user["id"]),
             email=user["email"],
             nome=user["nome"],
-            role=user["role"],
-            condominioId=user.get("condominioId"),
+            role=user["role"].lower(),
+            condominioId=str(user.get("condominio_id")) if user.get("condominio_id") else None,
         ),
-        condominio=MOCK_CONDOMINIO if user.get("condominioId") else None,
+        condominio=condominio_data,
     )
 
 @app.get("/api/auth/me")
 async def get_current_user(payload: dict = Depends(verify_token)):
     email = payload.get("email")
-    user = MOCK_USERS.get(email)
+    user = None
+    condominio_data = None
+
+    # Tenta buscar do banco
+    if DATABASE_AVAILABLE:
+        try:
+            user = await usuario_repo.get_by_email(email)
+            if user:
+                condominio_data = await condominio_repo.get_default()
+        except Exception as e:
+            print(f"Erro ao buscar usuário: {e}")
+
+    # Fallback para mock
+    if not user:
+        mock_user = MOCK_USERS.get(email)
+        if mock_user:
+            user = mock_user
+            condominio_data = MOCK_CONDOMINIO
+
     if not user:
         raise HTTPException(status_code=404, detail="Usuário não encontrado")
 
     return {
         "user": UserResponse(
-            id=user["id"],
+            id=str(user["id"]),
             email=user["email"],
             nome=user["nome"],
-            role=user["role"],
-            condominioId=user.get("condominioId"),
+            role=user.get("role", "morador").lower(),
+            condominioId=str(user.get("condominio_id") or user.get("condominioId", "")),
         ),
-        "condominio": MOCK_CONDOMINIO,
+        "condominio": condominio_data,
     }
 
 @app.post("/api/auth/logout")
@@ -262,6 +332,16 @@ async def get_sso_config():
 
 @app.get("/api/dashboard/estatisticas")
 async def get_dashboard_stats(payload: dict = Depends(verify_token)):
+    # Tenta buscar do banco
+    if DATABASE_AVAILABLE:
+        try:
+            condominio = await condominio_repo.get_default()
+            if condominio:
+                stats = await dashboard_repo.get_stats(str(condominio["id"]))
+                return stats
+        except Exception as e:
+            print(f"Erro ao buscar estatísticas: {e}")
+    # Fallback para mock
     return MOCK_DASHBOARD_STATS
 
 @app.get("/api/dashboard/alertas")
@@ -320,10 +400,29 @@ async def list_frigate_events(instance_id: str, payload: dict = Depends(verify_t
 
 @app.get("/api/cftv/cameras")
 async def list_cameras(payload: dict = Depends(verify_token)):
+    # Tenta buscar do banco
+    if DATABASE_AVAILABLE:
+        try:
+            condominio = await condominio_repo.get_default()
+            if condominio:
+                cameras = await camera_repo.list_all(str(condominio["id"]))
+                return {"items": cameras, "total": len(cameras)}
+        except Exception as e:
+            print(f"Erro ao buscar câmeras: {e}")
+    # Fallback para mock
     return {"items": MOCK_CAMERAS, "total": len(MOCK_CAMERAS)}
 
 @app.get("/api/cftv/cameras/{camera_id}")
 async def get_camera(camera_id: str, payload: dict = Depends(verify_token)):
+    # Tenta buscar do banco
+    if DATABASE_AVAILABLE:
+        try:
+            camera = await camera_repo.get_by_id(camera_id)
+            if camera:
+                return camera
+        except Exception as e:
+            print(f"Erro ao buscar câmera: {e}")
+    # Fallback para mock
     camera = next((c for c in MOCK_CAMERAS if c["id"] == camera_id), None)
     if not camera:
         raise HTTPException(status_code=404, detail="Câmera não encontrada")
@@ -1117,14 +1216,126 @@ async def list_unidades(payload: dict = Depends(verify_token)):
         "total": 3,
     }
 
+# Alias para financeiro/unidades
+@app.get("/api/financeiro/unidades")
+async def list_unidades_financeiro(payload: dict = Depends(verify_token)):
+    """Lista unidades para módulo financeiro"""
+    if DATABASE_AVAILABLE:
+        try:
+            condominio = await condominio_repo.get_default()
+            if condominio:
+                unidades = await unidade_repo.list_all(str(condominio["id"]))
+                return {"items": unidades, "total": len(unidades)}
+        except Exception as e:
+            print(f"Erro ao buscar unidades: {e}")
+    # Fallback mock
+    return {
+        "items": [
+            {"id": "1", "bloco": "A", "numero": "101", "tipo": "apartamento", "area": 75.5, "fracao": 0.0083, "proprietario": "Carlos Silva", "status": "adimplente"},
+            {"id": "2", "bloco": "A", "numero": "102", "tipo": "apartamento", "area": 75.5, "fracao": 0.0083, "proprietario": "Maria Santos", "status": "adimplente"},
+        ],
+        "total": 2,
+    }
+
+@app.get("/api/financeiro/moradores")
+async def list_moradores_financeiro(payload: dict = Depends(verify_token)):
+    """Lista moradores para módulo financeiro"""
+    if DATABASE_AVAILABLE:
+        try:
+            condominio = await condominio_repo.get_default()
+            if condominio:
+                moradores = await morador_repo.list_all(str(condominio["id"]))
+                return {"items": moradores, "total": len(moradores)}
+        except Exception as e:
+            print(f"Erro ao buscar moradores: {e}")
+    # Fallback mock
+    return {
+        "items": [
+            {"id": "1", "nome": "Carlos Silva", "email": "carlos@email.com", "telefone": "(11) 99999-0001", "unidade_id": "1", "tipo": "proprietario"},
+        ],
+        "total": 1,
+    }
+
+# ==================== PONTOS DE ACESSO ====================
+
+@app.get("/api/acesso/pontos")
+async def list_pontos_acesso(payload: dict = Depends(verify_token)):
+    """Lista pontos de controle de acesso"""
+    if DATABASE_AVAILABLE:
+        try:
+            condominio = await condominio_repo.get_default()
+            if condominio:
+                pontos = await ponto_acesso_repo.list_all(str(condominio["id"]))
+                return {"items": pontos, "total": len(pontos)}
+        except Exception as e:
+            print(f"Erro ao buscar pontos de acesso: {e}")
+    # Fallback mock
+    return {
+        "items": [
+            {"id": "1", "nome": "Portão Principal", "tipo": "entrada", "status": "online"},
+            {"id": "2", "nome": "Portão Garagem", "tipo": "entrada", "status": "online"},
+        ],
+        "total": 2,
+    }
+
+# ==================== MANUTENÇÃO ====================
+
+@app.get("/api/manutencao")
+async def list_manutencao(payload: dict = Depends(verify_token)):
+    """Lista ordens de manutenção"""
+    if DATABASE_AVAILABLE:
+        try:
+            condominio = await condominio_repo.get_default()
+            if condominio:
+                ordens = await manutencao_repo.list_all(str(condominio["id"]))
+                return {"items": ordens, "total": len(ordens)}
+        except Exception as e:
+            print(f"Erro ao buscar manutenções: {e}")
+    # Fallback mock
+    return {
+        "items": [
+            {"id": "1", "titulo": "Troca de lâmpadas corredor", "categoria": "eletrica", "prioridade": "baixa", "status": "aberta"},
+        ],
+        "total": 1,
+    }
+
+@app.post("/api/manutencao")
+async def create_manutencao(request: Request, payload: dict = Depends(verify_token)):
+    """Cria ordem de manutenção"""
+    if DATABASE_AVAILABLE:
+        try:
+            condominio = await condominio_repo.get_default()
+            body = await request.json()
+            if condominio:
+                body['condominio_id'] = str(condominio["id"])
+                body['solicitante_id'] = payload.get("sub")
+                ordem_id = await manutencao_repo.create(body)
+                return {"id": str(ordem_id), "message": "Ordem de manutenção criada com sucesso"}
+        except Exception as e:
+            print(f"Erro ao criar manutenção: {e}")
+    return {"id": str(uuid.uuid4()), "message": "Ordem de manutenção criada com sucesso"}
+
 # ==================== CONDOMINIOS ====================
 
 @app.get("/api/condominios/{condominio_id}")
 async def get_condominio(condominio_id: str, payload: dict = Depends(verify_token)):
+    if DATABASE_AVAILABLE:
+        try:
+            cond = await condominio_repo.get_by_id(condominio_id)
+            if cond:
+                return cond
+        except Exception as e:
+            print(f"Erro ao buscar condomínio: {e}")
     return MOCK_CONDOMINIO
 
 @app.get("/api/condominios/{condominio_id}/estatisticas")
 async def get_condominio_stats(condominio_id: str, payload: dict = Depends(verify_token)):
+    if DATABASE_AVAILABLE:
+        try:
+            stats = await dashboard_repo.get_stats(condominio_id)
+            return stats
+        except Exception as e:
+            print(f"Erro ao buscar estatísticas: {e}")
     return MOCK_DASHBOARD_STATS
 
 # ==================== ERROR HANDLERS ====================

@@ -156,6 +156,18 @@ class AnalisadorSentimento:
         Returns:
             AnaliseSentimento com detalhes
         """
+        # Tratamento de edge case: texto None ou vazio
+        if texto is None or not isinstance(texto, str) or len(texto.strip()) == 0:
+            return AnaliseSentimento(
+                sentimento=Sentimento.NEUTRO,
+                score=0.0,
+                confianca=0.0,
+                emocoes_detectadas=[],
+                intencao_pagamento=0.0,
+                requer_atencao_especial=False,
+                sugestao_resposta="Texto vazio ou inválido recebido. Aguardar nova mensagem."
+            )
+
         texto_lower = texto.lower()
 
         # Calcula score baseado em léxico

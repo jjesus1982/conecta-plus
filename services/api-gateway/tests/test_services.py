@@ -113,7 +113,7 @@ class TestEmailService:
         from services.email_service import email_service
 
         resultado = await email_service.enviar_email(
-            destinatario="teste@email.com",
+            para="teste@email.com",
             assunto="Teste de Email",
             corpo_html="<h1>Teste</h1>"
         )
@@ -189,62 +189,57 @@ class TestRelatoriosAvancados:
         from services.relatorios_avancados import gerador_relatorios
 
         lancamentos = [
-            {"tipo": "receita", "categoria": "Taxa", "valor": 100000},
-            {"tipo": "despesa", "categoria": "Folha", "valor": 20000},
+            {"tipo": "receita", "categoria": "REC001", "valor": 100000},
+            {"tipo": "despesa", "categoria": "DES001", "valor": 20000},
         ]
+        condominio = {"nome": "Condomínio Teste", "cnpj": "12.345.678/0001-90"}
 
-        dre = await gerador_relatorios.gerar_dre(lancamentos, 12, 2024)
+        dre = gerador_relatorios.gerar_dre(lancamentos, 12, 2024, condominio)
 
         assert dre is not None
-        assert "titulo" in dre
-        assert "receitas" in dre
-        assert "despesas" in dre
-        assert "resultado_operacional" in dre
+        assert isinstance(dre, bytes)  # Retorna PDF em bytes
 
     @pytest.mark.asyncio
     async def test_gerar_balancete(self):
         """Testa geracao de balancete"""
         from services.relatorios_avancados import gerador_relatorios
 
-        contas = [
-            {"codigo": "1.1.1", "nome": "Caixa", "tipo": "ativo", "saldo_anterior": 5000, "debitos": 10000, "creditos": 8000},
-            {"codigo": "2.1.1", "nome": "Fornecedores", "tipo": "passivo", "saldo_anterior": 3000, "debitos": 3000, "creditos": 4000},
+        lancamentos = [
+            {"tipo": "receita", "categoria": "REC001", "valor": 10000},
+            {"tipo": "despesa", "categoria": "DES001", "valor": 8000},
         ]
+        saldo_anterior = 5000.0
+        condominio = {"nome": "Condomínio Teste", "cnpj": "12.345.678/0001-90"}
 
-        balancete = await gerador_relatorios.gerar_balancete(contas, 12, 2024)
+        balancete = gerador_relatorios.gerar_balancete(lancamentos, saldo_anterior, 12, 2024, condominio)
 
         assert balancete is not None
-        assert "titulo" in balancete
-        assert "contas" in balancete
-        assert "totais" in balancete
+        assert isinstance(balancete, bytes)  # Retorna PDF em bytes
 
     @pytest.mark.asyncio
     async def test_gerar_prestacao_contas(self):
         """Testa geracao de prestacao de contas"""
         from services.relatorios_avancados import gerador_relatorios
+        from datetime import date
 
-        dados = {
-            "condominio": {"nome": "Teste", "documento": "12.345.678/0001-90"},
-            "sindico": {"nome": "Sindico Teste"},
-            "resumo": {
-                "receita_prevista": 100000,
-                "receita_realizada": 95000,
-                "despesa_orcada": 40000,
-                "despesa_realizada": 38000,
-                "saldo_anterior": 50000,
-                "saldo_atual": 107000
-            },
-            "receitas_detalhadas": [],
-            "despesas_detalhadas": [],
-            "inadimplencia": {"total_unidades": 100, "unidades_inadimplentes": 5}
-        }
+        lancamentos = [
+            {"tipo": "receita", "categoria": "REC001", "valor": 95000},
+            {"tipo": "despesa", "categoria": "DES001", "valor": 38000},
+        ]
+        boletos = [
+            {"valor": 850.00, "status": "pago", "vencimento": "2024-12-10"},
+        ]
+        saldo_inicial = 50000.0
+        periodo_inicio = date(2024, 12, 1)
+        periodo_fim = date(2024, 12, 31)
+        condominio = {"nome": "Condomínio Teste", "cnpj": "12.345.678/0001-90"}
 
-        prestacao = await gerador_relatorios.gerar_prestacao_contas(dados, 12, 2024)
+        prestacao = gerador_relatorios.gerar_prestacao_contas(
+            lancamentos, boletos, saldo_inicial, periodo_inicio, periodo_fim, condominio
+        )
 
         assert prestacao is not None
-        assert "titulo" in prestacao
-        assert "resumo_executivo" in prestacao
-        assert "movimento_financeiro" in prestacao
+        assert isinstance(prestacao, bytes)  # Retorna PDF em bytes
 
 
 class TestWebSocketNotifier:

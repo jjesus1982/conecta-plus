@@ -13,7 +13,7 @@ DATABASE_CONFIG = {
     "host": os.getenv("DB_HOST", "conecta-postgres"),
     "port": int(os.getenv("DB_PORT", 5432)),
     "user": os.getenv("DB_USER", "conecta"),
-    "password": os.getenv("DB_PASSWORD", "conecta_pass_2024"),
+    "password": os.getenv("DB_PASSWORD", "conecta_secret_2024"),
     "database": os.getenv("DB_NAME", "conecta_plus"),
 }
 
