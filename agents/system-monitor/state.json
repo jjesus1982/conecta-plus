@@ -1,19 +1,19 @@
 {
-  "last_update": "2025-12-25T14:02:42.487121",
-  "iteration": 1888,
+  "last_update": "2025-12-25T17:51:25.047847",
+  "iteration": 2062,
   "total_errors_fixed": 0,
-  "total_gaps_detected": 20773,
-  "total_tests_run": 4324,
-  "total_tests_passed": 1662,
+  "total_gaps_detected": 22687,
+  "total_tests_run": 4738,
+  "total_tests_passed": 1817,
   "last_cycle": {
-    "iteration": 1888,
-    "timestamp": "2025-12-25T14:01:57.497081",
+    "iteration": 2062,
+    "timestamp": "2025-12-25T17:50:40.428297",
     "log_analysis": {
-      "timestamp": "2025-12-25T14:01:57.497352",
+      "timestamp": "2025-12-25T17:50:40.429934",
       "logs": {
         "nextjs": {
           "log_path": "/tmp/nextjs-debug.log",
-          "timestamp": "2025-12-25T14:01:57.500049",
+          "timestamp": "2025-12-25T17:50:40.433953",
           "total_lines": 1000,
           "errors": [],
           "warnings": [],
@@ -45,7 +45,7 @@
       "critical_issues": []
     },
     "gaps": {
-      "timestamp": "2025-12-25T14:01:57.507528",
+      "timestamp": "2025-12-25T17:50:40.442222",
       "gaps": [
         {
           "category": "code_quality",
@@ -287,35 +287,35 @@
     },
     "fixes_applied": [],
     "metrics": {
-      "timestamp": "2025-12-25T14:02:01.267381",
+      "timestamp": "2025-12-25T17:50:43.920841",
       "cpu": {
-        "timestamp": "2025-12-25T14:02:01.267386",
-        "percent": 27.3,
+        "timestamp": "2025-12-25T17:50:43.920854",
+        "percent": 18.3,
         "per_cpu": [
-          32.7,
-          3.0,
-          2.0,
-          3.0
+          6.0,
+          8.1,
+          5.2,
+          5.2
         ],
         "count": 4,
         "load_avg": [
-          1.72900390625,
-          1.04833984375,
-          0.76416015625
+          0.89697265625,
+          0.9150390625,
+          0.6943359375
         ]
       },
       "memory": {
-        "timestamp": "2025-12-25T14:02:03.268706",
+        "timestamp": "2025-12-25T17:50:45.922358",
         "total_mb": 15992,
-        "available_mb": 12089,
-        "used_mb": 3395,
-        "percent": 24.4,
+        "available_mb": 12341,
+        "used_mb": 3142,
+        "percent": 22.8,
         "swap_total_mb": 0,
         "swap_used_mb": 0,
         "swap_percent": 0.0
       },
       "disk": {
-        "timestamp": "2025-12-25T14:02:03.268754",
+        "timestamp": "2025-12-25T17:50:45.922446",
         "path": "/",
         "total_gb": 192,
         "used_gb": 143,
@@ -323,11 +323,11 @@
         "percent": 74.7
       },
       "network": {
-        "timestamp": "2025-12-25T14:02:03.269144",
-        "bytes_sent": 25878650845,
-        "bytes_recv": 24590156113,
-        "packets_sent": 20367887,
-        "packets_recv": 28530214,
+        "timestamp": "2025-12-25T17:50:45.922876",
+        "bytes_sent": 26132939158,
+        "bytes_recv": 24936140428,
+        "packets_sent": 21069602,
+        "packets_recv": 29185489,
         "errors_in": 0,
         "errors_out": 0,
         "drops_in": 0,
@@ -335,20 +335,27 @@
       },
       "uptime": {
         "boot_time": "2025-12-18T15:11:19",
-        "uptime_seconds": 600644,
-        "uptime_human": "6 days, 22:50:44"
+        "uptime_seconds": 614366,
+        "uptime_human": "7 days, 2:39:26"
       },
       "top_processes_cpu": [
         {
-          "pid": 3211049,
-          "memory_percent": 2.2452802997550076,
-          "cpu_percent": 30.0,
+          "pid": 3790,
+          "memory_percent": 0.23417138697755988,
+          "cpu_percent": 10.0,
+          "name": "monarx-agent",
+          "username": "root"
+        },
+        {
+          "pid": 3439413,
+          "memory_percent": 1.8770594111885412,
+          "cpu_percent": 10.0,
           "name": "claude",
           "username": "root"
         },
         {
           "pid": 1,
-          "memory_percent": 0.07581808544678689,
+          "memory_percent": 0.0750364556999128,
           "cpu_percent": 0.0,
           "name": "systemd",
           "username": "root"
@@ -366,19 +373,12 @@
           "cpu_percent": 0.0,
           "name": "pool_workqueue_release",
           "username": "root"
-        },
-        {
-          "pid": 4,
-          "memory_percent": 0.0,
-          "cpu_percent": 0.0,
-          "name": "kworker/R-rcu_g",
-          "username": "root"
         }
       ],
       "top_processes_memory": [
         {
           "pid": 22398,
-          "memory_percent": 5.577856429271057,
+          "memory_percent": 5.5713347060705765,
           "cpu_percent": 0.0,
           "name": "dockerd",
           "username": "root"
@@ -391,31 +391,31 @@
           "username": "ubuntu"
         },
         {
-          "pid": 3211049,
-          "memory_percent": 2.1905662174738216,
-          "cpu_percent": 20.0,
+          "pid": 3439413,
+          "memory_percent": 1.8817491896697858,
+          "cpu_percent": 0.0,
           "name": "claude",
           "username": "root"
         },
         {
           "pid": 879018,
-          "memory_percent": 1.1296503916697809,
+          "memory_percent": 1.1408374674219164,
           "cpu_percent": 0.0,
           "name": "python3",
           "username": "root"
         },
         {
-          "pid": 5490,
-          "memory_percent": 0.9005351721173128,
+          "pid": 3231802,
+          "memory_percent": 0.8281611427426899,
           "cpu_percent": 0.0,
-          "name": "systemd-journald",
-          "username": "root"
+          "name": "python3.11",
+          "username": "ubuntu"
         }
       ]
     },
     "actions_taken": [],
     "safe_healing": {
-      "timestamp": "2025-12-25T14:02:01.240750",
+      "timestamp": "2025-12-25T17:50:43.886761",
       "total_issues": 11,
       "authorized": 0,
       "attempted": 0,
@@ -554,7 +554,7 @@
       }
     },
     "health_score": {
-      "timestamp": "2025-12-25T14:02:42.486921",
+      "timestamp": "2025-12-25T17:51:25.047534",
       "overall_score": 81,
       "health_level": "Good",
       "breakdown": {
@@ -569,11 +569,11 @@
           "score": 26,
           "max": 30,
           "cpu": {
-            "value": "27.3%",
+            "value": "18.3%",
             "score": 10
           },
           "memory": {
-            "value": "24.4%",
+            "value": "22.8%",
             "score": 10
           },
           "disk": {
@@ -594,6 +594,6 @@
         "\u2705 System health is optimal - continue monitoring"
       ]
     },
-    "duration_seconds": 44.989901
+    "duration_seconds": 44.619332
   }
 }

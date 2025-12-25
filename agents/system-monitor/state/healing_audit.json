@@ -1,21 +1,36 @@
 [
   {
-    "timestamp": "2025-12-25T13:57:01.726065",
+    "timestamp": "2025-12-25T17:42:28.851753",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
       "type": "unused_dependency",
       "severity": "low",
-      "description": "Possibly unused dependency: @tanstack/react-query",
-      "package": "@tanstack/react-query",
-      "solution": "Remove if not needed: npm uninstall @tanstack/react-query",
+      "description": "Possibly unused dependency: @radix-ui/react-select",
+      "package": "@radix-ui/react-select",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-select",
       "priority": "P4",
       "priority_score": 4
     },
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T13:57:01.726236",
+    "timestamp": "2025-12-25T17:42:28.852418",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-slot",
+      "package": "@radix-ui/react-slot",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-slot",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T17:42:28.853072",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -30,7 +45,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T13:57:01.727362",
+    "timestamp": "2025-12-25T17:42:28.853779",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -45,7 +60,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T13:57:01.728502",
+    "timestamp": "2025-12-25T17:42:28.854531",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -60,7 +75,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T13:58:16.655595",
+    "timestamp": "2025-12-25T17:43:45.160804",
     "action": "ABORTED",
     "issue": {
       "category": "code_quality",
@@ -76,7 +91,7 @@
     "reason": "Sem rollback definido para 'excessive_any'"
   },
   {
-    "timestamp": "2025-12-25T13:58:16.656491",
+    "timestamp": "2025-12-25T17:43:45.161598",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -91,7 +106,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T13:58:16.657458",
+    "timestamp": "2025-12-25T17:43:45.162353",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -106,7 +121,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T13:58:16.658397",
+    "timestamp": "2025-12-25T17:43:45.163150",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -121,7 +136,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T13:58:16.659244",
+    "timestamp": "2025-12-25T17:43:45.163978",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -136,7 +151,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T13:58:16.660201",
+    "timestamp": "2025-12-25T17:43:45.164882",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -151,7 +166,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T13:58:16.660946",
+    "timestamp": "2025-12-25T17:43:45.165829",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -166,7 +181,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T13:58:16.661817",
+    "timestamp": "2025-12-25T17:43:45.166764",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -181,7 +196,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T13:58:16.663082",
+    "timestamp": "2025-12-25T17:43:45.167600",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -196,7 +211,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T13:58:16.664033",
+    "timestamp": "2025-12-25T17:43:45.168947",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -211,7 +226,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T13:58:16.664851",
+    "timestamp": "2025-12-25T17:43:45.170341",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -226,7 +241,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T13:58:16.714806",
+    "timestamp": "2025-12-25T17:43:45.352311",
     "action": "ABORTED",
     "issue": {
       "category": "code_quality",
@@ -242,7 +257,7 @@
     "reason": "Sem rollback definido para 'excessive_any'"
   },
   {
-    "timestamp": "2025-12-25T13:58:16.715945",
+    "timestamp": "2025-12-25T17:43:45.353579",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -257,7 +272,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T13:58:16.717013",
+    "timestamp": "2025-12-25T17:43:45.354854",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -272,7 +287,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T13:58:16.718112",
+    "timestamp": "2025-12-25T17:43:45.356062",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -287,7 +302,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T13:58:16.719183",
+    "timestamp": "2025-12-25T17:43:45.357215",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -302,7 +317,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T13:58:16.720263",
+    "timestamp": "2025-12-25T17:43:45.358249",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -317,7 +332,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T13:58:16.721418",
+    "timestamp": "2025-12-25T17:43:45.359312",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -332,7 +347,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T13:58:16.722549",
+    "timestamp": "2025-12-25T17:43:45.360623",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -347,7 +362,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T13:58:16.724055",
+    "timestamp": "2025-12-25T17:43:45.361917",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -362,7 +377,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T13:58:16.725198",
+    "timestamp": "2025-12-25T17:43:45.363219",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -377,7 +392,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T13:58:16.726365",
+    "timestamp": "2025-12-25T17:43:45.364481",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -392,7 +407,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T13:59:31.346118",
+    "timestamp": "2025-12-25T17:45:00.989247",
     "action": "ABORTED",
     "issue": {
       "category": "code_quality",
@@ -408,7 +423,7 @@
     "reason": "Sem rollback definido para 'excessive_any'"
   },
   {
-    "timestamp": "2025-12-25T13:59:31.347291",
+    "timestamp": "2025-12-25T17:45:00.991250",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -423,7 +438,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T13:59:31.348328",
+    "timestamp": "2025-12-25T17:45:00.993541",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -438,7 +453,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T13:59:31.349785",
+    "timestamp": "2025-12-25T17:45:00.995373",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -453,7 +468,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T13:59:31.350835",
+    "timestamp": "2025-12-25T17:45:00.996831",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -468,7 +483,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T13:59:31.351830",
+    "timestamp": "2025-12-25T17:45:00.998399",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -483,7 +498,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T13:59:31.352798",
+    "timestamp": "2025-12-25T17:45:01.000210",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -498,7 +513,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T13:59:31.353808",
+    "timestamp": "2025-12-25T17:45:01.002725",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -513,7 +528,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T13:59:31.355093",
+    "timestamp": "2025-12-25T17:45:01.004409",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -528,7 +543,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T13:59:31.356392",
+    "timestamp": "2025-12-25T17:45:01.005866",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -543,7 +558,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T13:59:31.357498",
+    "timestamp": "2025-12-25T17:45:01.007095",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -558,7 +573,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T13:59:31.395603",
+    "timestamp": "2025-12-25T17:45:01.086411",
     "action": "ABORTED",
     "issue": {
       "category": "code_quality",
@@ -574,7 +589,7 @@
     "reason": "Sem rollback definido para 'excessive_any'"
   },
   {
-    "timestamp": "2025-12-25T13:59:31.397183",
+    "timestamp": "2025-12-25T17:45:01.093391",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -589,7 +604,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T13:59:31.398381",
+    "timestamp": "2025-12-25T17:45:01.097697",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -604,7 +619,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T13:59:31.399430",
+    "timestamp": "2025-12-25T17:45:01.100654",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -619,7 +634,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T13:59:31.400593",
+    "timestamp": "2025-12-25T17:45:01.103722",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -634,7 +649,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T13:59:31.401766",
+    "timestamp": "2025-12-25T17:45:01.106348",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -649,7 +664,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T13:59:31.402999",
+    "timestamp": "2025-12-25T17:45:01.108282",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -664,7 +679,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T13:59:31.404101",
+    "timestamp": "2025-12-25T17:45:01.109755",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -679,7 +694,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T13:59:31.406444",
+    "timestamp": "2025-12-25T17:45:01.115171",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -694,7 +709,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T13:59:31.407595",
+    "timestamp": "2025-12-25T17:45:01.117544",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -709,7 +724,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T13:59:31.408726",
+    "timestamp": "2025-12-25T17:45:01.122520",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -724,7 +739,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T14:00:46.318325",
+    "timestamp": "2025-12-25T17:46:16.114279",
     "action": "ABORTED",
     "issue": {
       "category": "code_quality",
@@ -740,7 +755,7 @@
     "reason": "Sem rollback definido para 'excessive_any'"
   },
   {
-    "timestamp": "2025-12-25T14:00:46.320202",
+    "timestamp": "2025-12-25T17:46:16.115964",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -755,7 +770,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T14:00:46.321805",
+    "timestamp": "2025-12-25T17:46:16.118097",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -770,7 +785,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T14:00:46.323468",
+    "timestamp": "2025-12-25T17:46:16.119543",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -785,7 +800,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T14:00:46.325121",
+    "timestamp": "2025-12-25T17:46:16.120858",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -800,7 +815,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T14:00:46.326791",
+    "timestamp": "2025-12-25T17:46:16.122151",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -815,7 +830,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T14:00:46.328301",
+    "timestamp": "2025-12-25T17:46:16.123387",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -830,7 +845,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T14:00:46.329821",
+    "timestamp": "2025-12-25T17:46:16.124586",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -845,7 +860,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T14:00:46.331771",
+    "timestamp": "2025-12-25T17:46:16.125744",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -860,7 +875,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T14:00:46.333518",
+    "timestamp": "2025-12-25T17:46:16.127050",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -875,7 +890,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T14:00:46.335126",
+    "timestamp": "2025-12-25T17:46:16.128382",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -890,7 +905,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T14:00:46.389995",
+    "timestamp": "2025-12-25T17:46:16.252618",
     "action": "ABORTED",
     "issue": {
       "category": "code_quality",
@@ -906,7 +921,7 @@
     "reason": "Sem rollback definido para 'excessive_any'"
   },
   {
-    "timestamp": "2025-12-25T14:00:46.392099",
+    "timestamp": "2025-12-25T17:46:16.254127",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -921,7 +936,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T14:00:46.393897",
+    "timestamp": "2025-12-25T17:46:16.255392",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -936,7 +951,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T14:00:46.395675",
+    "timestamp": "2025-12-25T17:46:16.256812",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -951,7 +966,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T14:00:46.397495",
+    "timestamp": "2025-12-25T17:46:16.258191",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -966,7 +981,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T14:00:46.399222",
+    "timestamp": "2025-12-25T17:46:16.259504",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -981,7 +996,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T14:00:46.400965",
+    "timestamp": "2025-12-25T17:46:16.261155",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -996,7 +1011,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T14:00:46.773760",
+    "timestamp": "2025-12-25T17:46:16.262742",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -1011,7 +1026,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T14:00:46.775020",
+    "timestamp": "2025-12-25T17:46:16.264345",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -1026,7 +1041,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T14:00:46.780950",
+    "timestamp": "2025-12-25T17:46:16.266385",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -1041,7 +1056,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T14:00:46.782668",
+    "timestamp": "2025-12-25T17:46:16.268424",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -1056,7 +1071,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T14:02:00.976558",
+    "timestamp": "2025-12-25T17:47:31.381472",
     "action": "ABORTED",
     "issue": {
       "category": "code_quality",
@@ -1072,7 +1087,7 @@
     "reason": "Sem rollback definido para 'excessive_any'"
   },
   {
-    "timestamp": "2025-12-25T14:02:00.979099",
+    "timestamp": "2025-12-25T17:47:31.383489",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -1087,7 +1102,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T14:02:00.981216",
+    "timestamp": "2025-12-25T17:47:31.385073",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -1102,7 +1117,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T14:02:00.982919",
+    "timestamp": "2025-12-25T17:47:31.386780",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -1117,7 +1132,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T14:02:00.984623",
+    "timestamp": "2025-12-25T17:47:31.388431",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -1132,7 +1147,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T14:02:00.986542",
+    "timestamp": "2025-12-25T17:47:31.389935",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -1147,7 +1162,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T14:02:00.988639",
+    "timestamp": "2025-12-25T17:47:31.392077",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -1162,7 +1177,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T14:02:00.990901",
+    "timestamp": "2025-12-25T17:47:31.394096",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -1177,7 +1192,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T14:02:00.992556",
+    "timestamp": "2025-12-25T17:47:31.395872",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -1192,7 +1207,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T14:02:00.994565",
+    "timestamp": "2025-12-25T17:47:31.397813",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -1207,7 +1222,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T14:02:00.996557",
+    "timestamp": "2025-12-25T17:47:31.399607",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -1222,7 +1237,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T14:02:01.241855",
+    "timestamp": "2025-12-25T17:47:31.470893",
     "action": "ABORTED",
     "issue": {
       "category": "code_quality",
@@ -1238,7 +1253,7 @@
     "reason": "Sem rollback definido para 'excessive_any'"
   },
   {
-    "timestamp": "2025-12-25T14:02:01.244557",
+    "timestamp": "2025-12-25T17:47:31.473268",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -1253,7 +1268,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T14:02:01.246851",
+    "timestamp": "2025-12-25T17:47:31.475088",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -1268,7 +1283,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T14:02:01.249035",
+    "timestamp": "2025-12-25T17:47:31.476982",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -1283,7 +1298,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T14:02:01.251424",
+    "timestamp": "2025-12-25T17:47:31.479061",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -1298,7 +1313,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T14:02:01.254111",
+    "timestamp": "2025-12-25T17:47:31.480904",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -1313,7 +1328,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T14:02:01.256415",
+    "timestamp": "2025-12-25T17:47:31.482871",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -1328,7 +1343,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T14:02:01.258846",
+    "timestamp": "2025-12-25T17:47:31.484976",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -1343,7 +1358,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T14:02:01.261065",
+    "timestamp": "2025-12-25T17:47:31.486777",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -1358,7 +1373,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T14:02:01.263206",
+    "timestamp": "2025-12-25T17:47:31.488870",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -1373,7 +1388,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T14:02:01.265403",
+    "timestamp": "2025-12-25T17:47:31.490879",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -1388,7 +1403,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T14:03:15.637278",
+    "timestamp": "2025-12-25T17:49:24.038564",
     "action": "ABORTED",
     "issue": {
       "category": "code_quality",
@@ -1404,7 +1419,7 @@
     "reason": "Sem rollback definido para 'excessive_any'"
   },
   {
-    "timestamp": "2025-12-25T14:03:15.639490",
+    "timestamp": "2025-12-25T17:49:24.041352",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -1419,7 +1434,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T14:03:15.641697",
+    "timestamp": "2025-12-25T17:49:24.043683",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -1434,7 +1449,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T14:03:15.643889",
+    "timestamp": "2025-12-25T17:49:24.046121",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -1449,7 +1464,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T14:03:15.645897",
+    "timestamp": "2025-12-25T17:49:24.048523",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -1464,7 +1479,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T14:03:15.647832",
+    "timestamp": "2025-12-25T17:49:24.050719",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -1479,7 +1494,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T14:03:15.649496",
+    "timestamp": "2025-12-25T17:49:24.053218",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -1494,7 +1509,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T14:03:15.651209",
+    "timestamp": "2025-12-25T17:49:24.055339",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -1509,7 +1524,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T14:03:15.653179",
+    "timestamp": "2025-12-25T17:49:24.058311",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -1524,7 +1539,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T14:03:15.655203",
+    "timestamp": "2025-12-25T17:49:24.060911",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -1539,7 +1554,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T14:03:15.657006",
+    "timestamp": "2025-12-25T17:49:24.063582",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -1554,7 +1569,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T14:03:17.204933",
+    "timestamp": "2025-12-25T17:49:28.856645",
     "action": "ABORTED",
     "issue": {
       "category": "code_quality",
@@ -1570,7 +1585,7 @@
     "reason": "Sem rollback definido para 'excessive_any'"
   },
   {
-    "timestamp": "2025-12-25T14:03:17.206907",
+    "timestamp": "2025-12-25T17:49:28.859488",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -1585,7 +1600,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T14:03:17.208736",
+    "timestamp": "2025-12-25T17:49:28.861645",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -1600,7 +1615,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T14:03:17.210480",
+    "timestamp": "2025-12-25T17:49:28.863781",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -1615,7 +1630,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T14:03:17.212412",
+    "timestamp": "2025-12-25T17:49:28.866165",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -1630,7 +1645,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T14:03:17.214462",
+    "timestamp": "2025-12-25T17:49:28.868362",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -1645,7 +1660,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T14:03:17.216686",
+    "timestamp": "2025-12-25T17:49:28.871026",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -1660,7 +1675,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T14:03:17.218718",
+    "timestamp": "2025-12-25T17:49:28.874058",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -1675,7 +1690,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T14:03:17.220934",
+    "timestamp": "2025-12-25T17:49:28.876566",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -1690,7 +1705,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T14:03:17.223087",
+    "timestamp": "2025-12-25T17:49:28.878889",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -1705,7 +1720,671 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T14:03:17.225021",
+    "timestamp": "2025-12-25T17:49:28.881193",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @tanstack/react-query",
+      "package": "@tanstack/react-query",
+      "solution": "Remove if not needed: npm uninstall @tanstack/react-query",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T17:50:39.735507",
+    "action": "ABORTED",
+    "issue": {
+      "category": "code_quality",
+      "type": "excessive_any",
+      "severity": "low",
+      "description": "Excessive use of \"any\" type in DashboardGraficos.tsx",
+      "count": 7,
+      "file": "/opt/conecta-plus/frontend/src/components/financeiro/DashboardGraficos.tsx",
+      "solution": "Replace \"any\" with proper types",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'excessive_any'"
+  },
+  {
+    "timestamp": "2025-12-25T17:50:39.737668",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @prisma/adapter-pg",
+      "package": "@prisma/adapter-pg",
+      "solution": "Remove if not needed: npm uninstall @prisma/adapter-pg",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T17:50:39.739661",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @prisma/client",
+      "package": "@prisma/client",
+      "solution": "Remove if not needed: npm uninstall @prisma/client",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T17:50:39.741767",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-avatar",
+      "package": "@radix-ui/react-avatar",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-avatar",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T17:50:39.743812",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-dialog",
+      "package": "@radix-ui/react-dialog",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-dialog",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T17:50:39.745906",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-dropdown-menu",
+      "package": "@radix-ui/react-dropdown-menu",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-dropdown-menu",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T17:50:39.748452",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-select",
+      "package": "@radix-ui/react-select",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-select",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T17:50:39.750781",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-slot",
+      "package": "@radix-ui/react-slot",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-slot",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T17:50:39.753340",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-tabs",
+      "package": "@radix-ui/react-tabs",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-tabs",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T17:50:39.755345",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-toast",
+      "package": "@radix-ui/react-toast",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-toast",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T17:50:39.757453",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @tanstack/react-query",
+      "package": "@tanstack/react-query",
+      "solution": "Remove if not needed: npm uninstall @tanstack/react-query",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T17:50:43.888304",
+    "action": "ABORTED",
+    "issue": {
+      "category": "code_quality",
+      "type": "excessive_any",
+      "severity": "low",
+      "description": "Excessive use of \"any\" type in DashboardGraficos.tsx",
+      "count": 7,
+      "file": "/opt/conecta-plus/frontend/src/components/financeiro/DashboardGraficos.tsx",
+      "solution": "Replace \"any\" with proper types",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'excessive_any'"
+  },
+  {
+    "timestamp": "2025-12-25T17:50:43.891587",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @prisma/adapter-pg",
+      "package": "@prisma/adapter-pg",
+      "solution": "Remove if not needed: npm uninstall @prisma/adapter-pg",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T17:50:43.894438",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @prisma/client",
+      "package": "@prisma/client",
+      "solution": "Remove if not needed: npm uninstall @prisma/client",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T17:50:43.897354",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-avatar",
+      "package": "@radix-ui/react-avatar",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-avatar",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T17:50:43.900193",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-dialog",
+      "package": "@radix-ui/react-dialog",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-dialog",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T17:50:43.902965",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-dropdown-menu",
+      "package": "@radix-ui/react-dropdown-menu",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-dropdown-menu",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T17:50:43.905774",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-select",
+      "package": "@radix-ui/react-select",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-select",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T17:50:43.909332",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-slot",
+      "package": "@radix-ui/react-slot",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-slot",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T17:50:43.912397",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-tabs",
+      "package": "@radix-ui/react-tabs",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-tabs",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T17:50:43.915314",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-toast",
+      "package": "@radix-ui/react-toast",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-toast",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T17:50:43.918217",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @tanstack/react-query",
+      "package": "@tanstack/react-query",
+      "solution": "Remove if not needed: npm uninstall @tanstack/react-query",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T17:51:54.810720",
+    "action": "ABORTED",
+    "issue": {
+      "category": "code_quality",
+      "type": "excessive_any",
+      "severity": "low",
+      "description": "Excessive use of \"any\" type in DashboardGraficos.tsx",
+      "count": 7,
+      "file": "/opt/conecta-plus/frontend/src/components/financeiro/DashboardGraficos.tsx",
+      "solution": "Replace \"any\" with proper types",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'excessive_any'"
+  },
+  {
+    "timestamp": "2025-12-25T17:51:54.814206",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @prisma/adapter-pg",
+      "package": "@prisma/adapter-pg",
+      "solution": "Remove if not needed: npm uninstall @prisma/adapter-pg",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T17:51:54.817300",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @prisma/client",
+      "package": "@prisma/client",
+      "solution": "Remove if not needed: npm uninstall @prisma/client",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T17:51:54.819558",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-avatar",
+      "package": "@radix-ui/react-avatar",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-avatar",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T17:51:54.821809",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-dialog",
+      "package": "@radix-ui/react-dialog",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-dialog",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T17:51:54.824282",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-dropdown-menu",
+      "package": "@radix-ui/react-dropdown-menu",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-dropdown-menu",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T17:51:54.826779",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-select",
+      "package": "@radix-ui/react-select",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-select",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T17:51:54.829666",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-slot",
+      "package": "@radix-ui/react-slot",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-slot",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T17:51:54.832788",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-tabs",
+      "package": "@radix-ui/react-tabs",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-tabs",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T17:51:54.835648",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-toast",
+      "package": "@radix-ui/react-toast",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-toast",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T17:51:54.837990",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @tanstack/react-query",
+      "package": "@tanstack/react-query",
+      "solution": "Remove if not needed: npm uninstall @tanstack/react-query",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T17:51:58.932214",
+    "action": "ABORTED",
+    "issue": {
+      "category": "code_quality",
+      "type": "excessive_any",
+      "severity": "low",
+      "description": "Excessive use of \"any\" type in DashboardGraficos.tsx",
+      "count": 7,
+      "file": "/opt/conecta-plus/frontend/src/components/financeiro/DashboardGraficos.tsx",
+      "solution": "Replace \"any\" with proper types",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'excessive_any'"
+  },
+  {
+    "timestamp": "2025-12-25T17:51:58.934673",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @prisma/adapter-pg",
+      "package": "@prisma/adapter-pg",
+      "solution": "Remove if not needed: npm uninstall @prisma/adapter-pg",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T17:51:58.937019",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @prisma/client",
+      "package": "@prisma/client",
+      "solution": "Remove if not needed: npm uninstall @prisma/client",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T17:51:58.939525",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-avatar",
+      "package": "@radix-ui/react-avatar",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-avatar",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T17:51:58.942605",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-dialog",
+      "package": "@radix-ui/react-dialog",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-dialog",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T17:51:58.945586",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-dropdown-menu",
+      "package": "@radix-ui/react-dropdown-menu",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-dropdown-menu",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T17:51:58.948211",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-select",
+      "package": "@radix-ui/react-select",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-select",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T17:51:58.950334",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-slot",
+      "package": "@radix-ui/react-slot",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-slot",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T17:51:58.952531",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-tabs",
+      "package": "@radix-ui/react-tabs",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-tabs",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T17:51:58.954859",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-toast",
+      "package": "@radix-ui/react-toast",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-toast",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T17:51:58.957243",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
