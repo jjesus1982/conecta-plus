@@ -16,11 +16,16 @@ import {
   Alert,
   Image,
 } from 'react-native';
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
+import * as WebBrowser from 'expo-web-browser';
+import * as Linking from 'expo-linking';
 import { useAuthStore } from '../../src/stores/authStore';
 import { authApi } from '../../src/services/api';
+
+// Completar auth session automaticamente
+WebBrowser.maybeCompleteAuthSession();
 
 interface SSOConfig {
   google_enabled: boolean;
@@ -79,19 +84,62 @@ export default function LoginScreen() {
   const handleGoogleLogin = async () => {
     try {
       const authUrl = await loginWithGoogle();
-      // TODO: Abrir WebView ou navegador para OAuth
-      Alert.alert('Google Login', 'OAuth via navegador será implementado');
+      if (authUrl) {
+        // Abrir navegador para OAuth
+        const redirectUrl = Linking.createURL('auth/callback');
+        const result = await WebBrowser.openAuthSessionAsync(
+          `${authUrl}&redirect_uri=${encodeURIComponent(redirectUrl)}`,
+          redirectUrl
+        );
+
+        if (result.type === 'success' && result.url) {
+          // Extrair token da URL de callback
+          const params = new URL(result.url).searchParams;
+          const token = params.get('token');
+          if (token) {
+            // Processar token OAuth
+            await processOAuthCallback(token);
+          }
+        }
+      }
     } catch (err: any) {
-      setError(err.message);
+      setError(err.message || 'Erro ao fazer login com Google');
     }
   };
 
   const handleMicrosoftLogin = async () => {
     try {
       const authUrl = await loginWithMicrosoft();
-      Alert.alert('Microsoft Login', 'OAuth via navegador será implementado');
+      if (authUrl) {
+        // Abrir navegador para OAuth
+        const redirectUrl = Linking.createURL('auth/callback');
+        const result = await WebBrowser.openAuthSessionAsync(
+          `${authUrl}&redirect_uri=${encodeURIComponent(redirectUrl)}`,
+          redirectUrl
+        );
+
+        if (result.type === 'success' && result.url) {
+          const params = new URL(result.url).searchParams;
+          const token = params.get('token');
+          if (token) {
+            await processOAuthCallback(token);
+          }
+        }
+      }
     } catch (err: any) {
-      setError(err.message);
+      setError(err.message || 'Erro ao fazer login com Microsoft');
+    }
+  };
+
+  const processOAuthCallback = async (token: string) => {
+    try {
+      // Validar e salvar token OAuth
+      const response = await authApi.validateOAuthToken(token);
+      if (response.data.success) {
+        router.replace('/(tabs)');
+      }
+    } catch (err: any) {
+      setError('Erro ao processar autenticação OAuth');
     }
   };
 

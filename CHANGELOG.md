@@ -7,6 +7,29 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ---
 
+## [2.1.0] - 2025-12-25
+
+### Adicionado
+- Suite completa de testes unitários (102 testes Python)
+- Testes de frontend com Vitest (componentes, hooks, utils)
+- Testes de integração da API completa
+- Configuração ESLint (.eslintrc.json)
+- Configuração Prettier (.prettierrc)
+- Configuração EditorConfig (.editorconfig)
+- Configuração Python (pyproject.toml com Black, isort, ruff, pytest)
+- Configuração Vitest para frontend (vitest.config.ts)
+- Fixtures pytest para testes (conftest.py)
+- OAuth flow completo no mobile (expo-web-browser)
+- Push token registration no backend
+- Setup de testes frontend (tests/setup.ts)
+
+### Corrigido
+- TODOs críticos do mobile (push token, OAuth)
+- Testes unitários que estavam falhando
+- Keywords de roteamento de agentes IA
+
+---
+
 ## [2.0.1] - 2025-12-25
 
 ### Corrigido

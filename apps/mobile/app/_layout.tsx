@@ -112,9 +112,52 @@ async function registerForPushNotifications() {
     const token = await Notifications.getExpoPushTokenAsync();
     console.log('Push token:', token.data);
 
-    // TODO: Enviar token para o backend
+    // Enviar token para o backend
+    await sendPushTokenToBackend(token.data);
+
     return token.data;
   } catch (error) {
     console.error('Erro ao registrar notificações:', error);
+  }
+}
+
+/**
+ * Envia o push token para o backend para registro de notificações
+ */
+async function sendPushTokenToBackend(pushToken: string) {
+  try {
+    const { default: AsyncStorage } = await import('@react-native-async-storage/async-storage');
+    const authToken = await AsyncStorage.getItem('conecta_plus_token');
+
+    if (!authToken) {
+      // Usuário não está logado, salvar token para enviar após login
+      await AsyncStorage.setItem('pending_push_token', pushToken);
+      return;
+    }
+
+    const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/api/v1/usuarios/push-token`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authToken}`,
+      },
+      body: JSON.stringify({
+        push_token: pushToken,
+        platform: 'expo',
+        device_info: {
+          brand: 'expo',
+          model: 'mobile',
+        },
+      }),
+    });
+
+    if (response.ok) {
+      console.log('Push token registrado com sucesso no backend');
+      await AsyncStorage.removeItem('pending_push_token');
+    } else {
+      console.warn('Falha ao registrar push token:', response.status);
+    }
+  } catch (error) {
+    console.error('Erro ao enviar push token para backend:', error);
   }
 }
