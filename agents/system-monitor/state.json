@@ -1,0 +1,599 @@
+{
+  "last_update": "2025-12-25T13:50:49.835973",
+  "iteration": 1879,
+  "total_errors_fixed": 0,
+  "total_gaps_detected": 20674,
+  "total_tests_run": 4301,
+  "total_tests_passed": 1653,
+  "last_cycle": {
+    "iteration": 1879,
+    "timestamp": "2025-12-25T13:50:06.192413",
+    "log_analysis": {
+      "timestamp": "2025-12-25T13:50:06.192715",
+      "logs": {
+        "nextjs": {
+          "log_path": "/tmp/nextjs-debug.log",
+          "timestamp": "2025-12-25T13:50:06.194346",
+          "total_lines": 1000,
+          "errors": [],
+          "warnings": [],
+          "patterns": {},
+          "severity": "ok",
+          "summary": {
+            "total_errors": 0,
+            "total_warnings": 0,
+            "error_types": {},
+            "most_common_error": null,
+            "unique_errors": 0
+          },
+          "recommendations": []
+        },
+        "backend": {
+          "log_path": "/opt/conecta-plus/backend/logs/api.log",
+          "error": "Log file not found",
+          "severity": "error"
+        },
+        "nginx": {
+          "log_path": "/var/log/nginx/error.log",
+          "error": "Log file not found",
+          "severity": "error"
+        }
+      },
+      "overall_severity": "ok",
+      "total_errors": 0,
+      "total_warnings": 0,
+      "critical_issues": []
+    },
+    "gaps": {
+      "timestamp": "2025-12-25T13:50:06.202681",
+      "gaps": [
+        {
+          "category": "code_quality",
+          "type": "excessive_any",
+          "severity": "low",
+          "description": "Excessive use of \"any\" type in DashboardGraficos.tsx",
+          "count": 7,
+          "file": "/opt/conecta-plus/frontend/src/components/financeiro/DashboardGraficos.tsx",
+          "solution": "Replace \"any\" with proper types",
+          "priority": "P4",
+          "priority_score": 4
+        },
+        {
+          "category": "unused_code",
+          "type": "unused_dependency",
+          "severity": "low",
+          "description": "Possibly unused dependency: @prisma/adapter-pg",
+          "package": "@prisma/adapter-pg",
+          "solution": "Remove if not needed: npm uninstall @prisma/adapter-pg",
+          "priority": "P4",
+          "priority_score": 4
+        },
+        {
+          "category": "unused_code",
+          "type": "unused_dependency",
+          "severity": "low",
+          "description": "Possibly unused dependency: @prisma/client",
+          "package": "@prisma/client",
+          "solution": "Remove if not needed: npm uninstall @prisma/client",
+          "priority": "P4",
+          "priority_score": 4
+        },
+        {
+          "category": "unused_code",
+          "type": "unused_dependency",
+          "severity": "low",
+          "description": "Possibly unused dependency: @radix-ui/react-avatar",
+          "package": "@radix-ui/react-avatar",
+          "solution": "Remove if not needed: npm uninstall @radix-ui/react-avatar",
+          "priority": "P4",
+          "priority_score": 4
+        },
+        {
+          "category": "unused_code",
+          "type": "unused_dependency",
+          "severity": "low",
+          "description": "Possibly unused dependency: @radix-ui/react-dialog",
+          "package": "@radix-ui/react-dialog",
+          "solution": "Remove if not needed: npm uninstall @radix-ui/react-dialog",
+          "priority": "P4",
+          "priority_score": 4
+        },
+        {
+          "category": "unused_code",
+          "type": "unused_dependency",
+          "severity": "low",
+          "description": "Possibly unused dependency: @radix-ui/react-dropdown-menu",
+          "package": "@radix-ui/react-dropdown-menu",
+          "solution": "Remove if not needed: npm uninstall @radix-ui/react-dropdown-menu",
+          "priority": "P4",
+          "priority_score": 4
+        },
+        {
+          "category": "unused_code",
+          "type": "unused_dependency",
+          "severity": "low",
+          "description": "Possibly unused dependency: @radix-ui/react-select",
+          "package": "@radix-ui/react-select",
+          "solution": "Remove if not needed: npm uninstall @radix-ui/react-select",
+          "priority": "P4",
+          "priority_score": 4
+        },
+        {
+          "category": "unused_code",
+          "type": "unused_dependency",
+          "severity": "low",
+          "description": "Possibly unused dependency: @radix-ui/react-slot",
+          "package": "@radix-ui/react-slot",
+          "solution": "Remove if not needed: npm uninstall @radix-ui/react-slot",
+          "priority": "P4",
+          "priority_score": 4
+        },
+        {
+          "category": "unused_code",
+          "type": "unused_dependency",
+          "severity": "low",
+          "description": "Possibly unused dependency: @radix-ui/react-tabs",
+          "package": "@radix-ui/react-tabs",
+          "solution": "Remove if not needed: npm uninstall @radix-ui/react-tabs",
+          "priority": "P4",
+          "priority_score": 4
+        },
+        {
+          "category": "unused_code",
+          "type": "unused_dependency",
+          "severity": "low",
+          "description": "Possibly unused dependency: @radix-ui/react-toast",
+          "package": "@radix-ui/react-toast",
+          "solution": "Remove if not needed: npm uninstall @radix-ui/react-toast",
+          "priority": "P4",
+          "priority_score": 4
+        },
+        {
+          "category": "unused_code",
+          "type": "unused_dependency",
+          "severity": "low",
+          "description": "Possibly unused dependency: @tanstack/react-query",
+          "package": "@tanstack/react-query",
+          "solution": "Remove if not needed: npm uninstall @tanstack/react-query",
+          "priority": "P4",
+          "priority_score": 4
+        }
+      ],
+      "total_gaps": 11,
+      "critical_gaps": 0,
+      "by_category": {
+        "code_quality": [
+          {
+            "category": "code_quality",
+            "type": "excessive_any",
+            "severity": "low",
+            "description": "Excessive use of \"any\" type in DashboardGraficos.tsx",
+            "count": 7,
+            "file": "/opt/conecta-plus/frontend/src/components/financeiro/DashboardGraficos.tsx",
+            "solution": "Replace \"any\" with proper types",
+            "priority": "P4",
+            "priority_score": 4
+          }
+        ],
+        "unused_code": [
+          {
+            "category": "unused_code",
+            "type": "unused_dependency",
+            "severity": "low",
+            "description": "Possibly unused dependency: @prisma/adapter-pg",
+            "package": "@prisma/adapter-pg",
+            "solution": "Remove if not needed: npm uninstall @prisma/adapter-pg",
+            "priority": "P4",
+            "priority_score": 4
+          },
+          {
+            "category": "unused_code",
+            "type": "unused_dependency",
+            "severity": "low",
+            "description": "Possibly unused dependency: @prisma/client",
+            "package": "@prisma/client",
+            "solution": "Remove if not needed: npm uninstall @prisma/client",
+            "priority": "P4",
+            "priority_score": 4
+          },
+          {
+            "category": "unused_code",
+            "type": "unused_dependency",
+            "severity": "low",
+            "description": "Possibly unused dependency: @radix-ui/react-avatar",
+            "package": "@radix-ui/react-avatar",
+            "solution": "Remove if not needed: npm uninstall @radix-ui/react-avatar",
+            "priority": "P4",
+            "priority_score": 4
+          },
+          {
+            "category": "unused_code",
+            "type": "unused_dependency",
+            "severity": "low",
+            "description": "Possibly unused dependency: @radix-ui/react-dialog",
+            "package": "@radix-ui/react-dialog",
+            "solution": "Remove if not needed: npm uninstall @radix-ui/react-dialog",
+            "priority": "P4",
+            "priority_score": 4
+          },
+          {
+            "category": "unused_code",
+            "type": "unused_dependency",
+            "severity": "low",
+            "description": "Possibly unused dependency: @radix-ui/react-dropdown-menu",
+            "package": "@radix-ui/react-dropdown-menu",
+            "solution": "Remove if not needed: npm uninstall @radix-ui/react-dropdown-menu",
+            "priority": "P4",
+            "priority_score": 4
+          },
+          {
+            "category": "unused_code",
+            "type": "unused_dependency",
+            "severity": "low",
+            "description": "Possibly unused dependency: @radix-ui/react-select",
+            "package": "@radix-ui/react-select",
+            "solution": "Remove if not needed: npm uninstall @radix-ui/react-select",
+            "priority": "P4",
+            "priority_score": 4
+          },
+          {
+            "category": "unused_code",
+            "type": "unused_dependency",
+            "severity": "low",
+            "description": "Possibly unused dependency: @radix-ui/react-slot",
+            "package": "@radix-ui/react-slot",
+            "solution": "Remove if not needed: npm uninstall @radix-ui/react-slot",
+            "priority": "P4",
+            "priority_score": 4
+          },
+          {
+            "category": "unused_code",
+            "type": "unused_dependency",
+            "severity": "low",
+            "description": "Possibly unused dependency: @radix-ui/react-tabs",
+            "package": "@radix-ui/react-tabs",
+            "solution": "Remove if not needed: npm uninstall @radix-ui/react-tabs",
+            "priority": "P4",
+            "priority_score": 4
+          },
+          {
+            "category": "unused_code",
+            "type": "unused_dependency",
+            "severity": "low",
+            "description": "Possibly unused dependency: @radix-ui/react-toast",
+            "package": "@radix-ui/react-toast",
+            "solution": "Remove if not needed: npm uninstall @radix-ui/react-toast",
+            "priority": "P4",
+            "priority_score": 4
+          },
+          {
+            "category": "unused_code",
+            "type": "unused_dependency",
+            "severity": "low",
+            "description": "Possibly unused dependency: @tanstack/react-query",
+            "package": "@tanstack/react-query",
+            "solution": "Remove if not needed: npm uninstall @tanstack/react-query",
+            "priority": "P4",
+            "priority_score": 4
+          }
+        ]
+      },
+      "by_priority": {
+        "P1": 0,
+        "P2": 0,
+        "P3": 0,
+        "P4": 11
+      }
+    },
+    "fixes_applied": [],
+    "metrics": {
+      "timestamp": "2025-12-25T13:50:10.388766",
+      "cpu": {
+        "timestamp": "2025-12-25T13:50:10.388769",
+        "percent": 24.2,
+        "per_cpu": [
+          6.1,
+          1.0,
+          12.2,
+          14.1
+        ],
+        "count": 4,
+        "load_avg": [
+          1.2353515625,
+          0.72119140625,
+          0.548828125
+        ]
+      },
+      "memory": {
+        "timestamp": "2025-12-25T13:50:12.390535",
+        "total_mb": 15992,
+        "available_mb": 12452,
+        "used_mb": 3032,
+        "percent": 22.1,
+        "swap_total_mb": 0,
+        "swap_used_mb": 0,
+        "swap_percent": 0.0
+      },
+      "disk": {
+        "timestamp": "2025-12-25T13:50:12.390582",
+        "path": "/",
+        "total_gb": 192,
+        "used_gb": 143,
+        "free_gb": 48,
+        "percent": 74.6
+      },
+      "network": {
+        "timestamp": "2025-12-25T13:50:12.390991",
+        "bytes_sent": 25826340420,
+        "bytes_recv": 24563333080,
+        "packets_sent": 20298353,
+        "packets_recv": 28464032,
+        "errors_in": 0,
+        "errors_out": 0,
+        "drops_in": 0,
+        "drops_out": 0
+      },
+      "uptime": {
+        "boot_time": "2025-12-18T15:11:19",
+        "uptime_seconds": 599933,
+        "uptime_human": "6 days, 22:38:53"
+      },
+      "top_processes_cpu": [
+        {
+          "pid": 3211049,
+          "memory_percent": 2.052486437502595,
+          "cpu_percent": 39.9,
+          "name": "claude",
+          "username": "root"
+        },
+        {
+          "pid": 1636540,
+          "memory_percent": 0.5685135112029527,
+          "cpu_percent": 10.0,
+          "name": "mongod",
+          "username": "999"
+        },
+        {
+          "pid": 1,
+          "memory_percent": 0.07581808544678689,
+          "cpu_percent": 0.0,
+          "name": "systemd",
+          "username": "root"
+        },
+        {
+          "pid": 2,
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "name": "kthreadd",
+          "username": "root"
+        },
+        {
+          "pid": 3,
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "name": "pool_workqueue_release",
+          "username": "root"
+        }
+      ],
+      "top_processes_memory": [
+        {
+          "pid": 22398,
+          "memory_percent": 5.56561903854656,
+          "cpu_percent": 0.0,
+          "name": "dockerd",
+          "username": "root"
+        },
+        {
+          "pid": 3666842,
+          "memory_percent": 2.5662370145651816,
+          "cpu_percent": 0.0,
+          "name": "python",
+          "username": "ubuntu"
+        },
+        {
+          "pid": 3211049,
+          "memory_percent": 1.9926917618667273,
+          "cpu_percent": 20.0,
+          "name": "claude",
+          "username": "root"
+        },
+        {
+          "pid": 879018,
+          "memory_percent": 1.1302854658391162,
+          "cpu_percent": 0.0,
+          "name": "python3",
+          "username": "root"
+        },
+        {
+          "pid": 5490,
+          "memory_percent": 0.8981902828766906,
+          "cpu_percent": 0.0,
+          "name": "systemd-journald",
+          "username": "root"
+        }
+      ]
+    },
+    "actions_taken": [],
+    "safe_healing": {
+      "timestamp": "2025-12-25T13:50:10.344706",
+      "total_issues": 11,
+      "authorized": 0,
+      "attempted": 0,
+      "successful": 0,
+      "partial": 0,
+      "failed": 0,
+      "aborted": 11,
+      "actions": [
+        {
+          "issue": "Excessive use of \"any\" type in DashboardGraficos.tsx",
+          "priority": "P4",
+          "authorized": false,
+          "authorization_reason": "Sem rollback definido para 'excessive_any'",
+          "state_before": null,
+          "execution": null,
+          "validation": null,
+          "rollback": null,
+          "final_result": "aborted"
+        },
+        {
+          "issue": "Possibly unused dependency: @prisma/adapter-pg",
+          "priority": "P4",
+          "authorized": false,
+          "authorization_reason": "Sem rollback definido para 'unused_dependency'",
+          "state_before": null,
+          "execution": null,
+          "validation": null,
+          "rollback": null,
+          "final_result": "aborted"
+        },
+        {
+          "issue": "Possibly unused dependency: @prisma/client",
+          "priority": "P4",
+          "authorized": false,
+          "authorization_reason": "Sem rollback definido para 'unused_dependency'",
+          "state_before": null,
+          "execution": null,
+          "validation": null,
+          "rollback": null,
+          "final_result": "aborted"
+        },
+        {
+          "issue": "Possibly unused dependency: @radix-ui/react-avatar",
+          "priority": "P4",
+          "authorized": false,
+          "authorization_reason": "Sem rollback definido para 'unused_dependency'",
+          "state_before": null,
+          "execution": null,
+          "validation": null,
+          "rollback": null,
+          "final_result": "aborted"
+        },
+        {
+          "issue": "Possibly unused dependency: @radix-ui/react-dialog",
+          "priority": "P4",
+          "authorized": false,
+          "authorization_reason": "Sem rollback definido para 'unused_dependency'",
+          "state_before": null,
+          "execution": null,
+          "validation": null,
+          "rollback": null,
+          "final_result": "aborted"
+        },
+        {
+          "issue": "Possibly unused dependency: @radix-ui/react-dropdown-menu",
+          "priority": "P4",
+          "authorized": false,
+          "authorization_reason": "Sem rollback definido para 'unused_dependency'",
+          "state_before": null,
+          "execution": null,
+          "validation": null,
+          "rollback": null,
+          "final_result": "aborted"
+        },
+        {
+          "issue": "Possibly unused dependency: @radix-ui/react-select",
+          "priority": "P4",
+          "authorized": false,
+          "authorization_reason": "Sem rollback definido para 'unused_dependency'",
+          "state_before": null,
+          "execution": null,
+          "validation": null,
+          "rollback": null,
+          "final_result": "aborted"
+        },
+        {
+          "issue": "Possibly unused dependency: @radix-ui/react-slot",
+          "priority": "P4",
+          "authorized": false,
+          "authorization_reason": "Sem rollback definido para 'unused_dependency'",
+          "state_before": null,
+          "execution": null,
+          "validation": null,
+          "rollback": null,
+          "final_result": "aborted"
+        },
+        {
+          "issue": "Possibly unused dependency: @radix-ui/react-tabs",
+          "priority": "P4",
+          "authorized": false,
+          "authorization_reason": "Sem rollback definido para 'unused_dependency'",
+          "state_before": null,
+          "execution": null,
+          "validation": null,
+          "rollback": null,
+          "final_result": "aborted"
+        },
+        {
+          "issue": "Possibly unused dependency: @radix-ui/react-toast",
+          "priority": "P4",
+          "authorized": false,
+          "authorization_reason": "Sem rollback definido para 'unused_dependency'",
+          "state_before": null,
+          "execution": null,
+          "validation": null,
+          "rollback": null,
+          "final_result": "aborted"
+        },
+        {
+          "issue": "Possibly unused dependency: @tanstack/react-query",
+          "priority": "P4",
+          "authorized": false,
+          "authorization_reason": "Sem rollback definido para 'unused_dependency'",
+          "state_before": null,
+          "execution": null,
+          "validation": null,
+          "rollback": null,
+          "final_result": "aborted"
+        }
+      ],
+      "healing_score": {
+        "current": 0.0,
+        "max": 10.0,
+        "p4_successes": 0,
+        "p3_ready": false
+      }
+    },
+    "health_score": {
+      "timestamp": "2025-12-25T13:50:49.835467",
+      "overall_score": 81,
+      "health_level": "Good",
+      "breakdown": {
+        "gaps": {
+          "score": 30,
+          "max": 40,
+          "total_gaps": 11,
+          "critical_gaps": 0,
+          "status": "Good - Few gaps"
+        },
+        "metrics": {
+          "score": 26,
+          "max": 30,
+          "cpu": {
+            "value": "24.2%",
+            "score": 10
+          },
+          "memory": {
+            "value": "22.1%",
+            "score": 10
+          },
+          "disk": {
+            "value": "74.6%",
+            "score": 6
+          }
+        },
+        "tests": {
+          "score": 20,
+          "reason": "No tests run this cycle"
+        },
+        "healing": {
+          "score": 5,
+          "reason": "No fixes attempted"
+        }
+      },
+      "recommendations": [
+        "\u2705 System health is optimal - continue monitoring"
+      ]
+    },
+    "duration_seconds": 43.643176
+  }
+}

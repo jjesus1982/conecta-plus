@@ -1,3 +1,4 @@
+# WARNING: This file may contain hardcoded secrets. Move to environment variables!
 """
 Conecta Plus - Serviço de Hardware
 Camada de abstração para comunicação com dispositivos físicos

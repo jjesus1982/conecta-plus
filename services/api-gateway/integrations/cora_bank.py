@@ -23,12 +23,12 @@ class CoraConfig:
     client_id: str
     client_secret: str
     ambiente: str = "sandbox"  # sandbox ou production
+    api_version: str = "v2"  # v1 ou v2
 
     @property
     def base_url(self) -> str:
-        if self.ambiente == "production":
-            return "https://api.cora.com.br"
-        return "https://api.stage.cora.com.br"
+        base = "https://api.cora.com.br" if self.ambiente == "production" else "https://api.stage.cora.com.br"
+        return f"{base}/{self.api_version}"
 
     @property
     def auth_url(self) -> str:
@@ -155,6 +155,33 @@ class CoraBankClient:
         except aiohttp.ClientError as e:
             raise CoraAPIError(f"Erro de conexão: {str(e)}")
 
+    def _format_payer(self, pagador: Dict[str, Any]) -> Dict:
+        """Formata dados do pagador para payload da API"""
+        payer = {
+            "name": pagador["nome"],
+            "document": {
+                "identity": pagador["documento"].replace(".", "").replace("-", "").replace("/", ""),
+                "type": "CPF" if len(pagador["documento"].replace(".", "").replace("-", "")) == 11 else "CNPJ"
+            }
+        }
+
+        if pagador.get("email"):
+            payer["email"] = pagador["email"]
+
+        if pagador.get("endereco"):
+            end = pagador["endereco"]
+            payer["address"] = {
+                "street": end.get("logradouro", ""),
+                "number": end.get("numero", "S/N"),
+                "complement": end.get("complemento"),
+                "district": end.get("bairro", ""),
+                "city": end.get("cidade", ""),
+                "state": end.get("uf", ""),
+                "zip_code": end.get("cep", "").replace("-", "")
+            }
+
+        return payer
+
     # ==================== BOLETOS ====================
 
     async def criar_boleto(
@@ -204,35 +231,11 @@ class CoraBankClient:
         Returns:
             Dados do boleto criado incluindo código de barras e linha digitável
         """
-        # Formata dados do pagador
-        payer = {
-            "name": pagador["nome"],
-            "document": {
-                "identity": pagador["documento"].replace(".", "").replace("-", "").replace("/", ""),
-                "type": "CPF" if len(pagador["documento"].replace(".", "").replace("-", "")) == 11 else "CNPJ"
-            }
-        }
-
-        if pagador.get("email"):
-            payer["email"] = pagador["email"]
-
-        if pagador.get("endereco"):
-            end = pagador["endereco"]
-            payer["address"] = {
-                "street": end.get("logradouro", ""),
-                "number": end.get("numero", "S/N"),
-                "complement": end.get("complemento"),
-                "district": end.get("bairro", ""),
-                "city": end.get("cidade", ""),
-                "state": end.get("uf", ""),
-                "zip_code": end.get("cep", "").replace("-", "")
-            }
-
         # Monta payload
         payload = {
             "amount": int(valor * 100),  # Valor em centavos
             "due_date": vencimento,
-            "payer": payer,
+            "payer": self._format_payer(pagador),
             "payment_terms": {
                 "fine": {
                     "type": "PERCENTAGE",
@@ -261,7 +264,7 @@ class CoraBankClient:
         if numero_documento:
             payload["document_number"] = numero_documento
 
-        response = await self._request("POST", "/v1/invoices", data=payload)
+        response = await self._request("POST", "/invoices", data=payload)
 
         # Formata resposta
         return {
@@ -283,7 +286,7 @@ class CoraBankClient:
 
     async def consultar_boleto(self, boleto_id: str) -> Dict:
         """Consulta status de um boleto"""
-        response = await self._request("GET", f"/v1/invoices/{boleto_id}")
+        response = await self._request("GET", f"/invoices/{boleto_id}")
 
         status_map = {
             "OPEN": "pendente",
@@ -333,7 +336,7 @@ class CoraBankClient:
         if data_fim:
             params["end_date"] = data_fim
 
-        response = await self._request("GET", "/v1/invoices", params=params)
+        response = await self._request("GET", "/invoices", params=params)
 
         items = []
         for item in response.get("items", []):
@@ -355,7 +358,7 @@ class CoraBankClient:
     async def cancelar_boleto(self, boleto_id: str) -> bool:
         """Cancela um boleto"""
         try:
-            await self._request("POST", f"/v1/invoices/{boleto_id}/cancel")
+            await self._request("POST", f"/invoices/{boleto_id}/cancel")
             return True
         except CoraAPIError:
             return False
@@ -404,7 +407,7 @@ class CoraBankClient:
                 for i in info_adicionais[:10]  # Máximo 10 infos
             ]
 
-        response = await self._request("POST", "/v1/pix/cob", data=payload)
+        response = await self._request("POST", "/pix/cob", data=payload)
 
         return {
             "txid": response.get("txid"),
@@ -419,7 +422,7 @@ class CoraBankClient:
 
     async def consultar_pix(self, txid: str) -> Dict:
         """Consulta status de uma cobrança PIX"""
-        response = await self._request("GET", f"/v1/pix/cob/{txid}")
+        response = await self._request("GET", f"/pix/cob/{txid}")
 
         return {
             "txid": response.get("txid"),
@@ -459,7 +462,7 @@ class CoraBankClient:
             "per_page": limit
         }
 
-        response = await self._request("GET", "/v1/statements", params=params)
+        response = await self._request("GET", "/statements", params=params)
 
         items = []
         for item in response.get("items", []):
@@ -485,13 +488,338 @@ class CoraBankClient:
 
     async def consultar_saldo(self) -> Dict:
         """Consulta saldo atual da conta"""
-        response = await self._request("GET", "/v1/accounts/balance")
+        response = await self._request("GET", "/accounts/balance")
 
         return {
             "disponivel": response.get("available", 0) / 100,
             "bloqueado": response.get("blocked", 0) / 100,
             "total": response.get("total", 0) / 100,
             "atualizado_em": response.get("updated_at")
+        }
+
+    # ==================== API V2 - NOVOS RECURSOS ====================
+
+    async def criar_carne(
+        self,
+        valor_total: float,
+        numero_parcelas: int,
+        data_primeiro_vencimento: str,
+        pagador: Dict[str, Any],
+        descricao: str = "Carnê",
+        dia_vencimento: int = 10,
+        multa_percentual: float = 2.0,
+        juros_mensal: float = 1.0,
+        **kwargs
+    ) -> Dict:
+        """
+        Cria carnê com múltiplos boletos (API V2)
+
+        Args:
+            valor_total: Valor total do carnê
+            numero_parcelas: Número de parcelas
+            data_primeiro_vencimento: Data de vencimento da primeira parcela (YYYY-MM-DD)
+            pagador: Dados do pagador (nome, documento, email, endereco)
+            descricao: Descrição do carnê
+            dia_vencimento: Dia do mês para vencimento das parcelas
+            multa_percentual: Multa em percentual (padrão 2%)
+            juros_mensal: Juros mensal em percentual (padrão 1%)
+
+        Returns:
+            Dados do carnê incluindo lista de boletos gerados
+
+        Endpoint: POST /invoices/installments
+        """
+        payload = {
+            "total_amount": int(valor_total * 100),
+            "installments": numero_parcelas,
+            "first_due_date": data_primeiro_vencimento,
+            "due_day": dia_vencimento,
+            "payer": self._format_payer(pagador),
+            "description": descricao,
+            "payment_terms": {
+                "fine": {
+                    "type": "PERCENTAGE",
+                    "value": int(multa_percentual * 100)
+                },
+                "interest": {
+                    "type": "MONTHLY_PERCENTAGE",
+                    "value": int(juros_mensal * 100)
+                }
+            }
+        }
+
+        # Adiciona campos opcionais
+        if kwargs.get("discount"):
+            payload["discount"] = kwargs["discount"]
+
+        response = await self._request("POST", "/invoices/installments", data=payload)
+
+        return {
+            "carne_id": response.get("id"),
+            "boletos": [
+                {
+                    "id": b["id"],
+                    "parcela": b["installment_number"],
+                    "valor": b["amount"] / 100,
+                    "vencimento": b["due_date"],
+                    "codigo_barras": b["payment"]["bar_code"],
+                    "linha_digitavel": b["payment"]["digitable_line"],
+                    "nosso_numero": b.get("our_number"),
+                    "status": b.get("status", "pending")
+                }
+                for b in response.get("invoices", [])
+            ],
+            "valor_total": valor_total,
+            "numero_parcelas": numero_parcelas,
+            "response_original": response
+        }
+
+    async def criar_transferencia(
+        self,
+        valor: float,
+        beneficiario: Dict[str, Any],
+        descricao: str = "Transferência",
+        tipo: str = "TED"
+    ) -> Dict:
+        """
+        Cria transferência bancária (API V2)
+
+        Args:
+            valor: Valor da transferência
+            beneficiario: Dados do beneficiário:
+                - tipo_conta: "CHECKING" | "SAVINGS"
+                - banco: Código do banco (ex: "001")
+                - agencia: Número da agência
+                - conta: Número da conta
+                - digito: Dígito verificador da conta
+                - documento: CPF/CNPJ
+                - nome: Nome do beneficiário
+                - tipo_pessoa: "PF" | "PJ"
+            descricao: Descrição da transferência
+            tipo: Tipo de transferência ("TED", "TEF", "PIX")
+
+        Returns:
+            Dados da transferência criada
+
+        Endpoint: POST /transfers
+        """
+        payload = {
+            "amount": int(valor * 100),
+            "description": descricao,
+            "transfer_type": tipo,
+            "beneficiary": {
+                "account_type": beneficiario.get("tipo_conta", "CHECKING"),
+                "bank_code": beneficiario["banco"],
+                "branch": beneficiario["agencia"],
+                "account": beneficiario["conta"],
+                "account_digit": beneficiario.get("digito"),
+                "document": {
+                    "identity": beneficiario["documento"].replace(".", "").replace("-", "").replace("/", ""),
+                    "type": beneficiario.get("tipo_pessoa", "PF")
+                },
+                "name": beneficiario["nome"]
+            }
+        }
+
+        response = await self._request("POST", "/transfers", data=payload)
+
+        return {
+            "id": response.get("id"),
+            "status": response.get("status"),
+            "valor": valor,
+            "tipo": tipo,
+            "data_agendamento": response.get("scheduled_date"),
+            "data_criacao": response.get("created_at"),
+            "beneficiario": beneficiario["nome"],
+            "response_original": response
+        }
+
+    async def listar_transferencias(
+        self,
+        data_inicio: Optional[str] = None,
+        data_fim: Optional[str] = None,
+        status: Optional[str] = None,
+        page: int = 1,
+        limit: int = 50
+    ) -> Dict:
+        """
+        Lista transferências (API V2)
+
+        Args:
+            data_inicio: Data inicial (YYYY-MM-DD)
+            data_fim: Data final (YYYY-MM-DD)
+            status: Filtrar por status
+            page: Página
+            limit: Limite por página
+
+        Returns:
+            Lista de transferências
+
+        Endpoint: GET /transfers
+        """
+        params = {"page": page, "per_page": limit}
+
+        if data_inicio:
+            params["start_date"] = data_inicio
+        if data_fim:
+            params["end_date"] = data_fim
+        if status:
+            params["status"] = status
+
+        response = await self._request("GET", "/transfers", params=params)
+
+        return {
+            "items": [
+                {
+                    "id": t["id"],
+                    "valor": t["amount"] / 100,
+                    "tipo": t["transfer_type"],
+                    "status": t["status"],
+                    "data": t["created_at"],
+                    "data_agendamento": t.get("scheduled_date"),
+                    "beneficiario": t["beneficiary"]["name"],
+                    "descricao": t.get("description")
+                }
+                for t in response.get("items", [])
+            ],
+            "total": response.get("total", 0),
+            "page": page,
+            "per_page": limit
+        }
+
+    async def listar_bancos(self) -> List[Dict]:
+        """
+        Lista bancos disponíveis para transferência (API V2)
+
+        Returns:
+            Lista de bancos com código, nome e ISPB
+
+        Endpoint: GET /banks
+        """
+        response = await self._request("GET", "/banks")
+
+        return [
+            {
+                "codigo": b["code"],
+                "nome": b["name"],
+                "ispb": b.get("ispb")
+            }
+            for b in response.get("banks", [])
+        ]
+
+    async def pagar_darf(
+        self,
+        codigo_receita: str,
+        periodo_apuracao: str,
+        valor_principal: float,
+        valor_multa: float = 0.0,
+        valor_juros: float = 0.0,
+        numero_referencia: Optional[str] = None
+    ) -> Dict:
+        """
+        Paga DARF - Documento de Arrecadação de Receitas Federais (API V2)
+
+        Args:
+            codigo_receita: Código da receita federal
+            periodo_apuracao: Período no formato "YYYY-MM"
+            valor_principal: Valor principal do imposto
+            valor_multa: Multa (se houver)
+            valor_juros: Juros (se houver)
+            numero_referencia: Número de referência (opcional)
+
+        Returns:
+            Dados do pagamento DARF
+
+        Endpoint: POST /taxes/darf
+        """
+        payload = {
+            "revenue_code": codigo_receita,
+            "reference_period": periodo_apuracao,
+            "principal_amount": int(valor_principal * 100),
+            "fine_amount": int(valor_multa * 100),
+            "interest_amount": int(valor_juros * 100)
+        }
+
+        if numero_referencia:
+            payload["reference_number"] = numero_referencia
+
+        response = await self._request("POST", "/taxes/darf", data=payload)
+
+        return {
+            "id": response.get("id"),
+            "status": response.get("status"),
+            "valor_total": (valor_principal + valor_multa + valor_juros),
+            "valor_principal": valor_principal,
+            "valor_multa": valor_multa,
+            "valor_juros": valor_juros,
+            "numero_autenticacao": response.get("authentication_number"),
+            "data_pagamento": response.get("payment_date"),
+            "response_original": response
+        }
+
+    async def pagar_gps(
+        self,
+        codigo_pagamento: str,
+        competencia: str,
+        identificador: str,
+        valor: float
+    ) -> Dict:
+        """
+        Paga GPS - Guia da Previdência Social (API V2)
+
+        Args:
+            codigo_pagamento: Código de pagamento GPS
+            competencia: Competência no formato "YYYY-MM"
+            identificador: CPF/CNPJ ou NIT
+            valor: Valor a pagar
+
+        Returns:
+            Dados do pagamento GPS
+
+        Endpoint: POST /taxes/gps
+        """
+        payload = {
+            "payment_code": codigo_pagamento,
+            "reference_month": competencia,
+            "identifier": identificador.replace(".", "").replace("-", "").replace("/", ""),
+            "amount": int(valor * 100)
+        }
+
+        response = await self._request("POST", "/taxes/gps", data=payload)
+
+        return {
+            "id": response.get("id"),
+            "status": response.get("status"),
+            "valor": valor,
+            "competencia": competencia,
+            "numero_autenticacao": response.get("authentication_number"),
+            "data_pagamento": response.get("payment_date"),
+            "response_original": response
+        }
+
+    async def consultar_dados_conta(self) -> Dict:
+        """
+        Consulta dados cadastrais da conta (API V2)
+
+        Returns:
+            Dados da conta bancária
+
+        Endpoint: GET /account
+        """
+        response = await self._request("GET", "/account")
+
+        return {
+            "id": response.get("id"),
+            "nome": response.get("name"),
+            "documento": response.get("document"),
+            "tipo_pessoa": response.get("document_type"),
+            "agencia": response.get("branch"),
+            "conta": response.get("account"),
+            "digito": response.get("account_digit"),
+            "banco": response.get("bank_code"),
+            "status": response.get("status"),
+            "data_criacao": response.get("created_at"),
+            "response_original": response
         }
 
     # ==================== WEBHOOKS ====================
@@ -569,6 +897,57 @@ class CoraBankClient:
             return {
                 "tipo": "boleto_cancelado",
                 "boleto_id": data.get("id"),
+            }
+
+        # Eventos V2 - Pagamentos
+        elif event_type == "payment.created":
+            return {
+                "tipo": "pagamento_criado",
+                "payment_id": data.get("id"),
+                "valor": data.get("amount", 0) / 100,
+                "tipo_pagamento": data.get("payment_type"),
+                "status": data.get("status"),
+                "data_criacao": data.get("created_at")
+            }
+
+        elif event_type == "payment.failed":
+            return {
+                "tipo": "pagamento_falhou",
+                "payment_id": data.get("id"),
+                "motivo": data.get("failure_reason"),
+                "erro_codigo": data.get("error_code"),
+                "data_falha": data.get("failed_at")
+            }
+
+        # Eventos V2 - Transferências
+        elif event_type == "transfer.completed":
+            return {
+                "tipo": "transferencia_concluida",
+                "transfer_id": data.get("id"),
+                "valor": data.get("amount", 0) / 100,
+                "beneficiario": data.get("beneficiary", {}).get("name"),
+                "tipo_transferencia": data.get("transfer_type"),
+                "data_conclusao": data.get("completed_at")
+            }
+
+        elif event_type == "transfer.failed":
+            return {
+                "tipo": "transferencia_falhou",
+                "transfer_id": data.get("id"),
+                "motivo": data.get("failure_reason"),
+                "erro_codigo": data.get("error_code"),
+                "data_falha": data.get("failed_at")
+            }
+
+        # Eventos V2 - Carnês
+        elif event_type == "installment.paid":
+            return {
+                "tipo": "parcela_paga",
+                "installment_id": data.get("id"),
+                "carne_id": data.get("installment_plan_id"),
+                "numero_parcela": data.get("installment_number"),
+                "valor_pago": data.get("paid_amount", 0) / 100,
+                "data_pagamento": data.get("paid_at")
             }
 
         return {
@@ -763,6 +1142,226 @@ class CoraBankMockClient:
             "saldo_final": 150000.00,
             "total": 2,
             "page": 1
+        }
+
+    # ==================== MÉTODOS V2 - MOCK ====================
+
+    async def criar_carne(
+        self,
+        valor_total: float,
+        numero_parcelas: int,
+        data_primeiro_vencimento: str,
+        pagador: Dict[str, Any],
+        descricao: str = "Carnê",
+        **kwargs
+    ) -> Dict:
+        """Cria carnê mock com múltiplos boletos"""
+        import uuid
+        from dateutil.relativedelta import relativedelta
+
+        carne_id = str(uuid.uuid4())
+        valor_parcela = valor_total / numero_parcelas
+        boletos = []
+
+        # Gera boletos para cada parcela
+        data_vencimento = datetime.fromisoformat(data_primeiro_vencimento)
+        for i in range(1, numero_parcelas + 1):
+            boleto_id = str(uuid.uuid4())
+            nosso_numero = f"{self._contador:08d}"
+            self._contador += 1
+
+            boleto = {
+                "id": boleto_id,
+                "parcela": i,
+                "valor": round(valor_parcela, 2),
+                "vencimento": data_vencimento.strftime("%Y-%m-%d"),
+                "codigo_barras": f"23793.38128 60000.000003 {nosso_numero[:5]}.{nosso_numero[5:]} 1 9285{int(valor_parcela*100):010d}",
+                "linha_digitavel": f"23793381286000000000300{nosso_numero}19285{int(valor_parcela):010d}",
+                "nosso_numero": nosso_numero,
+                "status": "pending"
+            }
+
+            boletos.append(boleto)
+            self._boletos[boleto_id] = boleto
+
+            # Próximo mês
+            data_vencimento = data_vencimento + relativedelta(months=1)
+
+        return {
+            "carne_id": carne_id,
+            "boletos": boletos,
+            "valor_total": valor_total,
+            "numero_parcelas": numero_parcelas,
+            "response_original": {
+                "id": carne_id,
+                "invoices": boletos
+            }
+        }
+
+    async def criar_transferencia(
+        self,
+        valor: float,
+        beneficiario: Dict[str, Any],
+        descricao: str = "Transferência",
+        tipo: str = "TED"
+    ) -> Dict:
+        """Cria transferência mock"""
+        import uuid
+
+        transfer_id = str(uuid.uuid4())
+
+        return {
+            "id": transfer_id,
+            "status": "PROCESSING",
+            "valor": valor,
+            "tipo": tipo,
+            "data_agendamento": datetime.now().strftime("%Y-%m-%d"),
+            "data_criacao": datetime.now().isoformat(),
+            "beneficiario": beneficiario["nome"],
+            "response_original": {
+                "id": transfer_id,
+                "status": "PROCESSING",
+                "amount": int(valor * 100),
+                "transfer_type": tipo,
+                "scheduled_date": datetime.now().strftime("%Y-%m-%d"),
+                "created_at": datetime.now().isoformat(),
+                "beneficiary": {"name": beneficiario["nome"]}
+            }
+        }
+
+    async def listar_transferencias(
+        self,
+        data_inicio: Optional[str] = None,
+        data_fim: Optional[str] = None,
+        status: Optional[str] = None,
+        page: int = 1,
+        limit: int = 50
+    ) -> Dict:
+        """Lista transferências mock"""
+        return {
+            "items": [
+                {
+                    "id": "transfer_001",
+                    "valor": 5000.00,
+                    "tipo": "TED",
+                    "status": "COMPLETED",
+                    "data": datetime.now().isoformat(),
+                    "data_agendamento": datetime.now().strftime("%Y-%m-%d"),
+                    "beneficiario": "Fornecedor XYZ Ltda",
+                    "descricao": "Pagamento de serviços"
+                },
+                {
+                    "id": "transfer_002",
+                    "valor": 1500.00,
+                    "tipo": "PIX",
+                    "status": "COMPLETED",
+                    "data": datetime.now().isoformat(),
+                    "data_agendamento": datetime.now().strftime("%Y-%m-%d"),
+                    "beneficiario": "João da Silva",
+                    "descricao": "Reembolso"
+                }
+            ],
+            "total": 2,
+            "page": page,
+            "per_page": limit
+        }
+
+    async def listar_bancos(self) -> List[Dict]:
+        """Lista bancos mock"""
+        return [
+            {"codigo": "001", "nome": "Banco do Brasil S.A.", "ispb": "00000000"},
+            {"codigo": "033", "nome": "Banco Santander (Brasil) S.A.", "ispb": "90400888"},
+            {"codigo": "104", "nome": "Caixa Econômica Federal", "ispb": "00360305"},
+            {"codigo": "237", "nome": "Banco Bradesco S.A.", "ispb": "60746948"},
+            {"codigo": "341", "nome": "Itaú Unibanco S.A.", "ispb": "60701190"},
+            {"codigo": "260", "nome": "Nu Pagamentos S.A. (Nubank)", "ispb": "18236120"},
+            {"codigo": "077", "nome": "Banco Inter S.A.", "ispb": "00416968"}
+        ]
+
+    async def pagar_darf(
+        self,
+        codigo_receita: str,
+        periodo_apuracao: str,
+        valor_principal: float,
+        valor_multa: float = 0.0,
+        valor_juros: float = 0.0,
+        numero_referencia: Optional[str] = None
+    ) -> Dict:
+        """Paga DARF mock"""
+        import uuid
+
+        payment_id = str(uuid.uuid4())
+        valor_total = valor_principal + valor_multa + valor_juros
+
+        return {
+            "id": payment_id,
+            "status": "PROCESSING",
+            "valor_total": valor_total,
+            "valor_principal": valor_principal,
+            "valor_multa": valor_multa,
+            "valor_juros": valor_juros,
+            "numero_autenticacao": f"AUTH{self._contador:010d}",
+            "data_pagamento": datetime.now().isoformat(),
+            "response_original": {
+                "id": payment_id,
+                "status": "PROCESSING",
+                "authentication_number": f"AUTH{self._contador:010d}",
+                "payment_date": datetime.now().isoformat()
+            }
+        }
+
+    async def pagar_gps(
+        self,
+        codigo_pagamento: str,
+        competencia: str,
+        identificador: str,
+        valor: float
+    ) -> Dict:
+        """Paga GPS mock"""
+        import uuid
+
+        payment_id = str(uuid.uuid4())
+
+        return {
+            "id": payment_id,
+            "status": "PROCESSING",
+            "valor": valor,
+            "competencia": competencia,
+            "numero_autenticacao": f"GPS{self._contador:010d}",
+            "data_pagamento": datetime.now().isoformat(),
+            "response_original": {
+                "id": payment_id,
+                "status": "PROCESSING",
+                "authentication_number": f"GPS{self._contador:010d}",
+                "payment_date": datetime.now().isoformat()
+            }
+        }
+
+    async def consultar_dados_conta(self) -> Dict:
+        """Consulta dados da conta mock"""
+        return {
+            "id": "acc_mock_001",
+            "nome": "Condomínio Teste Ltda",
+            "documento": "12.345.678/0001-99",
+            "tipo_pessoa": "PJ",
+            "agencia": "0001",
+            "conta": "123456",
+            "digito": "7",
+            "banco": "403",  # Código do Cora
+            "status": "ACTIVE",
+            "data_criacao": "2024-01-15T10:00:00Z",
+            "response_original": {
+                "id": "acc_mock_001",
+                "name": "Condomínio Teste Ltda",
+                "document": "12345678000199",
+                "document_type": "CNPJ",
+                "branch": "0001",
+                "account": "123456",
+                "account_digit": "7",
+                "bank_code": "403",
+                "status": "ACTIVE",
+                "created_at": "2024-01-15T10:00:00Z"
+            }
         }
 
     def simular_pagamento(self, boleto_id: str, valor_pago: Optional[float] = None):

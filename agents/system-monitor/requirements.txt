@@ -1,0 +1,14 @@
+# Conecta Plus System Monitor Agent - Dependencies
+
+# Core
+pyyaml==6.0.1
+psutil==5.9.6
+
+# Web Dashboard
+flask==3.0.0
+
+# Optional: Claude API (se quiser usar IA para análises avançadas)
+# anthropic==0.8.1
+
+# Development
+python-dateutil==2.8.2

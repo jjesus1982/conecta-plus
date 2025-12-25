@@ -1,0 +1,164 @@
+# Configuração do Agente System Monitor
+# Agente autônomo de monitoramento e correção do Conecta Plus
+
+agent:
+  name: "Conecta Plus System Monitor"
+  version: "1.0.0"
+  interval: 30  # segundos entre análises
+  auto_fix: true  # Corrigir erros automaticamente
+
+monitoring:
+  # Logs para monitorar
+  logs:
+    - path: "/tmp/nextjs-debug.log"
+      type: "nextjs"
+      patterns:
+        - "error"
+        - "Error"
+        - "failed"
+        - "Failed"
+        - "ECONNRESET"
+        - "socket hang up"
+        - "timeout"
+
+    - path: "/opt/conecta-plus/backend/logs/api.log"
+      type: "backend"
+      patterns:
+        - "ERROR"
+        - "CRITICAL"
+        - "Exception"
+        - "Traceback"
+
+    - path: "/var/log/nginx/error.log"
+      type: "nginx"
+      patterns:
+        - "error"
+        - "warn"
+
+  # Processos para monitorar
+  processes:
+    - name: "next-server"
+      command: "next dev"
+      restart_on_crash: true
+
+    - name: "conecta-api"
+      command: "uvicorn"
+      restart_on_crash: true
+
+  # Métricas
+  metrics:
+    cpu_threshold: 90  # % CPU
+    memory_threshold: 85  # % Memory
+    disk_threshold: 90  # % Disk
+    response_time_threshold: 5000  # ms
+
+auto_fixes:
+  enabled: true
+  max_attempts: 3
+  cooldown: 300  # segundos antes de tentar novamente
+
+  # Padrões de erros e suas correções
+  patterns:
+    - error: "ECONNRESET"
+      fix_type: "restart_proxy"
+      description: "Restart API proxy route"
+
+    - error: "socket hang up"
+      fix_type: "restart_proxy"
+      description: "Restart API proxy route"
+
+    - error: "lock file"
+      fix_type: "clear_lock"
+      description: "Clear Next.js lock file"
+
+    - error: "port.*in use"
+      fix_type: "kill_port"
+      description: "Kill process using the port"
+
+    - error: "MODULE_NOT_FOUND"
+      fix_type: "npm_install"
+      description: "Run npm install"
+
+    - error: "ENOSPC"
+      fix_type: "clear_disk"
+      description: "Clear disk space"
+
+gap_detection:
+  enabled: true
+  checks:
+    - type: "missing_dependencies"
+      description: "Check for missing npm/pip dependencies"
+
+    - type: "outdated_packages"
+      description: "Check for outdated packages"
+
+    - type: "security_vulnerabilities"
+      description: "Check for security issues"
+
+    - type: "performance_bottlenecks"
+      description: "Identify performance issues"
+
+    - type: "code_quality"
+      description: "Check for code quality issues"
+
+    - type: "unused_code"
+      description: "Detect unused imports/functions"
+
+reporting:
+  enabled: true
+  interval: 3600  # segundos (1 hora)
+  formats:
+    - "json"
+    - "html"
+    - "markdown"
+
+  output_dir: "/opt/conecta-plus/agents/system-monitor/reports"
+
+  include:
+    - errors_detected
+    - errors_fixed
+    - gaps_identified
+    - solutions_proposed
+    - system_health
+    - performance_metrics
+
+dashboard:
+  enabled: true
+  host: "0.0.0.0"
+  port: 8888
+  auth:
+    enabled: false
+    username: "admin"
+    password: "conecta2025"
+
+notifications:
+  enabled: true
+  channels:
+    - type: "console"
+      level: "info"
+
+    - type: "file"
+      level: "debug"
+      path: "/opt/conecta-plus/agents/system-monitor/logs/agent.log"
+
+    - type: "webhook"
+      level: "error"
+      url: "http://localhost:3001/api/monitoring/alerts"
+      enabled: false
+
+claude:
+  api_key_env: "ANTHROPIC_API_KEY"
+  model: "claude-sonnet-4"
+  max_tokens: 8000
+  temperature: 0.1
+  system_prompt: |
+    You are the Conecta Plus System Monitor, an autonomous AI agent responsible for:
+    1. Monitoring all system logs and metrics
+    2. Detecting errors, gaps, and performance issues
+    3. Automatically fixing common problems
+    4. Proposing solutions for complex issues
+    5. Generating comprehensive reports
+
+    You have full access to the codebase and can make changes automatically.
+    Always prioritize system stability and user experience.
+    Be proactive in identifying and resolving issues before they impact users.

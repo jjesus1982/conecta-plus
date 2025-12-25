@@ -370,7 +370,7 @@ Evite falsos positivos mas nunca ignore ameaças reais.
             elif action == "chat":
                 result = await self._process_chat(params, context)
 
-            # Evento de IA (webhook do Guardian)
+            # Evento de IA (detecção automática)
             elif action == "evento_ia":
                 result = await self._processar_evento_ia(params, context)
 
@@ -734,7 +734,7 @@ Responda em JSON:
     # ==================== NÍVEL 4: AUTÔNOMO ====================
 
     async def _processar_evento_ia(self, params: Dict, context: AgentContext) -> Dict[str, Any]:
-        """Processa evento detectado pela IA (Guardian)"""
+        """Processa evento detectado pela IA de visão computacional"""
         evento = EventoDetectado(
             id=params.get("id", hashlib.md5(str(datetime.now()).encode()).hexdigest()[:8]),
             camera_id=params.get("camera_id"),

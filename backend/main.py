@@ -49,12 +49,14 @@ from .routers import (
     comunicados_router,
     assembleias_router,
     dashboard_router,
-    guardian_router,
+    tranquilidade_router,
+    inteligencia_router,
+    health_router,
+    events_router,
 )
 from .routers.frigate import router as frigate_router
 from .routers.dispositivos import router as dispositivos_router
 from .services.hardware import get_hardware_manager
-from .services.guardian import get_guardian_service
 
 # Importar middlewares de seguranca
 from .middleware import (
@@ -108,14 +110,6 @@ async def lifespan(app: FastAPI):
     except Exception as e:
         logger.warning(f"Hardware Manager nao disponivel: {e}")
 
-    # Inicializar Guardian Security Service
-    try:
-        guardian = await get_guardian_service()
-        logger.info("Guardian Security Service inicializado")
-        logger.info(f"Guardian status: {guardian.status}")
-    except Exception as e:
-        logger.warning(f"Guardian Service nao disponivel: {e}")
-
     logger.info("API pronta para receber requisicoes")
 
     yield
@@ -146,13 +140,6 @@ app = FastAPI(
     - Audit log completo
     - Validacao robusta de inputs
 
-    ### Guardian AI Security
-    - Monitoramento inteligente 24/7
-    - Deteccao de anomalias com ML
-    - Resposta automatizada a incidentes
-    - Avaliacao de risco em tempo real
-    - Assistente de seguranca conversacional
-
     ### Modulos disponiveis:
     - **Autenticacao** - Login, tokens JWT, OAuth, LDAP/AD
     - **Usuarios** - Gestao de usuarios e permissoes
@@ -170,7 +157,7 @@ app = FastAPI(
     - **Dashboard** - Indicadores e estatisticas
     - **CFTV** - Integracao Frigate NVR
     - **Dispositivos** - Controle de hardware
-    - **Guardian** - Sistema de seguranca com IA
+    - **Inteligencia** - IA proativa e previsoes
     """,
     openapi_url=f"{settings.API_PREFIX}/openapi.json",
     docs_url=f"{settings.API_PREFIX}/docs",
@@ -283,7 +270,10 @@ app.include_router(assembleias_router, prefix=settings.API_PREFIX)
 app.include_router(dashboard_router, prefix=settings.API_PREFIX)
 app.include_router(frigate_router, prefix=settings.API_PREFIX)
 app.include_router(dispositivos_router, prefix=settings.API_PREFIX)
-app.include_router(guardian_router, prefix=settings.API_PREFIX)
+app.include_router(tranquilidade_router, prefix=settings.API_PREFIX)
+app.include_router(inteligencia_router, prefix=settings.API_PREFIX)
+app.include_router(health_router, prefix="")  # /health, /health/live, /health/ready
+app.include_router(events_router, prefix=settings.API_PREFIX)  # /api/v1/events/stream
 
 
 # ==================== ROTAS DE SISTEMA ====================
@@ -365,7 +355,8 @@ async def api_info():
             "dashboard": f"{settings.API_PREFIX}/dashboard",
             "frigate": f"{settings.API_PREFIX}/frigate",
             "dispositivos": f"{settings.API_PREFIX}/dispositivos",
-            "guardian": f"{settings.API_PREFIX}/guardian",
+            "tranquilidade": f"{settings.API_PREFIX}/tranquilidade",
+            "inteligencia": f"{settings.API_PREFIX}/inteligencia",
         }
     }
 

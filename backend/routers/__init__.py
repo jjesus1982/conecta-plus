@@ -16,7 +16,10 @@ from .reservas import router as reservas_router
 from .comunicados import router as comunicados_router
 from .assembleias import router as assembleias_router
 from .dashboard import router as dashboard_router
-from .guardian import router as guardian_router
+from .tranquilidade import router as tranquilidade_router
+from .inteligencia import router as inteligencia_router
+from .health import router as health_router
+from .events import router as events_router
 
 __all__ = [
     "auth_router",
@@ -33,5 +36,8 @@ __all__ = [
     "comunicados_router",
     "assembleias_router",
     "dashboard_router",
-    "guardian_router",
+    "tranquilidade_router",
+    "inteligencia_router",
+    "health_router",
+    "events_router",
 ]

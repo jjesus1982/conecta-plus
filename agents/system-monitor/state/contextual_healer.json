@@ -1,0 +1,16 @@
+{
+  "error_budget": {
+    "failures": [],
+    "available": true
+  },
+  "circuit_breaker": {
+    "state": "closed",
+    "consecutive_failures": 0,
+    "last_failure": null,
+    "opened_at": null
+  },
+  "last_healing": "2025-12-23T21:37:58.700321",
+  "healings_today": 0,
+  "p3_unlocked": false,
+  "feature_flags": {}
+}

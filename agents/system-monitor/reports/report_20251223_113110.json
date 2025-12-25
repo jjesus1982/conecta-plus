@@ -1,0 +1,522 @@
+{
+  "timestamp": "2025-12-23T11:31:10.211693",
+  "log_analysis": {
+    "timestamp": "2025-12-23T11:29:49.675606",
+    "logs": {
+      "nextjs": {
+        "log_path": "/tmp/nextjs-debug.log",
+        "timestamp": "2025-12-23T11:29:49.676741",
+        "total_lines": 1000,
+        "errors": [],
+        "warnings": [],
+        "patterns": {},
+        "severity": "ok",
+        "summary": {
+          "total_errors": 0,
+          "total_warnings": 0,
+          "error_types": {},
+          "most_common_error": null,
+          "unique_errors": 0
+        },
+        "recommendations": []
+      },
+      "backend": {
+        "log_path": "/opt/conecta-plus/backend/logs/api.log",
+        "error": "Log file not found",
+        "severity": "error"
+      },
+      "nginx": {
+        "log_path": "/var/log/nginx/error.log",
+        "error": "Log file not found",
+        "severity": "error"
+      }
+    },
+    "overall_severity": "ok",
+    "total_errors": 0,
+    "total_warnings": 0,
+    "critical_issues": []
+  },
+  "gaps": {
+    "timestamp": "2025-12-23T11:29:49.683076",
+    "gaps": [
+      {
+        "category": "dependencies",
+        "type": "missing_pip_package",
+        "severity": "high",
+        "description": "Missing pip package: alembic",
+        "solution": "Run: pip3 install -r requirements.txt",
+        "package": "alembic"
+      },
+      {
+        "category": "dependencies",
+        "type": "missing_pip_package",
+        "severity": "high",
+        "description": "Missing pip package: prometheus-client",
+        "solution": "Run: pip3 install -r requirements.txt",
+        "package": "prometheus-client"
+      },
+      {
+        "category": "dependencies",
+        "type": "missing_pip_package",
+        "severity": "high",
+        "description": "Missing pip package: flake8",
+        "solution": "Run: pip3 install -r requirements.txt",
+        "package": "flake8"
+      },
+      {
+        "category": "dependencies",
+        "type": "missing_pip_package",
+        "severity": "high",
+        "description": "Missing pip package: isort",
+        "solution": "Run: pip3 install -r requirements.txt",
+        "package": "isort"
+      },
+      {
+        "category": "dependencies",
+        "type": "missing_pip_package",
+        "severity": "high",
+        "description": "Missing pip package: uvicorn[standard]",
+        "solution": "Run: pip3 install -r requirements.txt",
+        "package": "uvicorn[standard]"
+      },
+      {
+        "category": "dependencies",
+        "type": "missing_pip_package",
+        "severity": "high",
+        "description": "Missing pip package: black",
+        "solution": "Run: pip3 install -r requirements.txt",
+        "package": "black"
+      },
+      {
+        "category": "dependencies",
+        "type": "missing_pip_package",
+        "severity": "high",
+        "description": "Missing pip package: python-jose[cryptography]",
+        "solution": "Run: pip3 install -r requirements.txt",
+        "package": "python-jose[cryptography]"
+      },
+      {
+        "category": "dependencies",
+        "type": "missing_pip_package",
+        "severity": "high",
+        "description": "Missing pip package: passlib[bcrypt]",
+        "solution": "Run: pip3 install -r requirements.txt",
+        "package": "passlib[bcrypt]"
+      },
+      {
+        "category": "outdated_packages",
+        "type": "outdated_npm",
+        "severity": "low",
+        "description": "Outdated npm package: eslint-config-next",
+        "current_version": "16.0.10",
+        "latest_version": "16.1.1",
+        "solution": "Run: npm install eslint-config-next@latest",
+        "package": "eslint-config-next"
+      },
+      {
+        "category": "outdated_packages",
+        "type": "outdated_npm",
+        "severity": "low",
+        "description": "Outdated npm package: next",
+        "current_version": "16.0.10",
+        "latest_version": "16.1.1",
+        "solution": "Run: npm install next@latest",
+        "package": "next"
+      },
+      {
+        "category": "outdated_packages",
+        "type": "outdated_npm",
+        "severity": "low",
+        "description": "Outdated npm package: react",
+        "current_version": "19.2.1",
+        "latest_version": "19.2.3",
+        "solution": "Run: npm install react@latest",
+        "package": "react"
+      },
+      {
+        "category": "outdated_packages",
+        "type": "outdated_npm",
+        "severity": "low",
+        "description": "Outdated npm package: react-dom",
+        "current_version": "19.2.1",
+        "latest_version": "19.2.3",
+        "solution": "Run: npm install react-dom@latest",
+        "package": "react-dom"
+      },
+      {
+        "category": "security",
+        "type": "hardcoded_secret",
+        "severity": "critical",
+        "description": "Possible hardcoded secret detected",
+        "location": "/opt/conecta-plus/backend/services/hardware.py",
+        "solution": "Move secrets to environment variables"
+      },
+      {
+        "category": "code_quality",
+        "type": "excessive_any",
+        "severity": "low",
+        "description": "Excessive use of \"any\" type in DashboardGraficos.tsx",
+        "count": 7,
+        "file": "/opt/conecta-plus/frontend/src/components/financeiro/DashboardGraficos.tsx",
+        "solution": "Replace \"any\" with proper types"
+      },
+      {
+        "category": "code_quality",
+        "type": "debug_code",
+        "severity": "low",
+        "description": "Debug console.log found in GuardianNotifications.tsx",
+        "file": "/opt/conecta-plus/frontend/src/components/guardian/GuardianNotifications.tsx",
+        "solution": "Remove or replace with proper logging"
+      },
+      {
+        "category": "code_quality",
+        "type": "debug_code",
+        "severity": "low",
+        "description": "Debug console.log found in guardian-client.ts",
+        "file": "/opt/conecta-plus/frontend/src/lib/guardian-client.ts",
+        "solution": "Remove or replace with proper logging"
+      },
+      {
+        "category": "unused_code",
+        "type": "unused_dependency",
+        "severity": "low",
+        "description": "Possibly unused dependency: @radix-ui/react-avatar",
+        "package": "@radix-ui/react-avatar",
+        "solution": "Remove if not needed: npm uninstall @radix-ui/react-avatar"
+      },
+      {
+        "category": "unused_code",
+        "type": "unused_dependency",
+        "severity": "low",
+        "description": "Possibly unused dependency: @radix-ui/react-dialog",
+        "package": "@radix-ui/react-dialog",
+        "solution": "Remove if not needed: npm uninstall @radix-ui/react-dialog"
+      },
+      {
+        "category": "unused_code",
+        "type": "unused_dependency",
+        "severity": "low",
+        "description": "Possibly unused dependency: @radix-ui/react-dropdown-menu",
+        "package": "@radix-ui/react-dropdown-menu",
+        "solution": "Remove if not needed: npm uninstall @radix-ui/react-dropdown-menu"
+      },
+      {
+        "category": "unused_code",
+        "type": "unused_dependency",
+        "severity": "low",
+        "description": "Possibly unused dependency: @radix-ui/react-select",
+        "package": "@radix-ui/react-select",
+        "solution": "Remove if not needed: npm uninstall @radix-ui/react-select"
+      },
+      {
+        "category": "unused_code",
+        "type": "unused_dependency",
+        "severity": "low",
+        "description": "Possibly unused dependency: @radix-ui/react-slot",
+        "package": "@radix-ui/react-slot",
+        "solution": "Remove if not needed: npm uninstall @radix-ui/react-slot"
+      },
+      {
+        "category": "unused_code",
+        "type": "unused_dependency",
+        "severity": "low",
+        "description": "Possibly unused dependency: @radix-ui/react-tabs",
+        "package": "@radix-ui/react-tabs",
+        "solution": "Remove if not needed: npm uninstall @radix-ui/react-tabs"
+      },
+      {
+        "category": "unused_code",
+        "type": "unused_dependency",
+        "severity": "low",
+        "description": "Possibly unused dependency: @radix-ui/react-toast",
+        "package": "@radix-ui/react-toast",
+        "solution": "Remove if not needed: npm uninstall @radix-ui/react-toast"
+      },
+      {
+        "category": "unused_code",
+        "type": "unused_dependency",
+        "severity": "low",
+        "description": "Possibly unused dependency: axios",
+        "package": "axios",
+        "solution": "Remove if not needed: npm uninstall axios"
+      },
+      {
+        "category": "unused_code",
+        "type": "unused_dependency",
+        "severity": "low",
+        "description": "Possibly unused dependency: class-variance-authority",
+        "package": "class-variance-authority",
+        "solution": "Remove if not needed: npm uninstall class-variance-authority"
+      },
+      {
+        "category": "unused_code",
+        "type": "unused_dependency",
+        "severity": "low",
+        "description": "Possibly unused dependency: clsx",
+        "package": "clsx",
+        "solution": "Remove if not needed: npm uninstall clsx"
+      }
+    ],
+    "total_gaps": 26,
+    "critical_gaps": 1,
+    "by_category": {
+      "dependencies": [
+        {
+          "category": "dependencies",
+          "type": "missing_pip_package",
+          "severity": "high",
+          "description": "Missing pip package: alembic",
+          "solution": "Run: pip3 install -r requirements.txt",
+          "package": "alembic"
+        },
+        {
+          "category": "dependencies",
+          "type": "missing_pip_package",
+          "severity": "high",
+          "description": "Missing pip package: prometheus-client",
+          "solution": "Run: pip3 install -r requirements.txt",
+          "package": "prometheus-client"
+        },
+        {
+          "category": "dependencies",
+          "type": "missing_pip_package",
+          "severity": "high",
+          "description": "Missing pip package: flake8",
+          "solution": "Run: pip3 install -r requirements.txt",
+          "package": "flake8"
+        },
+        {
+          "category": "dependencies",
+          "type": "missing_pip_package",
+          "severity": "high",
+          "description": "Missing pip package: isort",
+          "solution": "Run: pip3 install -r requirements.txt",
+          "package": "isort"
+        },
+        {
+          "category": "dependencies",
+          "type": "missing_pip_package",
+          "severity": "high",
+          "description": "Missing pip package: uvicorn[standard]",
+          "solution": "Run: pip3 install -r requirements.txt",
+          "package": "uvicorn[standard]"
+        },
+        {
+          "category": "dependencies",
+          "type": "missing_pip_package",
+          "severity": "high",
+          "description": "Missing pip package: black",
+          "solution": "Run: pip3 install -r requirements.txt",
+          "package": "black"
+        },
+        {
+          "category": "dependencies",
+          "type": "missing_pip_package",
+          "severity": "high",
+          "description": "Missing pip package: python-jose[cryptography]",
+          "solution": "Run: pip3 install -r requirements.txt",
+          "package": "python-jose[cryptography]"
+        },
+        {
+          "category": "dependencies",
+          "type": "missing_pip_package",
+          "severity": "high",
+          "description": "Missing pip package: passlib[bcrypt]",
+          "solution": "Run: pip3 install -r requirements.txt",
+          "package": "passlib[bcrypt]"
+        }
+      ],
+      "outdated_packages": [
+        {
+          "category": "outdated_packages",
+          "type": "outdated_npm",
+          "severity": "low",
+          "description": "Outdated npm package: eslint-config-next",
+          "current_version": "16.0.10",
+          "latest_version": "16.1.1",
+          "solution": "Run: npm install eslint-config-next@latest",
+          "package": "eslint-config-next"
+        },
+        {
+          "category": "outdated_packages",
+          "type": "outdated_npm",
+          "severity": "low",
+          "description": "Outdated npm package: next",
+          "current_version": "16.0.10",
+          "latest_version": "16.1.1",
+          "solution": "Run: npm install next@latest",
+          "package": "next"
+        },
+        {
+          "category": "outdated_packages",
+          "type": "outdated_npm",
+          "severity": "low",
+          "description": "Outdated npm package: react",
+          "current_version": "19.2.1",
+          "latest_version": "19.2.3",
+          "solution": "Run: npm install react@latest",
+          "package": "react"
+        },
+        {
+          "category": "outdated_packages",
+          "type": "outdated_npm",
+          "severity": "low",
+          "description": "Outdated npm package: react-dom",
+          "current_version": "19.2.1",
+          "latest_version": "19.2.3",
+          "solution": "Run: npm install react-dom@latest",
+          "package": "react-dom"
+        }
+      ],
+      "security": [
+        {
+          "category": "security",
+          "type": "hardcoded_secret",
+          "severity": "critical",
+          "description": "Possible hardcoded secret detected",
+          "location": "/opt/conecta-plus/backend/services/hardware.py",
+          "solution": "Move secrets to environment variables"
+        }
+      ],
+      "code_quality": [
+        {
+          "category": "code_quality",
+          "type": "excessive_any",
+          "severity": "low",
+          "description": "Excessive use of \"any\" type in DashboardGraficos.tsx",
+          "count": 7,
+          "file": "/opt/conecta-plus/frontend/src/components/financeiro/DashboardGraficos.tsx",
+          "solution": "Replace \"any\" with proper types"
+        },
+        {
+          "category": "code_quality",
+          "type": "debug_code",
+          "severity": "low",
+          "description": "Debug console.log found in GuardianNotifications.tsx",
+          "file": "/opt/conecta-plus/frontend/src/components/guardian/GuardianNotifications.tsx",
+          "solution": "Remove or replace with proper logging"
+        },
+        {
+          "category": "code_quality",
+          "type": "debug_code",
+          "severity": "low",
+          "description": "Debug console.log found in guardian-client.ts",
+          "file": "/opt/conecta-plus/frontend/src/lib/guardian-client.ts",
+          "solution": "Remove or replace with proper logging"
+        }
+      ],
+      "unused_code": [
+        {
+          "category": "unused_code",
+          "type": "unused_dependency",
+          "severity": "low",
+          "description": "Possibly unused dependency: @radix-ui/react-avatar",
+          "package": "@radix-ui/react-avatar",
+          "solution": "Remove if not needed: npm uninstall @radix-ui/react-avatar"
+        },
+        {
+          "category": "unused_code",
+          "type": "unused_dependency",
+          "severity": "low",
+          "description": "Possibly unused dependency: @radix-ui/react-dialog",
+          "package": "@radix-ui/react-dialog",
+          "solution": "Remove if not needed: npm uninstall @radix-ui/react-dialog"
+        },
+        {
+          "category": "unused_code",
+          "type": "unused_dependency",
+          "severity": "low",
+          "description": "Possibly unused dependency: @radix-ui/react-dropdown-menu",
+          "package": "@radix-ui/react-dropdown-menu",
+          "solution": "Remove if not needed: npm uninstall @radix-ui/react-dropdown-menu"
+        },
+        {
+          "category": "unused_code",
+          "type": "unused_dependency",
+          "severity": "low",
+          "description": "Possibly unused dependency: @radix-ui/react-select",
+          "package": "@radix-ui/react-select",
+          "solution": "Remove if not needed: npm uninstall @radix-ui/react-select"
+        },
+        {
+          "category": "unused_code",
+          "type": "unused_dependency",
+          "severity": "low",
+          "description": "Possibly unused dependency: @radix-ui/react-slot",
+          "package": "@radix-ui/react-slot",
+          "solution": "Remove if not needed: npm uninstall @radix-ui/react-slot"
+        },
+        {
+          "category": "unused_code",
+          "type": "unused_dependency",
+          "severity": "low",
+          "description": "Possibly unused dependency: @radix-ui/react-tabs",
+          "package": "@radix-ui/react-tabs",
+          "solution": "Remove if not needed: npm uninstall @radix-ui/react-tabs"
+        },
+        {
+          "category": "unused_code",
+          "type": "unused_dependency",
+          "severity": "low",
+          "description": "Possibly unused dependency: @radix-ui/react-toast",
+          "package": "@radix-ui/react-toast",
+          "solution": "Remove if not needed: npm uninstall @radix-ui/react-toast"
+        },
+        {
+          "category": "unused_code",
+          "type": "unused_dependency",
+          "severity": "low",
+          "description": "Possibly unused dependency: axios",
+          "package": "axios",
+          "solution": "Remove if not needed: npm uninstall axios"
+        },
+        {
+          "category": "unused_code",
+          "type": "unused_dependency",
+          "severity": "low",
+          "description": "Possibly unused dependency: class-variance-authority",
+          "package": "class-variance-authority",
+          "solution": "Remove if not needed: npm uninstall class-variance-authority"
+        },
+        {
+          "category": "unused_code",
+          "type": "unused_dependency",
+          "severity": "low",
+          "description": "Possibly unused dependency: clsx",
+          "package": "clsx",
+          "solution": "Remove if not needed: npm uninstall clsx"
+        }
+      ]
+    }
+  },
+  "fixes": {
+    "total_fixes": 0,
+    "successful_fixes": 0,
+    "failed_fixes": 0,
+    "success_rate": 0,
+    "by_error_type": {},
+    "recent_fixes": []
+  },
+  "summary": {
+    "system_health": "ok",
+    "total_errors": 0,
+    "total_warnings": 0,
+    "critical_issues": 0,
+    "total_gaps": 26,
+    "critical_gaps": 1,
+    "total_fixes_applied": 0,
+    "successful_fixes": 0,
+    "fix_success_rate": 0,
+    "recommendations": [
+      "Run: pip3 install -r requirements.txt",
+      "Run: pip3 install -r requirements.txt",
+      "Run: pip3 install -r requirements.txt",
+      "Run: pip3 install -r requirements.txt",
+      "Run: pip3 install -r requirements.txt",
+      "Run: pip3 install -r requirements.txt",
+      "Run: pip3 install -r requirements.txt",
+      "Run: pip3 install -r requirements.txt",
+      "Move secrets to environment variables"
+    ]
+  }
+}

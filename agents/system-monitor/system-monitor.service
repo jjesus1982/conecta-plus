@@ -1,0 +1,19 @@
+[Unit]
+Description=Conecta Plus System Monitor Agent
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/conecta-plus/agents/system-monitor
+ExecStart=/usr/bin/python3 /opt/conecta-plus/agents/system-monitor/agent.py
+Restart=always
+RestartSec=10
+StandardOutput=append:/opt/conecta-plus/agents/system-monitor/logs/agent.log
+StandardError=append:/opt/conecta-plus/agents/system-monitor/logs/agent-error.log
+
+# Environment
+Environment="PYTHONUNBUFFERED=1"
+
+[Install]
+WantedBy=multi-user.target

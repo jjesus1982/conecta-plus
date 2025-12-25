@@ -41,3 +41,17 @@ try:
     )
 except ImportError as e:
     print(f"Aviso: Repositórios financeiros não disponíveis: {e}")
+
+# Importações Cora Bank (opcional)
+try:
+    from .cora import (
+        ContaCoraRepository,
+        TransacaoCoraRepository,
+        CobrancaCoraRepository,
+        WebhookCoraRepository,
+        CoraTokenRepository,
+        SaldoCoraRepository,
+        CoraSyncLogRepository,
+    )
+except ImportError as e:
+    print(f"Aviso: Repositórios Cora não disponíveis: {e}")

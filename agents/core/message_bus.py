@@ -801,3 +801,7 @@ class StandardTopics:
     SYSTEM_STATUS = "system.status"
     AGENT_STARTED = "agent.started"
     AGENT_STOPPED = "agent.stopped"
+
+
+# Alias para compatibilidade
+MessageBus = AgentMessageBus

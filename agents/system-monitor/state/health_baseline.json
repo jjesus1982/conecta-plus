@@ -1,0 +1,12 @@
+{
+  "overall": 70.8,
+  "dimensions": {
+    "infrastructure": 70.8,
+    "application": 93.3,
+    "code_quality": 78.0,
+    "security": 95.0,
+    "reliability": 95.0
+  },
+  "last_updated": "2025-12-23T21:38:40.637230",
+  "samples": 1
+}

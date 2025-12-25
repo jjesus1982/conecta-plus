@@ -1,0 +1,20 @@
+[Unit]
+Description=Conecta Plus System Monitor Dashboard
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/conecta-plus/agents/system-monitor/dashboard
+ExecStart=/usr/bin/python3 /opt/conecta-plus/agents/system-monitor/dashboard/app.py
+Restart=always
+RestartSec=10
+StandardOutput=append:/opt/conecta-plus/agents/system-monitor/logs/dashboard.log
+StandardError=append:/opt/conecta-plus/agents/system-monitor/logs/dashboard-error.log
+
+# Environment
+Environment="PYTHONUNBUFFERED=1"
+Environment="FLASK_ENV=production"
+
+[Install]
+WantedBy=multi-user.target

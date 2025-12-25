@@ -1,0 +1,24 @@
+{
+  "active": [
+    {
+      "timestamp": "2025-12-23T21:37:35.116730",
+      "risk_level": "low",
+      "predictions_count": 0,
+      "ttf_count": 0,
+      "warnings": []
+    },
+    {
+      "timestamp": "2025-12-23T21:37:58.701094",
+      "risk_level": "low",
+      "predictions_count": 0,
+      "ttf_count": 0,
+      "warnings": []
+    }
+  ],
+  "past": [],
+  "accuracy": {
+    "total": 0,
+    "correct": 0,
+    "rate": 0
+  }
+}

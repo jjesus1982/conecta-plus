@@ -1,0 +1,153 @@
+{
+  "occurrences": {
+    "excessive_any": [
+      "2025-12-23T21:37:35.116304",
+      "2025-12-23T21:37:58.700587"
+    ],
+    "unused_dependency": [
+      "2025-12-23T21:37:35.116304",
+      "2025-12-23T21:37:35.116304",
+      "2025-12-23T21:37:35.116304",
+      "2025-12-23T21:37:35.116304",
+      "2025-12-23T21:37:35.116304",
+      "2025-12-23T21:37:35.116304",
+      "2025-12-23T21:37:35.116304",
+      "2025-12-23T21:37:35.116304",
+      "2025-12-23T21:37:35.116304",
+      "2025-12-23T21:37:35.116304",
+      "2025-12-23T21:37:58.700587",
+      "2025-12-23T21:37:58.700587",
+      "2025-12-23T21:37:58.700587",
+      "2025-12-23T21:37:58.700587",
+      "2025-12-23T21:37:58.700587",
+      "2025-12-23T21:37:58.700587",
+      "2025-12-23T21:37:58.700587",
+      "2025-12-23T21:37:58.700587",
+      "2025-12-23T21:37:58.700587",
+      "2025-12-23T21:37:58.700587"
+    ]
+  },
+  "escalations": [
+    {
+      "issue_type": "unused_dependency",
+      "from_priority": "P4",
+      "to_priority": "P3",
+      "reason": "P4 recorrente (3+ ocorr\u00eancias)",
+      "timestamp": "2025-12-23T21:37:35.116304"
+    },
+    {
+      "issue_type": "unused_dependency",
+      "from_priority": "P4",
+      "to_priority": "P3",
+      "reason": "P4 recorrente (3+ ocorr\u00eancias)",
+      "timestamp": "2025-12-23T21:37:35.116304"
+    },
+    {
+      "issue_type": "unused_dependency",
+      "from_priority": "P4",
+      "to_priority": "P3",
+      "reason": "P4 recorrente (3+ ocorr\u00eancias)",
+      "timestamp": "2025-12-23T21:37:35.116304"
+    },
+    {
+      "issue_type": "unused_dependency",
+      "from_priority": "P4",
+      "to_priority": "P3",
+      "reason": "P4 recorrente (3+ ocorr\u00eancias)",
+      "timestamp": "2025-12-23T21:37:35.116304"
+    },
+    {
+      "issue_type": "unused_dependency",
+      "from_priority": "P4",
+      "to_priority": "P3",
+      "reason": "P4 recorrente (3+ ocorr\u00eancias)",
+      "timestamp": "2025-12-23T21:37:35.116304"
+    },
+    {
+      "issue_type": "unused_dependency",
+      "from_priority": "P4",
+      "to_priority": "P3",
+      "reason": "P4 recorrente (3+ ocorr\u00eancias)",
+      "timestamp": "2025-12-23T21:37:35.116304"
+    },
+    {
+      "issue_type": "unused_dependency",
+      "from_priority": "P4",
+      "to_priority": "P3",
+      "reason": "P4 recorrente (3+ ocorr\u00eancias)",
+      "timestamp": "2025-12-23T21:37:35.116304"
+    },
+    {
+      "issue_type": "unused_dependency",
+      "from_priority": "P4",
+      "to_priority": "P3",
+      "reason": "P4 recorrente (3+ ocorr\u00eancias)",
+      "timestamp": "2025-12-23T21:37:58.700587"
+    },
+    {
+      "issue_type": "unused_dependency",
+      "from_priority": "P4",
+      "to_priority": "P3",
+      "reason": "P4 recorrente (3+ ocorr\u00eancias)",
+      "timestamp": "2025-12-23T21:37:58.700587"
+    },
+    {
+      "issue_type": "unused_dependency",
+      "from_priority": "P4",
+      "to_priority": "P3",
+      "reason": "P4 recorrente (3+ ocorr\u00eancias)",
+      "timestamp": "2025-12-23T21:37:58.700587"
+    },
+    {
+      "issue_type": "unused_dependency",
+      "from_priority": "P4",
+      "to_priority": "P3",
+      "reason": "P4 recorrente (3+ ocorr\u00eancias)",
+      "timestamp": "2025-12-23T21:37:58.700587"
+    },
+    {
+      "issue_type": "unused_dependency",
+      "from_priority": "P4",
+      "to_priority": "P3",
+      "reason": "P4 recorrente (3+ ocorr\u00eancias)",
+      "timestamp": "2025-12-23T21:37:58.700587"
+    },
+    {
+      "issue_type": "unused_dependency",
+      "from_priority": "P4",
+      "to_priority": "P3",
+      "reason": "P4 recorrente (3+ ocorr\u00eancias)",
+      "timestamp": "2025-12-23T21:37:58.700587"
+    },
+    {
+      "issue_type": "unused_dependency",
+      "from_priority": "P4",
+      "to_priority": "P3",
+      "reason": "P4 recorrente (3+ ocorr\u00eancias)",
+      "timestamp": "2025-12-23T21:37:58.700587"
+    },
+    {
+      "issue_type": "unused_dependency",
+      "from_priority": "P4",
+      "to_priority": "P3",
+      "reason": "P4 recorrente (3+ ocorr\u00eancias)",
+      "timestamp": "2025-12-23T21:37:58.700587"
+    },
+    {
+      "issue_type": "unused_dependency",
+      "from_priority": "P4",
+      "to_priority": "P3",
+      "reason": "P4 recorrente (3+ ocorr\u00eancias)",
+      "timestamp": "2025-12-23T21:37:58.700587"
+    },
+    {
+      "issue_type": "unused_dependency",
+      "from_priority": "P4",
+      "to_priority": "P3",
+      "reason": "P4 recorrente (3+ ocorr\u00eancias)",
+      "timestamp": "2025-12-23T21:37:58.700587"
+    }
+  ],
+  "treated": [],
+  "silent_failures": []
+}

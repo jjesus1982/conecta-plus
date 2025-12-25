@@ -38,12 +38,260 @@ except ImportError:
     FINANCEIRO_ROUTER_AVAILABLE = False
     print("⚠️ Router financeiro não disponível, usando endpoints mock")
 
+# Importa router Cora
+try:
+    from routers.cora import router as cora_router
+    CORA_ROUTER_AVAILABLE = True
+except ImportError:
+    CORA_ROUTER_AVAILABLE = False
+    print("⚠️ Router Cora não disponível")
+
 # Configurações
 SECRET_KEY = os.getenv("SECRET_KEY", "conecta-plus-secret-key-2024")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24  # 24 horas
 
 security = HTTPBearer()
+
+# ==================== ML ENGINE COM APRENDIZADO CONTÍNUO ====================
+
+import json
+from pathlib import Path
+from collections import defaultdict
+
+class MLEngine:
+    """Engine de ML com cache, persistência e aprendizado contínuo"""
+
+    def __init__(self):
+        self.cache_dir = Path("/tmp/conecta_ml_cache")
+        self.cache_dir.mkdir(exist_ok=True)
+
+        # Cache em memória
+        self.prediction_cache = {}
+        self.cache_ttl = 300  # 5 minutos
+
+        # Histórico de previsões e resultados reais
+        self.predictions_file = self.cache_dir / "predictions_history.json"
+        self.feedback_file = self.cache_dir / "feedback_history.json"
+        self.model_params_file = self.cache_dir / "model_params.json"
+
+        # Carrega histórico e parâmetros
+        self.predictions_history = self._load_json(self.predictions_file, [])
+        self.feedback_history = self._load_json(self.feedback_file, [])
+        self.model_params = self._load_json(self.model_params_file, {
+            "base_score_weight": 0.4,
+            "history_weight": 0.3,
+            "recent_behavior_weight": 0.3,
+            "precision": 0.82,  # Precisão inicial
+            "total_predictions": 0,
+            "correct_predictions": 0
+        })
+
+    def _load_json(self, filepath, default):
+        """Carrega dados de arquivo JSON"""
+        try:
+            if filepath.exists():
+                with open(filepath, 'r') as f:
+                    return json.load(f)
+        except Exception:
+            pass
+        return default
+
+    def _save_json(self, filepath, data):
+        """Salva dados em arquivo JSON"""
+        try:
+            with open(filepath, 'w') as f:
+                json.dump(data, f, indent=2)
+        except Exception as e:
+            print(f"Erro ao salvar {filepath}: {e}")
+
+    def get_cached_prediction(self, cache_key: str):
+        """Busca previsão no cache"""
+        if cache_key in self.prediction_cache:
+            cached = self.prediction_cache[cache_key]
+            if datetime.now().timestamp() - cached['timestamp'] < self.cache_ttl:
+                return cached['data']
+            else:
+                del self.prediction_cache[cache_key]
+        return None
+
+    def set_cache(self, cache_key: str, data: dict):
+        """Armazena previsão no cache"""
+        self.prediction_cache[cache_key] = {
+            'data': data,
+            'timestamp': datetime.now().timestamp()
+        }
+
+    def predict_default_risk(self, unidade_id: str, boletos: List[Dict]) -> Dict:
+        """Previsão de inadimplência com ML aprimorado"""
+        cache_key = f"default_risk_{unidade_id}"
+
+        # Verifica cache
+        cached = self.get_cached_prediction(cache_key)
+        if cached:
+            cached['from_cache'] = True
+            return cached
+
+        # Calcula score base
+        if not boletos:
+            score = 800
+            prob = 0.2
+        else:
+            vencidos = len([b for b in boletos if b.get('status') == 'vencido'])
+            pagos_em_dia = len([b for b in boletos if b.get('status') == 'pago' and b.get('dias_atraso', 0) <= 0])
+            total = len(boletos)
+
+            # Usa histórico para ajustar previsão
+            historical_factor = self._get_historical_factor(unidade_id)
+
+            # Pesos ajustáveis baseados em aprendizado
+            base_weight = self.model_params['base_score_weight']
+            hist_weight = self.model_params['history_weight']
+
+            taxa_pontualidade = (pagos_em_dia / total) if total > 0 else 0.8
+            taxa_inadimplencia = (vencidos / total) if total > 0 else 0
+
+            # Score combinado com histórico
+            base_score = 800 * taxa_pontualidade - 400 * taxa_inadimplencia
+            adjusted_score = base_score * base_weight + historical_factor * hist_weight * 1000
+
+            score = max(300, min(1000, int(adjusted_score)))
+            prob = max(0.05, min(0.95, 1 - (score / 1000)))
+
+        # Classifica risco
+        if prob < 0.3:
+            risk_class = "baixo_risco"
+        elif prob < 0.6:
+            risk_class = "medio_risco"
+        else:
+            risk_class = "alto_risco"
+
+        result = {
+            'score': score,
+            'probabilidade': round(prob, 2),
+            'classificacao': risk_class,
+            'confianca': round(self.model_params['precision'], 2),
+            'from_cache': False,
+            'modelo_versao': 'v2.2-adaptive'
+        }
+
+        # Armazena previsão no histórico
+        self._store_prediction(unidade_id, result)
+
+        # Cache resultado
+        self.set_cache(cache_key, result)
+
+        return result
+
+    def _get_historical_factor(self, unidade_id: str) -> float:
+        """Calcula fator de ajuste baseado no histórico"""
+        unit_history = [p for p in self.predictions_history if p.get('unidade_id') == unidade_id]
+
+        if not unit_history:
+            return 0.5  # Neutro
+
+        # Últimas 5 previsões
+        recent = sorted(unit_history, key=lambda x: x.get('timestamp', 0), reverse=True)[:5]
+
+        avg_score = sum(p.get('score', 500) for p in recent) / len(recent)
+        return avg_score / 1000  # Normaliza 0-1
+
+    def _store_prediction(self, unidade_id: str, prediction: Dict):
+        """Armazena previsão no histórico"""
+        entry = {
+            'unidade_id': unidade_id,
+            'timestamp': datetime.now().isoformat(),
+            'prediction': prediction
+        }
+
+        self.predictions_history.append(entry)
+
+        # Limita histórico a últimos 1000 registros
+        if len(self.predictions_history) > 1000:
+            self.predictions_history = self.predictions_history[-1000:]
+
+        # Salva periodicamente (a cada 10 previsões)
+        self.model_params['total_predictions'] += 1
+        if self.model_params['total_predictions'] % 10 == 0:
+            self._save_json(self.predictions_file, self.predictions_history)
+            self._save_json(self.model_params_file, self.model_params)
+
+    def register_feedback(self, unidade_id: str, prediction_id: str, actual_result: bool):
+        """Registra resultado real para aprendizado"""
+        feedback = {
+            'unidade_id': unidade_id,
+            'prediction_id': prediction_id,
+            'actual_result': actual_result,
+            'timestamp': datetime.now().isoformat()
+        }
+
+        self.feedback_history.append(feedback)
+
+        # Atualiza precisão do modelo
+        if actual_result:
+            self.model_params['correct_predictions'] += 1
+
+        total = self.model_params['total_predictions']
+        correct = self.model_params['correct_predictions']
+
+        if total > 0:
+            self.model_params['precision'] = correct / total
+
+        # Ajusta pesos baseado em performance
+        if total % 50 == 0:  # A cada 50 feedbacks
+            self._adjust_model_weights()
+
+        self._save_json(self.feedback_file, self.feedback_history)
+        self._save_json(self.model_params_file, self.model_params)
+
+        return {
+            'precision': round(self.model_params['precision'], 3),
+            'total_predictions': total,
+            'correct_predictions': correct
+        }
+
+    def _adjust_model_weights(self):
+        """Ajusta pesos do modelo baseado em performance"""
+        precision = self.model_params['precision']
+
+        # Se precisão < 70%, aumenta peso do histórico
+        if precision < 0.70:
+            self.model_params['history_weight'] += 0.05
+            self.model_params['base_score_weight'] -= 0.05
+        # Se precisão > 90%, confiar mais no score base
+        elif precision > 0.90:
+            self.model_params['base_score_weight'] += 0.03
+            self.model_params['history_weight'] -= 0.03
+
+        # Normaliza pesos
+        total_weight = (self.model_params['base_score_weight'] +
+                       self.model_params['history_weight'] +
+                       self.model_params['recent_behavior_weight'])
+
+        if total_weight != 1.0:
+            factor = 1.0 / total_weight
+            self.model_params['base_score_weight'] *= factor
+            self.model_params['history_weight'] *= factor
+            self.model_params['recent_behavior_weight'] *= factor
+
+    def get_model_stats(self) -> Dict:
+        """Retorna estatísticas do modelo"""
+        return {
+            'precision': round(self.model_params['precision'], 3),
+            'total_predictions': self.model_params['total_predictions'],
+            'correct_predictions': self.model_params['correct_predictions'],
+            'weights': {
+                'base_score': round(self.model_params['base_score_weight'], 3),
+                'history': round(self.model_params['history_weight'], 3),
+                'behavior': round(self.model_params['recent_behavior_weight'], 3)
+            },
+            'cache_size': len(self.prediction_cache),
+            'history_size': len(self.predictions_history),
+            'feedback_count': len(self.feedback_history)
+        }
+
+# Instância global do ML Engine
+ml_engine = MLEngine()
 
 # Lifespan para startup/shutdown
 @asynccontextmanager
@@ -86,6 +334,11 @@ app.add_middleware(
 if FINANCEIRO_ROUTER_AVAILABLE:
     app.include_router(financeiro_router)
     print("✅ Router financeiro carregado com IA e integração Cora")
+
+# Inclui router Cora se disponível
+if CORA_ROUTER_AVAILABLE:
+    app.include_router(cora_router)
+    print("✅ Router Cora carregado - Integração Banco Cora V2")
 
 # ==================== MODELS ====================
 
@@ -1126,6 +1379,581 @@ async def create_acordo(payload: dict = Depends(verify_token)):
         "acordo_id": f"acordo_{str(uuid.uuid4())[:8]}",
     }
 
+# ==================== IA FINANCEIRA ====================
+
+# Engines de IA sempre disponíveis via lógica interna
+IA_ENGINES_AVAILABLE = True
+
+# Helpers internos para IA (sem dependências externas)
+def calcular_score_inadimplencia(boletos: List[Dict]) -> int:
+    """Calcula score de inadimplência (0-1000)"""
+    if not boletos:
+        return 800
+
+    vencidos = len([b for b in boletos if b.get('status') == 'vencido'])
+    pagos_em_dia = len([b for b in boletos if b.get('status') == 'pago' and b.get('dias_atraso', 0) <= 0])
+    total = len(boletos)
+
+    if total == 0:
+        return 800
+
+    taxa_pontualidade = pagos_em_dia / total
+    taxa_inadimplencia = vencidos / total
+
+    score = int(800 * taxa_pontualidade - 400 * taxa_inadimplencia)
+    return max(300, min(1000, score))
+
+def analisar_sentimento_texto(texto: str) -> Dict:
+    """Análise de sentimento simplificada"""
+    texto_lower = texto.lower()
+
+    palavras_positivas = ['vou pagar', 'pagarei', 'obrigado', 'sim', 'ok', 'acordo']
+    palavras_negativas = ['não', 'impossível', 'absurdo', 'nunca', 'raiva']
+    palavras_hostis = ['processo', 'advogado', 'ladrão', 'roubo']
+
+    score = 0.0
+    sentimento = 'neutro'
+    intencao_pagamento = 0.0
+    emocoes = []
+
+    for palavra in palavras_positivas:
+        if palavra in texto_lower:
+            score += 0.3
+            intencao_pagamento += 0.25
+
+    for palavra in palavras_negativas:
+        if palavra in texto_lower:
+            score -= 0.2
+
+    for palavra in palavras_hostis:
+        if palavra in texto_lower:
+            score -= 0.5
+            emocoes.append('raiva')
+            sentimento = 'hostil'
+
+    if score > 0.3:
+        sentimento = 'positivo'
+    elif score < -0.3:
+        sentimento = 'negativo' if sentimento != 'hostil' else 'hostil'
+
+    if 'desemprego' in texto_lower or 'doença' in texto_lower:
+        emocoes.append('preocupação')
+
+    return {
+        'sentimento': sentimento,
+        'score': round(score, 2),
+        'confianca': 0.75,
+        'intencao_pagamento': min(1.0, intencao_pagamento),
+        'emocoes': emocoes,
+        'requer_atencao': sentimento == 'hostil' or 'preocupação' in emocoes
+    }
+
+def gerar_mensagem_cobranca_simples(boleto: Dict, canal: str, tom: Optional[str] = None) -> Dict:
+    """Gera mensagem de cobrança"""
+    dias_atraso = boleto.get('dias_atraso', 0)
+
+    if tom is None:
+        if dias_atraso <= 0:
+            tom = 'amigavel'
+        elif dias_atraso <= 15:
+            tom = 'profissional'
+        elif dias_atraso <= 30:
+            tom = 'firme'
+        else:
+            tom = 'urgente'
+
+    nome = boleto.get('morador', 'Morador')
+    valor = boleto.get('valor', 0)
+
+    if canal == 'whatsapp':
+        if tom == 'amigavel':
+            corpo = f"Oi {nome}! Tudo bem? Seu boleto de R$ {valor:.2f} vence em breve. Pague fácil pelo PIX!"
+        elif tom == 'profissional':
+            corpo = f"{nome}, informamos que seu boleto de R$ {valor:.2f} está pendente. Por favor, regularize."
+        elif tom == 'firme':
+            corpo = f"AVISO: {nome}, seu boleto de R$ {valor:.2f} está vencido há {dias_atraso} dias. Regularize AGORA!"
+        else:
+            corpo = f"ÚLTIMO AVISO: {nome}, débito de R$ {valor:.2f} há {dias_atraso} dias. Evite medidas legais. Pague já!"
+    else:
+        corpo = f"Prezado(a) {nome},\n\nInformamos pendência de R$ {valor:.2f}.\n\nAtenciosamente,\nAdministração"
+
+    return {
+        'assunto': f"Cobrança - {boleto.get('competencia', 'Pendente')}",
+        'corpo': corpo,
+        'tom': tom,
+        'cta': 'Pague agora'
+    }
+
+# Dados mock para unidades
+MOCK_UNIDADES = [
+    {"id": "unit_001", "bloco": "A", "numero": "101", "morador": "Carlos Silva", "documento": "529.982.247-25"},
+    {"id": "unit_002", "bloco": "A", "numero": "102", "morador": "Maria Santos", "documento": "407.902.298-32"},
+    {"id": "unit_003", "bloco": "A", "numero": "103", "morador": "Pedro Oliveira", "documento": "838.687.518-15"},
+    {"id": "unit_004", "bloco": "A", "numero": "201", "morador": "Ana Costa", "documento": "191.536.168-02"},
+]
+
+@app.get("/api/financeiro/ia/previsao-inadimplencia/{unidade_id}")
+async def prever_inadimplencia(unidade_id: str, payload: dict = Depends(verify_token)):
+    """Prevê probabilidade de inadimplência usando ML com cache e aprendizado contínuo"""
+    # Busca unidade
+    unidade = next((u for u in MOCK_UNIDADES if u["id"] == unidade_id), None)
+    if not unidade:
+        raise HTTPException(status_code=404, detail="Unidade não encontrada")
+
+    # Busca boletos da unidade
+    boletos_unidade = [b for b in MOCK_BOLETOS if b.get('unidade_id') == unidade_id]
+
+    # Usa ML Engine com cache e aprendizado
+    prediction = ml_engine.predict_default_risk(unidade_id, boletos_unidade)
+
+    # Determina fatores e recomendação baseado na classificação
+    if prediction['classificacao'] == "baixo_risco":
+        fatores = ["Histórico de pagamentos pontual", "Sem atrasos recentes"]
+        recomendacao = "Manter monitoramento padrão"
+    elif prediction['classificacao'] == "medio_risco":
+        fatores = ["Alguns atrasos ocasionais", "Score médio"]
+        recomendacao = "Enviar lembretes antes do vencimento"
+    else:
+        fatores = ["Múltiplos atrasos", "Histórico de inadimplência"]
+        recomendacao = "Contato proativo imediato, oferecer acordo"
+
+    return {
+        "unidade_id": unidade_id,
+        "unidade": f"Apt {unidade['numero']} - Bloco {unidade['bloco']}",
+        "morador": unidade["morador"],
+        "previsao": {
+            "probabilidade": prediction['probabilidade'],
+            "classificacao": prediction['classificacao'],
+            "score": prediction['score'],
+            "confianca": prediction['confianca']
+        },
+        "fatores_risco": fatores,
+        "recomendacao": recomendacao,
+        "modelo_versao": prediction['modelo_versao'],
+        "from_cache": prediction.get('from_cache', False)
+    }
+
+@app.get("/api/financeiro/ia/alertas-proativos")
+async def obter_alertas_proativos(payload: dict = Depends(verify_token)):
+    """Retorna alertas proativos gerados pelo sistema de IA"""
+    alertas = []
+
+    # Verifica boletos vencidos
+    vencidos = [b for b in MOCK_BOLETOS if b.get('status') == 'vencido']
+    if len(vencidos) > 0:
+        alertas.append({
+            "tipo": "inadimplencia",
+            "severidade": "warning" if len(vencidos) < 3 else "critical",
+            "titulo": f"{len(vencidos)} boleto(s) vencido(s)",
+            "mensagem": f"Há {len(vencidos)} boletos vencidos totalizando R$ {sum(b.get('valor',0) for b in vencidos):.2f}",
+            "acao_recomendada": "Intensificar cobrança",
+            "probabilidade": 0.9,
+            "entidade": {"tipo": "sistema", "id": "inadimplencia"},
+            "criado_em": datetime.now().isoformat()
+        })
+
+    # Verifica vencimentos próximos
+    from datetime import date
+    pendentes = [b for b in MOCK_BOLETOS if b.get('status') == 'pendente']
+    if len(pendentes) > 0:
+        alertas.append({
+            "tipo": "vencimento_proximo",
+            "severidade": "info",
+            "titulo": f"{len(pendentes)} boleto(s) pendente(s)",
+            "mensagem": f"{len(pendentes)} boletos aguardando pagamento",
+            "acao_recomendada": "Enviar lembretes",
+            "probabilidade": 0.7,
+            "entidade": {"tipo": "sistema", "id": "pendentes"},
+            "criado_em": datetime.now().isoformat()
+        })
+
+    return {
+        "total_alertas": len(alertas),
+        "criticos": len([a for a in alertas if a["severidade"] == 'critical']),
+        "avisos": len([a for a in alertas if a["severidade"] == 'warning']),
+        "info": len([a for a in alertas if a["severidade"] == 'info']),
+        "alertas": alertas
+    }
+
+@app.get("/api/financeiro/ia/priorizar-cobranca")
+async def priorizar_cobrancas(payload: dict = Depends(verify_token)):
+    """Retorna lista de boletos priorizados para cobrança"""
+    # Filtra boletos vencidos
+    boletos_vencidos = [b for b in MOCK_BOLETOS if b.get('status') == 'vencido']
+
+    if not boletos_vencidos:
+        return {"message": "Não há boletos vencidos para priorizar", "priorizados": []}
+
+    # Prioriza por dias de atraso e valor
+    priorizados = []
+    for boleto in boletos_vencidos:
+        unidade = next((u for u in MOCK_UNIDADES if u['id'] == boleto.get('unidade_id')), {})
+        dias_atraso = boleto.get('dias_atraso', 0)
+        valor = boleto.get('valor', 0)
+
+        # Score de prioridade (0-100)
+        score = min(100, (dias_atraso * 2) + (valor / 100))
+
+        # Probabilidade de pagamento
+        prob_pag = max(0.1, 0.8 - (dias_atraso * 0.01))
+
+        # Classificação
+        if dias_atraso > 60:
+            risco = "critico"
+            estrategia = "Contato jurídico imediato, acordo urgente"
+        elif dias_atraso > 30:
+            risco = "alto"
+            estrategia = "Ligação telefônica + WhatsApp, propor acordo"
+        else:
+            risco = "medio"
+            estrategia = "Email + WhatsApp com tom firme"
+
+        priorizados.append({
+            "boleto": boleto,
+            "unidade": unidade,
+            "dias_atraso": dias_atraso,
+            "score_prioridade": round(score, 1),
+            "probabilidade_pagamento": round(prob_pag, 2),
+            "classificacao_risco": risco,
+            "estrategia_recomendada": estrategia
+        })
+
+    # Ordena por score
+    priorizados.sort(key=lambda x: x['score_prioridade'], reverse=True)
+
+    return {
+        "total_vencidos": len(boletos_vencidos),
+        "valor_total": sum(b.get('valor', 0) for b in boletos_vencidos),
+        "priorizados": [
+            {
+                "posicao": i + 1,
+                "boleto_id": p['boleto'].get('id'),
+                "unidade": p['unidade'].get('numero', 'N/A'),
+                "morador": p['unidade'].get('morador', 'N/A'),
+                "valor": p['boleto'].get('valor', 0),
+                "dias_atraso": p['dias_atraso'],
+                "score_prioridade": p['score_prioridade'],
+                "probabilidade_pagamento": p['probabilidade_pagamento'],
+                "classificacao_risco": p['classificacao_risco'],
+                "estrategia": p['estrategia_recomendada'],
+                "componentes_score": {"dias": p['dias_atraso'] * 2, "valor": p['boleto'].get('valor', 0) / 100}
+            }
+            for i, p in enumerate(priorizados)
+        ]
+    }
+
+@app.post("/api/financeiro/ia/analisar-sentimento")
+async def analisar_sentimento_mensagem(request: Request, payload: dict = Depends(verify_token)):
+    """Analisa sentimento de uma mensagem recebida do morador"""
+    body = await request.json()
+    mensagem = body.get("mensagem", "")
+
+    if not mensagem or len(mensagem) < 3:
+        raise HTTPException(status_code=400, detail="Mensagem muito curta para análise")
+
+    analise = analisar_sentimento_texto(mensagem)
+
+    # Gera sugestão de resposta
+    if analise['sentimento'] == 'hostil':
+        sugestao = "Escalar para supervisor. Responder com calma. Oferecer ouvidoria."
+    elif analise['sentimento'] == 'positivo' and analise['intencao_pagamento'] > 0.5:
+        sugestao = "Confirmar acordo e facilitar pagamento imediato."
+    elif 'preocupação' in analise['emocoes']:
+        sugestao = "Demonstrar empatia. Oferecer condições especiais."
+    else:
+        sugestao = "Manter tom profissional. Apresentar opções de regularização."
+
+    return {
+        "mensagem_original": mensagem[:200],
+        "analise": {
+            "sentimento": analise['sentimento'],
+            "score": analise['score'],
+            "confianca": analise['confianca'],
+            "intencao_pagamento": analise['intencao_pagamento'],
+            "emocoes": analise['emocoes'],
+            "requer_atencao": analise['requer_atencao']
+        },
+        "sugestao_resposta": sugestao
+    }
+
+@app.post("/api/financeiro/ia/gerar-mensagem-cobranca")
+async def gerar_mensagem_cobranca(
+    boleto_id: str,
+    canal: str = "whatsapp",
+    tom: Optional[str] = None,
+    variante: str = "A",
+    payload: dict = Depends(verify_token)
+):
+    """Gera mensagem de cobrança personalizada usando IA"""
+    boleto = next((b for b in MOCK_BOLETOS if b["id"] == boleto_id), None)
+    if not boleto:
+        raise HTTPException(status_code=404, detail="Boleto não encontrado")
+
+    # Calcula dias de atraso
+    try:
+        from datetime import date
+        vencimento = datetime.strptime(boleto.get('vencimento', '')[:10], '%Y-%m-%d').date()
+        dias_atraso = (date.today() - vencimento).days
+        boleto['dias_atraso'] = max(0, dias_atraso)
+    except:
+        boleto['dias_atraso'] = 0
+
+    mensagem = gerar_mensagem_cobranca_simples(boleto, canal, tom)
+
+    # Score de efetividade
+    score_efetividade = 0.65 if canal == 'whatsapp' else 0.55
+    if mensagem['tom'] == 'amigavel':
+        score_efetividade *= 1.1
+
+    return {
+        "boleto_id": boleto_id,
+        "canal": canal,
+        "mensagem": mensagem,
+        "score_efetividade": round(score_efetividade, 2),
+        "variante": variante
+    }
+
+@app.get("/api/financeiro/ia/melhor-momento/{unidade_id}")
+async def obter_melhor_momento(unidade_id: str, payload: dict = Depends(verify_token)):
+    """Retorna melhor momento para contatar um morador"""
+    unidade = next((u for u in MOCK_UNIDADES if u["id"] == unidade_id), None)
+    if not unidade:
+        raise HTTPException(status_code=404, detail="Unidade não encontrada")
+
+    # Perfil padrão baseado em heurísticas
+    from datetime import datetime as dt, timedelta
+    dia_semana = dt.now().weekday()
+
+    # Segunda a sexta: 10h é melhor, Sábado: 11h, Domingo: evitar
+    if dia_semana < 5:
+        horario = "10:00"
+        dia_sugerido = "Segunda"
+    elif dia_semana == 5:
+        horario = "11:00"
+        dia_sugerido = "Sábado"
+    else:
+        horario = "10:00"
+        dia_sugerido = "Segunda"
+
+    return {
+        "unidade_id": unidade_id,
+        "morador": unidade["morador"],
+        "perfil": {
+            "canal_preferido": "whatsapp",
+            "responde_rapido": True,
+            "taxa_resposta": 0.72
+        },
+        "sugestao": {
+            "canal": "whatsapp",
+            "horario": horario,
+            "data_sugerida": (dt.now() + timedelta(days=1)).date().isoformat(),
+            "dia_semana": dia_sugerido,
+            "tom_sugerido": "profissional",
+            "probabilidade_resposta": 0.72,
+            "responde_rapido": True
+        }
+    }
+
+@app.get("/api/financeiro/ia/previsao-fluxo-caixa")
+async def prever_fluxo_caixa(dias: int = 90, payload: dict = Depends(verify_token)):
+    """Prevê fluxo de caixa para os próximos N dias"""
+    if dias < 7 or dias > 365:
+        raise HTTPException(status_code=400, detail="Dias deve estar entre 7 e 365")
+
+    # Calcula previsões semanais
+    semanas = dias // 7
+    from datetime import datetime as dt, timedelta
+
+    receita_media_semana = 25500  # ~102k/mês = 25.5k/semana
+    despesa_media_semana = 7000   # ~28k/mês = 7k/semana
+
+    previsoes = []
+    data_inicio = dt.now().date()
+
+    for i in range(semanas):
+        data = (data_inicio + timedelta(weeks=i)).isoformat()
+        # Adiciona variação aleatória pequena baseada em índice
+        variacao = (i % 3) * 0.05 - 0.05  # -5%, 0%, +5%
+
+        receita = receita_media_semana * (1 + variacao)
+        despesa = despesa_media_semana * (1 + variacao * 0.5)
+        saldo = receita - despesa
+
+        previsoes.append({
+            "data_inicio": data,
+            "receita_prevista": round(receita, 2),
+            "despesa_prevista": round(despesa, 2),
+            "saldo_previsto": round(saldo, 2),
+            "intervalo": {
+                "inferior": round(saldo * 0.85, 2),
+                "superior": round(saldo * 1.15, 2)
+            },
+            "confianca": 0.78,
+            "sazonalidade": 1.0,
+            "tendencia": "estavel"
+        })
+
+    return {
+        "periodo_dias": dias,
+        "semanas": semanas,
+        "previsoes": previsoes,
+        "resumo": {
+            "receita_total_prevista": sum(p["receita_prevista"] for p in previsoes),
+            "despesa_total_prevista": sum(p["despesa_prevista"] for p in previsoes),
+            "saldo_periodo": sum(p["saldo_previsto"] for p in previsoes)
+        }
+    }
+
+@app.get("/api/financeiro/ia/dashboard-inteligente")
+async def obter_dashboard_inteligente(payload: dict = Depends(verify_token)):
+    """Retorna dashboard com insights automáticos gerados por IA"""
+    if not IA_ENGINES_AVAILABLE:
+        # Retorna mock se IA não disponível
+        return {
+            "periodo": datetime.now().strftime("%m/%Y"),
+            "resumo": {
+                "receita_mes": 102000,
+                "despesa_mes": 28000,
+                "saldo": 74000,
+                "inadimplencia": 8.5
+            },
+            "indicadores": [],
+            "insights": [
+                {
+                    "tipo": "info",
+                    "titulo": "Engines de IA não disponíveis",
+                    "mensagem": "Configure os engines de ML/NLP para insights inteligentes"
+                }
+            ],
+            "acoes_recomendadas": [],
+            "saude_financeira": {"score": 75, "classificacao": "boa"}
+        }
+
+    # Calcula dados atuais
+    boletos = MOCK_BOLETOS
+    total_boletos = len(boletos)
+    pagos = len([b for b in boletos if b.get('status') == 'pago'])
+    vencidos = len([b for b in boletos if b.get('status') == 'vencido'])
+
+    valor_total = sum(b.get('valor', 0) for b in boletos)
+    valor_pago = sum(b.get('valor', 0) for b in boletos if b.get('status') == 'pago')
+    valor_vencido = sum(b.get('valor', 0) for b in boletos if b.get('status') == 'vencido')
+
+    taxa_inadimpl = (vencidos / total_boletos * 100) if total_boletos > 0 else 0
+
+    # Gera insights simples
+    insights = []
+    if taxa_inadimpl > 10:
+        insights.append({
+            "tipo": "warning",
+            "titulo": "Taxa de inadimplência acima da média",
+            "mensagem": f"Taxa atual de {taxa_inadimpl:.1f}% está acima do recomendado (5%)",
+            "prioridade": "alta"
+        })
+
+    if valor_pago / valor_total > 0.9:
+        insights.append({
+            "tipo": "success",
+            "titulo": "Excelente taxa de arrecadação",
+            "mensagem": f"Arrecadação de {valor_pago/valor_total*100:.1f}% está acima da meta",
+            "prioridade": "info"
+        })
+
+    # Calcula score de saúde
+    score = int((valor_pago / valor_total) * 100) if valor_total > 0 else 50
+    classificacao = "excelente" if score > 90 else "boa" if score > 75 else "regular" if score > 60 else "ruim"
+
+    return {
+        "periodo": datetime.now().strftime("%m/%Y"),
+        "resumo": {
+            "receita_mes": valor_pago,
+            "despesa_mes": sum(l["valor"] for l in MOCK_LANCAMENTOS if l["tipo"] == "despesa"),
+            "saldo": valor_pago - sum(l["valor"] for l in MOCK_LANCAMENTOS if l["tipo"] == "despesa"),
+            "inadimplencia": taxa_inadimpl
+        },
+        "indicadores": [
+            {"nome": "Taxa Arrecadação", "valor": f"{(valor_pago/valor_total*100):.1f}%", "tendencia": "up"},
+            {"nome": "Inadimplência", "valor": f"{taxa_inadimpl:.1f}%", "tendencia": "down"}
+        ],
+        "insights": insights,
+        "acoes_recomendadas": [
+            "Intensificar cobrança de boletos vencidos" if vencidos > 0 else "Manter estratégia atual"
+        ],
+        "saude_financeira": {
+            "score": score,
+            "classificacao": classificacao
+        }
+    }
+
+@app.get("/api/financeiro/ia/score/{unidade_id}")
+async def obter_score_unidade(unidade_id: str, payload: dict = Depends(verify_token)):
+    """Retorna score de inadimplência de uma unidade"""
+    # Busca unidade
+    unidade = next((u for u in MOCK_UNIDADES if u["id"] == unidade_id), None)
+    if not unidade:
+        raise HTTPException(status_code=404, detail="Unidade não encontrada")
+
+    # Busca boletos
+    boletos_unidade = [b for b in MOCK_BOLETOS if b.get('unidade_id') == unidade_id]
+
+    # Calcula score
+    score = calcular_score_inadimplencia(boletos_unidade)
+
+    # Classificação
+    if score >= 850:
+        classificacao = "excelente"
+        fatores = ["Pagador pontual", "Sem histórico de atrasos"]
+    elif score >= 700:
+        classificacao = "bom"
+        fatores = ["Bom histórico de pagamentos"]
+    elif score >= 500:
+        classificacao = "medio"
+        fatores = ["Alguns atrasos ocasionais"]
+    else:
+        classificacao = "ruim"
+        fatores = ["Histórico de inadimplência", "Requer atenção"]
+
+    probabilidade = max(0, min(1, (1000 - score) / 700))
+
+    return {
+        "score": score,
+        "classificacao": classificacao,
+        "probabilidade": round(probabilidade, 2),
+        "fatores": fatores
+    }
+
+@app.get("/api/financeiro/ia/ml/stats")
+async def get_ml_stats(payload: dict = Depends(verify_token)):
+    """Retorna estatísticas do modelo de ML - precisão, previsões, pesos"""
+    return ml_engine.get_model_stats()
+
+@app.post("/api/financeiro/ia/ml/feedback")
+async def register_ml_feedback(
+    unidade_id: str,
+    prediction_id: str,
+    actual_result: bool,
+    payload: dict = Depends(verify_token)
+):
+    """Registra feedback de resultado real para aprendizado contínuo do modelo"""
+    result = ml_engine.register_feedback(unidade_id, prediction_id, actual_result)
+
+    return {
+        "success": True,
+        "message": "Feedback registrado com sucesso",
+        "model_stats": result
+    }
+
+@app.post("/api/financeiro/ia/ml/clear-cache")
+async def clear_ml_cache(payload: dict = Depends(verify_token)):
+    """Limpa cache de previsões do ML Engine"""
+    cache_size_before = len(ml_engine.prediction_cache)
+    ml_engine.prediction_cache.clear()
+
+    return {
+        "success": True,
+        "message": f"Cache limpo - {cache_size_before} itens removidos"
+    }
+
 # ==================== OCORRÊNCIAS ====================
 
 @app.get("/api/ocorrencias")
@@ -1317,6 +2145,23 @@ async def create_manutencao(request: Request, payload: dict = Depends(verify_tok
 
 # ==================== CONDOMINIOS ====================
 
+@app.get("/api/condominios")
+async def list_condominios(payload: dict = Depends(verify_token)):
+    """Lista todos os condomínios"""
+    if DATABASE_AVAILABLE:
+        try:
+            condominios = await condominio_repo.list_all()
+            if condominios:
+                return {"items": condominios, "total": len(condominios)}
+        except Exception as e:
+            print(f"Erro ao listar condomínios: {e}")
+
+    # Mock data
+    return {
+        "items": [MOCK_CONDOMINIO],
+        "total": 1
+    }
+
 @app.get("/api/condominios/{condominio_id}")
 async def get_condominio(condominio_id: str, payload: dict = Depends(verify_token)):
     if DATABASE_AVAILABLE:
@@ -1337,6 +2182,106 @@ async def get_condominio_stats(condominio_id: str, payload: dict = Depends(verif
         except Exception as e:
             print(f"Erro ao buscar estatísticas: {e}")
     return MOCK_DASHBOARD_STATS
+
+# ==================== RELATÓRIOS AVANÇADOS ====================
+
+@app.get("/api/financeiro/relatorios/tendencias")
+async def get_tendencias(meses: int = 12, payload: dict = Depends(verify_token)):
+    """Análise de tendências financeiras"""
+    from datetime import datetime as dt
+
+    tendencias = []
+    base_receita = 98000
+    base_despesa = 26000
+
+    for i in range(meses):
+        mes_ref = dt.now() - timedelta(days=30 * (meses - i - 1))
+        crescimento = (i / meses) * 0.15
+        variacao_mes = (i % 3) * 0.02
+        receita = base_receita * (1 + crescimento + variacao_mes)
+        despesa = base_despesa * (1 + (crescimento * 0.6))
+        inadimplencia = max(3, 12 - (i * 0.5))
+
+        tendencias.append({
+            "mes": mes_ref.strftime("%m/%Y"),
+            "receita": round(receita, 2),
+            "despesa": round(despesa, 2),
+            "saldo": round(receita - despesa, 2),
+            "inadimplencia": round(inadimplencia, 1),
+            "crescimento_receita": round(crescimento * 100, 1),
+            "eficiencia": round((despesa / receita) * 100, 1)
+        })
+
+    primeira_receita = tendencias[0]['receita']
+    ultima_receita = tendencias[-1]['receita']
+    tendencia_receita = ((ultima_receita - primeira_receita) / primeira_receita) * 100
+
+    return {
+        "periodo": f"{meses} meses",
+        "dados": tendencias,
+        "analise": {
+            "tendencia_receita": round(tendencia_receita, 1),
+            "tendencia_receita_texto": "crescimento" if tendencia_receita > 0 else "decrescimento",
+            "media_inadimplencia": round(sum(t['inadimplencia'] for t in tendencias) / len(tendencias), 1),
+            "melhor_mes": max(tendencias, key=lambda x: x['saldo'])['mes'],
+            "pior_mes": min(tendencias, key=lambda x: x['saldo'])['mes']
+        }
+    }
+
+@app.get("/api/financeiro/relatorios/comparativo")
+async def get_comparativo(payload: dict = Depends(verify_token)):
+    """Comparativo entre períodos"""
+    mes_atual = datetime.now()
+    mes_anterior = mes_atual - timedelta(days=30)
+
+    atual = {"periodo": mes_atual.strftime("%m/%Y"), "receita": 105240.00, "despesa": 28350.00,
+             "saldo": 76890.00, "inadimplencia": 7.2, "boletos_pagos": 112, "boletos_vencidos": 8}
+    anterior = {"periodo": mes_anterior.strftime("%m/%Y"), "receita": 102150.00, "despesa": 27800.00,
+                "saldo": 74350.00, "inadimplencia": 8.5, "boletos_pagos": 108, "boletos_vencidos": 12}
+
+    var_mensal = {
+        "receita": round(((atual['receita'] - anterior['receita']) / anterior['receita']) * 100, 1),
+        "despesa": round(((atual['despesa'] - anterior['despesa']) / anterior['despesa']) * 100, 1),
+        "saldo": round(((atual['saldo'] - anterior['saldo']) / anterior['saldo']) * 100, 1),
+        "inadimplencia": round(atual['inadimplencia'] - anterior['inadimplencia'], 1)
+    }
+
+    return {
+        "mes_atual": atual,
+        "mes_anterior": anterior,
+        "variacoes": {"mensal": var_mensal},
+        "insights": [
+            f"Receita cresceu {var_mensal['receita']}% em relação ao mês anterior",
+            f"Inadimplência reduziu {abs(var_mensal['inadimplencia'])}% no último mês"
+        ]
+    }
+
+@app.get("/api/financeiro/analise/custos")
+async def analisar_custos(payload: dict = Depends(verify_token)):
+    """Análise detalhada de custos operacionais"""
+    custos_fixos = [
+        {"categoria": "Funcionários", "valor": 18500.00, "percentual": 66.1},
+        {"categoria": "Energia", "valor": 4850.00, "percentual": 17.3},
+    ]
+    total_fixo = sum(c['valor'] for c in custos_fixos)
+
+    return {
+        "periodo": datetime.now().strftime("%m/%Y"),
+        "resumo": {"total_custos": total_fixo, "custos_fixos": total_fixo},
+        "detalhamento": {"fixos": custos_fixos},
+        "oportunidades_economia": [
+            {"categoria": "Energia", "economia_potencial": 970.00, "acao": "Sistema solar"}
+        ]
+    }
+
+@app.get("/api/financeiro/benchmark/unidades")
+async def benchmark_unidades(payload: dict = Depends(verify_token)):
+    """Benchmark de performance entre unidades"""
+    unidades = [
+        {"id": "unit_001", "numero": "101", "score": 850, "classificacao": "excelente", "ranking": 1},
+        {"id": "unit_002", "numero": "102", "score": 780, "classificacao": "bom", "ranking": 2}
+    ]
+    return {"total_unidades": len(unidades), "score_medio": 815, "top_performers": unidades}
 
 # ==================== ERROR HANDLERS ====================
 
