@@ -444,7 +444,41 @@ class MultiChannelSkill(BaseSkill):
             channels = [c for c in immediate if c in channels] + \
                        [c for c in channels if c not in immediate]
 
-        # TODO: Buscar preferências do usuário e reordenar
+        # Buscar preferências do usuário e reordenar
+        if respect_preferences:
+            try:
+                # Tentar obter preferências do usuário do contexto
+                user_prefs = context.get_data("user_preferences", {})
+
+                if user_prefs:
+                    # Reordenar baseado nas preferências
+                    canal_primario = user_prefs.get("canal_primario")
+                    canal_secundario = user_prefs.get("canal_secundario")
+
+                    preferred_order = []
+
+                    # Adicionar canal primário primeiro
+                    if canal_primario and canal_primario in channels:
+                        preferred_order.append(canal_primario)
+
+                    # Adicionar canal secundário
+                    if canal_secundario and canal_secundario in channels:
+                        if canal_secundario not in preferred_order:
+                            preferred_order.append(canal_secundario)
+
+                    # Adicionar os demais canais na ordem original
+                    for channel in channels:
+                        if channel not in preferred_order:
+                            preferred_order.append(channel)
+
+                    channels = preferred_order
+
+                    logger.debug(
+                        f"Canais reordenados por preferências do usuário {recipient_id}: {channels}"
+                    )
+            except Exception as e:
+                logger.warning(f"Erro ao buscar preferências do usuário: {e}")
+                # Continuar com a ordem padrão em caso de erro
 
         return channels
 
