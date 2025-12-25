@@ -1,96 +1,21 @@
 [
   {
-    "timestamp": "2025-12-25T13:50:10.388649",
+    "timestamp": "2025-12-25T13:57:01.726065",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
       "type": "unused_dependency",
       "severity": "low",
-      "description": "Possibly unused dependency: @prisma/client",
-      "package": "@prisma/client",
-      "solution": "Remove if not needed: npm uninstall @prisma/client",
+      "description": "Possibly unused dependency: @tanstack/react-query",
+      "package": "@tanstack/react-query",
+      "solution": "Remove if not needed: npm uninstall @tanstack/react-query",
       "priority": "P4",
       "priority_score": 4
     },
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T13:50:10.389599",
-    "action": "ABORTED",
-    "issue": {
-      "category": "unused_code",
-      "type": "unused_dependency",
-      "severity": "low",
-      "description": "Possibly unused dependency: @radix-ui/react-avatar",
-      "package": "@radix-ui/react-avatar",
-      "solution": "Remove if not needed: npm uninstall @radix-ui/react-avatar",
-      "priority": "P4",
-      "priority_score": 4
-    },
-    "reason": "Sem rollback definido para 'unused_dependency'"
-  },
-  {
-    "timestamp": "2025-12-25T13:50:10.390476",
-    "action": "ABORTED",
-    "issue": {
-      "category": "unused_code",
-      "type": "unused_dependency",
-      "severity": "low",
-      "description": "Possibly unused dependency: @radix-ui/react-dialog",
-      "package": "@radix-ui/react-dialog",
-      "solution": "Remove if not needed: npm uninstall @radix-ui/react-dialog",
-      "priority": "P4",
-      "priority_score": 4
-    },
-    "reason": "Sem rollback definido para 'unused_dependency'"
-  },
-  {
-    "timestamp": "2025-12-25T13:50:10.391334",
-    "action": "ABORTED",
-    "issue": {
-      "category": "unused_code",
-      "type": "unused_dependency",
-      "severity": "low",
-      "description": "Possibly unused dependency: @radix-ui/react-dropdown-menu",
-      "package": "@radix-ui/react-dropdown-menu",
-      "solution": "Remove if not needed: npm uninstall @radix-ui/react-dropdown-menu",
-      "priority": "P4",
-      "priority_score": 4
-    },
-    "reason": "Sem rollback definido para 'unused_dependency'"
-  },
-  {
-    "timestamp": "2025-12-25T13:50:10.392220",
-    "action": "ABORTED",
-    "issue": {
-      "category": "unused_code",
-      "type": "unused_dependency",
-      "severity": "low",
-      "description": "Possibly unused dependency: @radix-ui/react-select",
-      "package": "@radix-ui/react-select",
-      "solution": "Remove if not needed: npm uninstall @radix-ui/react-select",
-      "priority": "P4",
-      "priority_score": 4
-    },
-    "reason": "Sem rollback definido para 'unused_dependency'"
-  },
-  {
-    "timestamp": "2025-12-25T13:50:10.393180",
-    "action": "ABORTED",
-    "issue": {
-      "category": "unused_code",
-      "type": "unused_dependency",
-      "severity": "low",
-      "description": "Possibly unused dependency: @radix-ui/react-slot",
-      "package": "@radix-ui/react-slot",
-      "solution": "Remove if not needed: npm uninstall @radix-ui/react-slot",
-      "priority": "P4",
-      "priority_score": 4
-    },
-    "reason": "Sem rollback definido para 'unused_dependency'"
-  },
-  {
-    "timestamp": "2025-12-25T13:50:10.393915",
+    "timestamp": "2025-12-25T13:57:01.726236",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -105,7 +30,7 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T13:50:10.394587",
+    "timestamp": "2025-12-25T13:57:01.727362",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",
@@ -120,7 +45,1667 @@
     "reason": "Sem rollback definido para 'unused_dependency'"
   },
   {
-    "timestamp": "2025-12-25T13:50:10.395668",
+    "timestamp": "2025-12-25T13:57:01.728502",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @tanstack/react-query",
+      "package": "@tanstack/react-query",
+      "solution": "Remove if not needed: npm uninstall @tanstack/react-query",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T13:58:16.655595",
+    "action": "ABORTED",
+    "issue": {
+      "category": "code_quality",
+      "type": "excessive_any",
+      "severity": "low",
+      "description": "Excessive use of \"any\" type in DashboardGraficos.tsx",
+      "count": 7,
+      "file": "/opt/conecta-plus/frontend/src/components/financeiro/DashboardGraficos.tsx",
+      "solution": "Replace \"any\" with proper types",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'excessive_any'"
+  },
+  {
+    "timestamp": "2025-12-25T13:58:16.656491",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @prisma/adapter-pg",
+      "package": "@prisma/adapter-pg",
+      "solution": "Remove if not needed: npm uninstall @prisma/adapter-pg",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T13:58:16.657458",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @prisma/client",
+      "package": "@prisma/client",
+      "solution": "Remove if not needed: npm uninstall @prisma/client",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T13:58:16.658397",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-avatar",
+      "package": "@radix-ui/react-avatar",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-avatar",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T13:58:16.659244",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-dialog",
+      "package": "@radix-ui/react-dialog",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-dialog",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T13:58:16.660201",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-dropdown-menu",
+      "package": "@radix-ui/react-dropdown-menu",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-dropdown-menu",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T13:58:16.660946",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-select",
+      "package": "@radix-ui/react-select",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-select",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T13:58:16.661817",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-slot",
+      "package": "@radix-ui/react-slot",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-slot",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T13:58:16.663082",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-tabs",
+      "package": "@radix-ui/react-tabs",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-tabs",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T13:58:16.664033",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-toast",
+      "package": "@radix-ui/react-toast",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-toast",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T13:58:16.664851",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @tanstack/react-query",
+      "package": "@tanstack/react-query",
+      "solution": "Remove if not needed: npm uninstall @tanstack/react-query",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T13:58:16.714806",
+    "action": "ABORTED",
+    "issue": {
+      "category": "code_quality",
+      "type": "excessive_any",
+      "severity": "low",
+      "description": "Excessive use of \"any\" type in DashboardGraficos.tsx",
+      "count": 7,
+      "file": "/opt/conecta-plus/frontend/src/components/financeiro/DashboardGraficos.tsx",
+      "solution": "Replace \"any\" with proper types",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'excessive_any'"
+  },
+  {
+    "timestamp": "2025-12-25T13:58:16.715945",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @prisma/adapter-pg",
+      "package": "@prisma/adapter-pg",
+      "solution": "Remove if not needed: npm uninstall @prisma/adapter-pg",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T13:58:16.717013",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @prisma/client",
+      "package": "@prisma/client",
+      "solution": "Remove if not needed: npm uninstall @prisma/client",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T13:58:16.718112",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-avatar",
+      "package": "@radix-ui/react-avatar",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-avatar",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T13:58:16.719183",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-dialog",
+      "package": "@radix-ui/react-dialog",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-dialog",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T13:58:16.720263",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-dropdown-menu",
+      "package": "@radix-ui/react-dropdown-menu",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-dropdown-menu",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T13:58:16.721418",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-select",
+      "package": "@radix-ui/react-select",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-select",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T13:58:16.722549",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-slot",
+      "package": "@radix-ui/react-slot",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-slot",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T13:58:16.724055",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-tabs",
+      "package": "@radix-ui/react-tabs",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-tabs",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T13:58:16.725198",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-toast",
+      "package": "@radix-ui/react-toast",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-toast",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T13:58:16.726365",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @tanstack/react-query",
+      "package": "@tanstack/react-query",
+      "solution": "Remove if not needed: npm uninstall @tanstack/react-query",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T13:59:31.346118",
+    "action": "ABORTED",
+    "issue": {
+      "category": "code_quality",
+      "type": "excessive_any",
+      "severity": "low",
+      "description": "Excessive use of \"any\" type in DashboardGraficos.tsx",
+      "count": 7,
+      "file": "/opt/conecta-plus/frontend/src/components/financeiro/DashboardGraficos.tsx",
+      "solution": "Replace \"any\" with proper types",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'excessive_any'"
+  },
+  {
+    "timestamp": "2025-12-25T13:59:31.347291",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @prisma/adapter-pg",
+      "package": "@prisma/adapter-pg",
+      "solution": "Remove if not needed: npm uninstall @prisma/adapter-pg",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T13:59:31.348328",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @prisma/client",
+      "package": "@prisma/client",
+      "solution": "Remove if not needed: npm uninstall @prisma/client",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T13:59:31.349785",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-avatar",
+      "package": "@radix-ui/react-avatar",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-avatar",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T13:59:31.350835",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-dialog",
+      "package": "@radix-ui/react-dialog",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-dialog",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T13:59:31.351830",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-dropdown-menu",
+      "package": "@radix-ui/react-dropdown-menu",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-dropdown-menu",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T13:59:31.352798",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-select",
+      "package": "@radix-ui/react-select",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-select",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T13:59:31.353808",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-slot",
+      "package": "@radix-ui/react-slot",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-slot",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T13:59:31.355093",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-tabs",
+      "package": "@radix-ui/react-tabs",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-tabs",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T13:59:31.356392",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-toast",
+      "package": "@radix-ui/react-toast",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-toast",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T13:59:31.357498",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @tanstack/react-query",
+      "package": "@tanstack/react-query",
+      "solution": "Remove if not needed: npm uninstall @tanstack/react-query",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T13:59:31.395603",
+    "action": "ABORTED",
+    "issue": {
+      "category": "code_quality",
+      "type": "excessive_any",
+      "severity": "low",
+      "description": "Excessive use of \"any\" type in DashboardGraficos.tsx",
+      "count": 7,
+      "file": "/opt/conecta-plus/frontend/src/components/financeiro/DashboardGraficos.tsx",
+      "solution": "Replace \"any\" with proper types",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'excessive_any'"
+  },
+  {
+    "timestamp": "2025-12-25T13:59:31.397183",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @prisma/adapter-pg",
+      "package": "@prisma/adapter-pg",
+      "solution": "Remove if not needed: npm uninstall @prisma/adapter-pg",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T13:59:31.398381",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @prisma/client",
+      "package": "@prisma/client",
+      "solution": "Remove if not needed: npm uninstall @prisma/client",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T13:59:31.399430",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-avatar",
+      "package": "@radix-ui/react-avatar",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-avatar",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T13:59:31.400593",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-dialog",
+      "package": "@radix-ui/react-dialog",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-dialog",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T13:59:31.401766",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-dropdown-menu",
+      "package": "@radix-ui/react-dropdown-menu",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-dropdown-menu",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T13:59:31.402999",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-select",
+      "package": "@radix-ui/react-select",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-select",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T13:59:31.404101",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-slot",
+      "package": "@radix-ui/react-slot",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-slot",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T13:59:31.406444",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-tabs",
+      "package": "@radix-ui/react-tabs",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-tabs",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T13:59:31.407595",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-toast",
+      "package": "@radix-ui/react-toast",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-toast",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T13:59:31.408726",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @tanstack/react-query",
+      "package": "@tanstack/react-query",
+      "solution": "Remove if not needed: npm uninstall @tanstack/react-query",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T14:00:46.318325",
+    "action": "ABORTED",
+    "issue": {
+      "category": "code_quality",
+      "type": "excessive_any",
+      "severity": "low",
+      "description": "Excessive use of \"any\" type in DashboardGraficos.tsx",
+      "count": 7,
+      "file": "/opt/conecta-plus/frontend/src/components/financeiro/DashboardGraficos.tsx",
+      "solution": "Replace \"any\" with proper types",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'excessive_any'"
+  },
+  {
+    "timestamp": "2025-12-25T14:00:46.320202",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @prisma/adapter-pg",
+      "package": "@prisma/adapter-pg",
+      "solution": "Remove if not needed: npm uninstall @prisma/adapter-pg",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T14:00:46.321805",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @prisma/client",
+      "package": "@prisma/client",
+      "solution": "Remove if not needed: npm uninstall @prisma/client",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T14:00:46.323468",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-avatar",
+      "package": "@radix-ui/react-avatar",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-avatar",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T14:00:46.325121",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-dialog",
+      "package": "@radix-ui/react-dialog",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-dialog",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T14:00:46.326791",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-dropdown-menu",
+      "package": "@radix-ui/react-dropdown-menu",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-dropdown-menu",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T14:00:46.328301",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-select",
+      "package": "@radix-ui/react-select",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-select",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T14:00:46.329821",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-slot",
+      "package": "@radix-ui/react-slot",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-slot",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T14:00:46.331771",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-tabs",
+      "package": "@radix-ui/react-tabs",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-tabs",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T14:00:46.333518",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-toast",
+      "package": "@radix-ui/react-toast",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-toast",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T14:00:46.335126",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @tanstack/react-query",
+      "package": "@tanstack/react-query",
+      "solution": "Remove if not needed: npm uninstall @tanstack/react-query",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T14:00:46.389995",
+    "action": "ABORTED",
+    "issue": {
+      "category": "code_quality",
+      "type": "excessive_any",
+      "severity": "low",
+      "description": "Excessive use of \"any\" type in DashboardGraficos.tsx",
+      "count": 7,
+      "file": "/opt/conecta-plus/frontend/src/components/financeiro/DashboardGraficos.tsx",
+      "solution": "Replace \"any\" with proper types",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'excessive_any'"
+  },
+  {
+    "timestamp": "2025-12-25T14:00:46.392099",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @prisma/adapter-pg",
+      "package": "@prisma/adapter-pg",
+      "solution": "Remove if not needed: npm uninstall @prisma/adapter-pg",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T14:00:46.393897",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @prisma/client",
+      "package": "@prisma/client",
+      "solution": "Remove if not needed: npm uninstall @prisma/client",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T14:00:46.395675",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-avatar",
+      "package": "@radix-ui/react-avatar",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-avatar",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T14:00:46.397495",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-dialog",
+      "package": "@radix-ui/react-dialog",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-dialog",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T14:00:46.399222",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-dropdown-menu",
+      "package": "@radix-ui/react-dropdown-menu",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-dropdown-menu",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T14:00:46.400965",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-select",
+      "package": "@radix-ui/react-select",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-select",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T14:00:46.773760",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-slot",
+      "package": "@radix-ui/react-slot",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-slot",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T14:00:46.775020",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-tabs",
+      "package": "@radix-ui/react-tabs",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-tabs",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T14:00:46.780950",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-toast",
+      "package": "@radix-ui/react-toast",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-toast",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T14:00:46.782668",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @tanstack/react-query",
+      "package": "@tanstack/react-query",
+      "solution": "Remove if not needed: npm uninstall @tanstack/react-query",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T14:02:00.976558",
+    "action": "ABORTED",
+    "issue": {
+      "category": "code_quality",
+      "type": "excessive_any",
+      "severity": "low",
+      "description": "Excessive use of \"any\" type in DashboardGraficos.tsx",
+      "count": 7,
+      "file": "/opt/conecta-plus/frontend/src/components/financeiro/DashboardGraficos.tsx",
+      "solution": "Replace \"any\" with proper types",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'excessive_any'"
+  },
+  {
+    "timestamp": "2025-12-25T14:02:00.979099",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @prisma/adapter-pg",
+      "package": "@prisma/adapter-pg",
+      "solution": "Remove if not needed: npm uninstall @prisma/adapter-pg",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T14:02:00.981216",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @prisma/client",
+      "package": "@prisma/client",
+      "solution": "Remove if not needed: npm uninstall @prisma/client",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T14:02:00.982919",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-avatar",
+      "package": "@radix-ui/react-avatar",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-avatar",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T14:02:00.984623",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-dialog",
+      "package": "@radix-ui/react-dialog",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-dialog",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T14:02:00.986542",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-dropdown-menu",
+      "package": "@radix-ui/react-dropdown-menu",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-dropdown-menu",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T14:02:00.988639",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-select",
+      "package": "@radix-ui/react-select",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-select",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T14:02:00.990901",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-slot",
+      "package": "@radix-ui/react-slot",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-slot",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T14:02:00.992556",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-tabs",
+      "package": "@radix-ui/react-tabs",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-tabs",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T14:02:00.994565",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-toast",
+      "package": "@radix-ui/react-toast",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-toast",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T14:02:00.996557",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @tanstack/react-query",
+      "package": "@tanstack/react-query",
+      "solution": "Remove if not needed: npm uninstall @tanstack/react-query",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T14:02:01.241855",
+    "action": "ABORTED",
+    "issue": {
+      "category": "code_quality",
+      "type": "excessive_any",
+      "severity": "low",
+      "description": "Excessive use of \"any\" type in DashboardGraficos.tsx",
+      "count": 7,
+      "file": "/opt/conecta-plus/frontend/src/components/financeiro/DashboardGraficos.tsx",
+      "solution": "Replace \"any\" with proper types",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'excessive_any'"
+  },
+  {
+    "timestamp": "2025-12-25T14:02:01.244557",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @prisma/adapter-pg",
+      "package": "@prisma/adapter-pg",
+      "solution": "Remove if not needed: npm uninstall @prisma/adapter-pg",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T14:02:01.246851",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @prisma/client",
+      "package": "@prisma/client",
+      "solution": "Remove if not needed: npm uninstall @prisma/client",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T14:02:01.249035",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-avatar",
+      "package": "@radix-ui/react-avatar",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-avatar",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T14:02:01.251424",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-dialog",
+      "package": "@radix-ui/react-dialog",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-dialog",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T14:02:01.254111",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-dropdown-menu",
+      "package": "@radix-ui/react-dropdown-menu",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-dropdown-menu",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T14:02:01.256415",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-select",
+      "package": "@radix-ui/react-select",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-select",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T14:02:01.258846",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-slot",
+      "package": "@radix-ui/react-slot",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-slot",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T14:02:01.261065",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-tabs",
+      "package": "@radix-ui/react-tabs",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-tabs",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T14:02:01.263206",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-toast",
+      "package": "@radix-ui/react-toast",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-toast",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T14:02:01.265403",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @tanstack/react-query",
+      "package": "@tanstack/react-query",
+      "solution": "Remove if not needed: npm uninstall @tanstack/react-query",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T14:03:15.637278",
+    "action": "ABORTED",
+    "issue": {
+      "category": "code_quality",
+      "type": "excessive_any",
+      "severity": "low",
+      "description": "Excessive use of \"any\" type in DashboardGraficos.tsx",
+      "count": 7,
+      "file": "/opt/conecta-plus/frontend/src/components/financeiro/DashboardGraficos.tsx",
+      "solution": "Replace \"any\" with proper types",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'excessive_any'"
+  },
+  {
+    "timestamp": "2025-12-25T14:03:15.639490",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @prisma/adapter-pg",
+      "package": "@prisma/adapter-pg",
+      "solution": "Remove if not needed: npm uninstall @prisma/adapter-pg",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T14:03:15.641697",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @prisma/client",
+      "package": "@prisma/client",
+      "solution": "Remove if not needed: npm uninstall @prisma/client",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T14:03:15.643889",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-avatar",
+      "package": "@radix-ui/react-avatar",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-avatar",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T14:03:15.645897",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-dialog",
+      "package": "@radix-ui/react-dialog",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-dialog",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T14:03:15.647832",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-dropdown-menu",
+      "package": "@radix-ui/react-dropdown-menu",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-dropdown-menu",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T14:03:15.649496",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-select",
+      "package": "@radix-ui/react-select",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-select",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T14:03:15.651209",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-slot",
+      "package": "@radix-ui/react-slot",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-slot",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T14:03:15.653179",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-tabs",
+      "package": "@radix-ui/react-tabs",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-tabs",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T14:03:15.655203",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-toast",
+      "package": "@radix-ui/react-toast",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-toast",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T14:03:15.657006",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @tanstack/react-query",
+      "package": "@tanstack/react-query",
+      "solution": "Remove if not needed: npm uninstall @tanstack/react-query",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T14:03:17.204933",
+    "action": "ABORTED",
+    "issue": {
+      "category": "code_quality",
+      "type": "excessive_any",
+      "severity": "low",
+      "description": "Excessive use of \"any\" type in DashboardGraficos.tsx",
+      "count": 7,
+      "file": "/opt/conecta-plus/frontend/src/components/financeiro/DashboardGraficos.tsx",
+      "solution": "Replace \"any\" with proper types",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'excessive_any'"
+  },
+  {
+    "timestamp": "2025-12-25T14:03:17.206907",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @prisma/adapter-pg",
+      "package": "@prisma/adapter-pg",
+      "solution": "Remove if not needed: npm uninstall @prisma/adapter-pg",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T14:03:17.208736",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @prisma/client",
+      "package": "@prisma/client",
+      "solution": "Remove if not needed: npm uninstall @prisma/client",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T14:03:17.210480",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-avatar",
+      "package": "@radix-ui/react-avatar",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-avatar",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T14:03:17.212412",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-dialog",
+      "package": "@radix-ui/react-dialog",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-dialog",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T14:03:17.214462",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-dropdown-menu",
+      "package": "@radix-ui/react-dropdown-menu",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-dropdown-menu",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T14:03:17.216686",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-select",
+      "package": "@radix-ui/react-select",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-select",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T14:03:17.218718",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-slot",
+      "package": "@radix-ui/react-slot",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-slot",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T14:03:17.220934",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-tabs",
+      "package": "@radix-ui/react-tabs",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-tabs",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T14:03:17.223087",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-toast",
+      "package": "@radix-ui/react-toast",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-toast",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-25T14:03:17.225021",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",

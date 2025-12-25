@@ -14,8 +14,7 @@ from repositories.cora import (
     TransacaoCoraRepository,
     CobrancaCoraRepository
 )
-from repositories.boleto import BoletoRepository
-from repositories.pagamento import PagamentoRepository
+from repositories.financeiro import BoletoRepository, PagamentoRepository
 from models.cora import TipoTransacaoCora
 
 logger = logging.getLogger("conciliacao_service")
