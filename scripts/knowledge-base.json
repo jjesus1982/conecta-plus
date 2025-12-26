@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "last_updated": "2025-12-19T22:10:04.419397",
+  "last_updated": "2025-12-26T03:52:49.653937",
   "problems": [
     {
       "id": "f065256d5df4",
@@ -8,8 +8,8 @@
       "error_type": "port_not_listening",
       "message_pattern": "Porta 3000 (Frontend) não está em uso",
       "first_seen": "2025-12-19 21:13:31",
-      "last_seen": "2025-12-19 21:50:13",
-      "occurrences": 77,
+      "last_seen": "2025-12-24 21:09:52",
+      "occurrences": 116,
       "times_auto_resolved": 0,
       "avg_resolution_time": null,
       "known_causes": [
@@ -28,10 +28,10 @@
       "error_type": "service_down",
       "message_pattern": "Backend não responde (HTTP 000)",
       "first_seen": "2025-12-19 21:20:56",
-      "last_seen": "2025-12-19 21:30:21",
-      "occurrences": 70,
-      "times_auto_resolved": 0,
-      "avg_resolution_time": null,
+      "last_seen": "2025-12-22 14:57:11",
+      "occurrences": 89,
+      "times_auto_resolved": 1,
+      "avg_resolution_time": 10.0,
       "known_causes": [
         "Crash da aplicação",
         "Falta de memória",
@@ -50,10 +50,10 @@
       "error_type": "container_stopped",
       "message_pattern": "Container conecta-api-gateway-dev não está rodando (status: exited)",
       "first_seen": "2025-12-19 21:20:57",
-      "last_seen": "2025-12-19 21:30:21",
-      "occurrences": 20,
-      "times_auto_resolved": 10,
-      "avg_resolution_time": 10.0,
+      "last_seen": "2025-12-20 21:59:18",
+      "occurrences": 25,
+      "times_auto_resolved": 13,
+      "avg_resolution_time": 9.25,
       "known_causes": [
         "OOM Kill (falta de memória)",
         "Erro no entrypoint",
@@ -71,8 +71,8 @@
       "error_type": "unknown",
       "message_pattern": "Falha ao reiniciar backend",
       "first_seen": "2025-12-19 21:21:04",
-      "last_seen": "2025-12-19 21:22:21",
-      "occurrences": 20,
+      "last_seen": "2025-12-20 16:40:24",
+      "occurrences": 23,
       "times_auto_resolved": 0,
       "avg_resolution_time": null,
       "known_causes": [],
@@ -84,10 +84,10 @@
       "error_type": "service_down",
       "message_pattern": "Frontend não responde (HTTP 000)",
       "first_seen": "2025-12-19 21:32:11",
-      "last_seen": "2025-12-19 21:50:43",
-      "occurrences": 95,
-      "times_auto_resolved": 18,
-      "avg_resolution_time": 18.666656494140625,
+      "last_seen": "2025-12-24 21:10:22",
+      "occurrences": 148,
+      "times_auto_resolved": 29,
+      "avg_resolution_time": 17.79231770336628,
       "known_causes": [
         "Crash da aplicação",
         "Falta de memória",
@@ -98,6 +98,60 @@
         "Monitorar uso de memória",
         "Implementar health checks internos",
         "Adicionar circuit breakers"
+      ]
+    },
+    {
+      "id": "994b7b94d407",
+      "service": "docker",
+      "error_type": "container_stopped",
+      "message_pattern": "Container conecta-api-gateway-dev não está rodando (status: )",
+      "first_seen": "2025-12-19 22:56:01",
+      "last_seen": "2025-12-20 22:05:36",
+      "occurrences": 4,
+      "times_auto_resolved": 4,
+      "avg_resolution_time": 8.25,
+      "known_causes": [
+        "OOM Kill (falta de memória)",
+        "Erro no entrypoint",
+        "Dependência de rede falhou"
+      ],
+      "prevention_tips": [
+        "Configurar limites de memória adequados",
+        "Usar restart policies no Docker",
+        "Implementar graceful shutdown"
+      ]
+    },
+    {
+      "id": "531eb0748ab2",
+      "service": "unknown",
+      "error_type": "unknown",
+      "message_pattern": "Falha ao reiniciar frontend",
+      "first_seen": "2025-12-20 15:42:12",
+      "last_seen": "2025-12-22 15:50:58",
+      "occurrences": 2,
+      "times_auto_resolved": 0,
+      "avg_resolution_time": null,
+      "known_causes": [],
+      "prevention_tips": []
+    },
+    {
+      "id": "6bfb4e843774",
+      "service": "backend",
+      "error_type": "port_not_listening",
+      "message_pattern": "Porta 3001 (Backend) não está em uso",
+      "first_seen": "2025-12-20 16:40:24",
+      "last_seen": "2025-12-20 21:54:35",
+      "occurrences": 3,
+      "times_auto_resolved": 0,
+      "avg_resolution_time": null,
+      "known_causes": [
+        "Processo não iniciou",
+        "Porta já em uso por outro processo",
+        "Erro de binding"
+      ],
+      "prevention_tips": [
+        "Verificar conflitos de porta antes de iniciar",
+        "Usar wait-for-it scripts"
       ]
     }
   ],
@@ -179,21 +233,72 @@
       "occurrences": 4,
       "description": "Problema recorrente em unknown: unknown",
       "recommendation": "Investigar causa raiz - problema está se repetindo frequentemente"
+    },
+    {
+      "id": "correlation_backend_docker",
+      "type": "service_correlation",
+      "services": [
+        "backend",
+        "docker"
+      ],
+      "description": "Problemas em backend frequentemente acompanham problemas em docker",
+      "occurrences": 4,
+      "recommendation": "Ao detectar problema em backend, verificar preventivamente docker"
+    },
+    {
+      "id": "correlation_backend_unknown",
+      "type": "service_correlation",
+      "services": [
+        "backend",
+        "unknown"
+      ],
+      "description": "Problemas em backend frequentemente acompanham problemas em unknown",
+      "occurrences": 4,
+      "recommendation": "Ao detectar problema em backend, verificar preventivamente unknown"
+    },
+    {
+      "id": "correlation_docker_unknown",
+      "type": "service_correlation",
+      "services": [
+        "docker",
+        "unknown"
+      ],
+      "description": "Problemas em docker frequentemente acompanham problemas em unknown",
+      "occurrences": 4,
+      "recommendation": "Ao detectar problema em docker, verificar preventivamente unknown"
+    },
+    {
+      "id": "recurring_994b7b94d407",
+      "type": "recurring_problem",
+      "problem_id": "994b7b94d407",
+      "service": "docker",
+      "occurrences": 4,
+      "description": "Problema recorrente em docker: container_stopped",
+      "recommendation": "Investigar causa raiz - problema está se repetindo frequentemente"
+    },
+    {
+      "id": "recurring_6bfb4e843774",
+      "type": "recurring_problem",
+      "problem_id": "6bfb4e843774",
+      "service": "backend",
+      "occurrences": 3,
+      "description": "Problema recorrente em backend: port_not_listening",
+      "recommendation": "Investigar causa raiz - problema está se repetindo frequentemente"
     }
   ],
   "solutions": [],
   "statistics": {
-    "total_incidents": 5,
-    "auto_resolved": 0,
+    "total_incidents": 8,
+    "auto_resolved": 1,
     "manual_resolved": 0,
     "prevention_success": 0,
-    "learning_cycles": 8786
+    "learning_cycles": 8898
   },
   "learned_thresholds": {
-    "cpu_warning": 19.884639022856643,
-    "cpu_critical": 52.79458087168005,
-    "memory_warning": 23.523831367310645,
-    "memory_critical": 25.380424111963325,
+    "cpu_warning": 20.899454076957547,
+    "cpu_critical": 54.207026553911284,
+    "memory_warning": 23.922496920611273,
+    "memory_critical": 26.44433620390823,
     "response_time_warning": 100,
     "response_time_critical": 500,
     "failure_count_before_action": 2
@@ -204,8 +309,8 @@
       "success": 36
     },
     "preventive_cpu_optimization": {
-      "attempts": 736,
-      "success": 736
+      "attempts": 749,
+      "success": 749
     }
   }
 }

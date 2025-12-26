@@ -3,6 +3,7 @@
 Conecta Plus - Serviço de Hardware
 Camada de abstração para comunicação com dispositivos físicos
 Suporta: Controle de Acesso, Alarmes, Câmeras, Portões
+Com Circuit Breaker para resiliência por dispositivo
 """
 
 import asyncio
@@ -17,8 +18,25 @@ import httpx
 import redis.asyncio as redis
 
 from ..config import settings
+from .resilience import (
+    get_circuit_breaker,
+    CircuitBreakerConfig,
+    CircuitBreakerError,
+    CircuitState,
+    get_resilient_redis,
+    ResilientRedis,
+)
 
 logger = logging.getLogger(__name__)
+
+# Configuração de Circuit Breaker para Hardware
+HARDWARE_CB_CONFIG = CircuitBreakerConfig(
+    failure_threshold=3,
+    success_threshold=2,
+    timeout=10.0,
+    reset_timeout=60.0,
+    half_open_max_calls=2
+)
 
 
 # ==================== Enums e Dataclasses ====================
@@ -943,26 +961,52 @@ class HardwareManager:
     """
     Gerenciador centralizado de dispositivos de hardware
     Mantém conexões, status e envia comandos
+    Com Circuit Breaker por dispositivo para resiliência
     """
 
     def __init__(self, redis_url: str = None):
         self.redis_url = redis_url or settings.REDIS_URL
         self._devices: Dict[str, Device] = {}
         self._drivers: Dict[str, DeviceDriver] = {}
+        self._circuits: Dict[str, Any] = {}  # Circuit breakers por dispositivo
         self._redis: Optional[redis.Redis] = None
+        self._resilient_redis: Optional[ResilientRedis] = None
         self._running = False
 
     async def initialize(self):
         """Inicializa o gerenciador"""
         try:
             self._redis = await redis.from_url(self.redis_url)
+            self._resilient_redis = ResilientRedis(self._redis, "hardware-redis")
             await self._load_devices_from_cache()
             self._running = True
             # Iniciar loop de monitoramento
             asyncio.create_task(self._monitoring_loop())
-            logger.info("HardwareManager inicializado")
+            logger.info("HardwareManager inicializado com Circuit Breakers")
         except Exception as e:
             logger.error(f"Erro ao inicializar HardwareManager: {e}")
+
+    def _get_device_circuit(self, device_id: str) -> Any:
+        """Obtém ou cria circuit breaker para um dispositivo."""
+        if device_id not in self._circuits:
+            self._circuits[device_id] = get_circuit_breaker(
+                f"hardware-device-{device_id}",
+                HARDWARE_CB_CONFIG
+            )
+        return self._circuits[device_id]
+
+    def get_device_circuit_stats(self, device_id: str) -> Dict[str, Any]:
+        """Obtém estatísticas do circuit breaker de um dispositivo."""
+        if device_id in self._circuits:
+            return self._circuits[device_id].stats
+        return {}
+
+    def get_all_device_circuits_stats(self) -> Dict[str, Dict[str, Any]]:
+        """Obtém estatísticas de todos os circuit breakers de dispositivos."""
+        return {
+            device_id: cb.stats
+            for device_id, cb in self._circuits.items()
+        }
 
     async def shutdown(self):
         """Encerra o gerenciador"""
@@ -1010,7 +1054,10 @@ class HardwareManager:
         command: str,
         params: Dict[str, Any] = None
     ) -> CommandResult:
-        """Envia comando para um dispositivo"""
+        """
+        Envia comando para um dispositivo protegido por Circuit Breaker.
+        Se o circuito estiver aberto, retorna erro sem tentar comunicar.
+        """
         driver = self._drivers.get(device_id)
         if not driver:
             return CommandResult(
@@ -1022,18 +1069,38 @@ class HardwareManager:
                 error="Device not registered"
             )
 
-        result = await driver.send_command(command, params)
+        # Obter circuit breaker do dispositivo
+        circuit = self._get_device_circuit(device_id)
 
-        # Log do comando
-        if self._redis:
+        async def execute_command():
+            return await driver.send_command(command, params)
+
+        try:
+            result = await circuit.execute(execute_command)
+        except CircuitBreakerError as e:
+            logger.warning(
+                f"Circuit breaker aberto para dispositivo {device_id}",
+                state=e.state.value
+            )
+            return CommandResult(
+                success=False,
+                message=f"Dispositivo indisponível (circuit breaker: {e.state.value})",
+                device_id=device_id,
+                command=command,
+                timestamp=datetime.now(),
+                error=f"Circuit breaker is {e.state.value}"
+            )
+
+        # Log do comando usando Redis resiliente
+        if self._resilient_redis:
             log_entry = {
                 "device_id": device_id,
                 "command": command,
                 "success": result.success,
-                "timestamp": result.timestamp.isoformat()
+                "timestamp": result.timestamp.isoformat(),
+                "circuit_state": circuit.state.value
             }
-            await self._redis.lpush("hardware:command_log", str(log_entry))
-            await self._redis.ltrim("hardware:command_log", 0, 999)
+            await self._resilient_redis.lpush("hardware:command_log", str(log_entry))
 
         return result
 

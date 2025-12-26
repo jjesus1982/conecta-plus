@@ -24,21 +24,26 @@ from .tranquilidade import (
     EstadoTranquilidade, PerfilUsuario
 )
 
-# Q2 - Inteligencia Proativa
-from .previsao import (
-    Previsao, TipoPrevisao, SubtipoPrevisao, StatusPrevisao, TipoEntidadePrevisao
-)
-from .sugestao import (
-    Sugestao, TipoSugestao, CodigoSugestao, StatusSugestao, PerfilDestino
-)
-from .comunicacao import (
-    PreferenciaComunicacao, HistoricoComunicacao, FilaComunicacao,
-    CanalComunicacao, TipoComunicacao, UrgenciaComunicacao
-)
-from .feedback import (
-    FeedbackModelo, MetricaModelo, HistoricoTreinamento,
-    TipoOrigem, TipoFeedback, ValorFeedback
-)
+# Q2 - Inteligencia Proativa (temporariamente desabilitado - requer schema conecta)
+# from .previsao import (
+#     Previsao, TipoPrevisao, SubtipoPrevisao, StatusPrevisao, TipoEntidadePrevisao
+# )
+# from .sugestao import (
+#     Sugestao, TipoSugestao, CodigoSugestao, StatusSugestao, PerfilDestino
+# )
+# from .comunicacao import (
+#     PreferenciaComunicacao, HistoricoComunicacao, FilaComunicacao,
+#     CanalComunicacao, TipoComunicacao, UrgenciaComunicacao
+# )
+# from .feedback import (
+#     FeedbackModelo, MetricaModelo, HistoricoTreinamento,
+#     TipoOrigem, TipoFeedback, ValorFeedback
+# )
+# Placeholders para manter compatibilidade
+TipoPrevisao = StatusPrevisao = SubtipoPrevisao = TipoEntidadePrevisao = None
+TipoSugestao = StatusSugestao = PerfilDestino = CodigoSugestao = None
+TipoComunicacao = UrgenciaComunicacao = CanalComunicacao = None
+TipoOrigem = ValorFeedback = TipoFeedback = None
 
 __all__ = [
     "Usuario", "Role",
@@ -58,11 +63,9 @@ __all__ = [
     "SLAConfig", "TipoEntidade", "PrioridadeSLA",
     "DecisionLog", "ModuloSistema", "TipoDecisao", "NivelCriticidade",
     "TranquilidadeSnapshot", "RecomendacaoTemplate", "EstadoTranquilidade", "PerfilUsuario",
-    # Q2 - Inteligencia Proativa
-    "Previsao", "TipoPrevisao", "SubtipoPrevisao", "StatusPrevisao", "TipoEntidadePrevisao",
-    "Sugestao", "TipoSugestao", "CodigoSugestao", "StatusSugestao", "PerfilDestino",
-    "PreferenciaComunicacao", "HistoricoComunicacao", "FilaComunicacao",
-    "CanalComunicacao", "TipoComunicacao", "UrgenciaComunicacao",
-    "FeedbackModelo", "MetricaModelo", "HistoricoTreinamento",
-    "TipoOrigem", "TipoFeedback", "ValorFeedback",
+    # Q2 - Inteligencia Proativa (temporariamente desabilitado)
+    "TipoPrevisao", "StatusPrevisao", "SubtipoPrevisao", "TipoEntidadePrevisao",
+    "TipoSugestao", "StatusSugestao", "PerfilDestino", "CodigoSugestao",
+    "TipoComunicacao", "UrgenciaComunicacao", "CanalComunicacao",
+    "TipoOrigem", "ValorFeedback", "TipoFeedback",
 ]

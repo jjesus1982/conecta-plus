@@ -17,9 +17,12 @@ from .comunicados import router as comunicados_router
 from .assembleias import router as assembleias_router
 from .dashboard import router as dashboard_router
 from .tranquilidade import router as tranquilidade_router
-from .inteligencia import router as inteligencia_router
 from .health import router as health_router
 from .events import router as events_router
+
+# Q2 - Inteligencia Proativa (temporariamente desabilitado - requer schema conecta)
+# from .inteligencia import router as inteligencia_router
+inteligencia_router = None  # Placeholder
 
 __all__ = [
     "auth_router",

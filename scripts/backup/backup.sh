@@ -23,8 +23,8 @@ REDIS_CONTAINER="${REDIS_CONTAINER:-conecta-redis}"
 MONGO_CONTAINER="${MONGO_CONTAINER:-conecta-mongodb}"
 
 # Credenciais (do .env ou variaveis)
-POSTGRES_USER="${POSTGRES_USER:-conecta_user}"
-POSTGRES_DB="${POSTGRES_DB:-conecta_db}"
+POSTGRES_USER="${POSTGRES_USER:-conecta}"
+POSTGRES_DB="${POSTGRES_DB:-conecta_plus}"
 MONGO_USER="${MONGO_USER:-conecta}"
 MONGO_PASSWORD="${MONGO_PASSWORD:-}"
 

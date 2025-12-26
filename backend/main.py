@@ -280,7 +280,9 @@ app.include_router(dashboard_router, prefix=settings.API_PREFIX)
 app.include_router(frigate_router, prefix=settings.API_PREFIX)
 app.include_router(dispositivos_router, prefix=settings.API_PREFIX)
 app.include_router(tranquilidade_router, prefix=settings.API_PREFIX)
-app.include_router(inteligencia_router, prefix=settings.API_PREFIX)
+# Q2 - Inteligencia router (temporariamente desabilitado se None)
+if inteligencia_router is not None:
+    app.include_router(inteligencia_router, prefix=settings.API_PREFIX)
 app.include_router(health_router, prefix="")  # /health, /health/live, /health/ready
 app.include_router(events_router, prefix=settings.API_PREFIX)  # /api/v1/events/stream
 
@@ -396,6 +398,18 @@ async def health_check():
         health_status["components"]["database"] = "unhealthy"
         health_status["status"] = "degraded"
         logger.error(f"Health check - Database unhealthy: {e}")
+
+    # Verificar Redis
+    try:
+        import redis
+        redis_url = os.getenv('REDIS_URL', 'redis://localhost:6379')
+        client = redis.from_url(redis_url, socket_timeout=2)
+        client.ping()
+        health_status["components"]["redis"] = "healthy"
+    except Exception as e:
+        health_status["components"]["redis"] = "unhealthy"
+        health_status["status"] = "degraded"
+        logger.error(f"Health check - Redis unhealthy: {e}")
 
     return health_status
 

@@ -1,6 +1,7 @@
 """
 Conecta Plus - Serviço de OAuth
 Suporta Google e Microsoft OAuth2
+Com Circuit Breaker para resiliência
 """
 
 import httpx
@@ -14,6 +15,7 @@ from ..schemas.auth import (
     GoogleTokenResponse, GoogleUserInfo, MicrosoftUserInfo,
     OAuthUserInfo, AuthProviderEnum
 )
+from .resilience import with_circuit_breaker, get_http_client
 
 
 class OAuthService:
@@ -92,9 +94,11 @@ class OAuthService:
         url = f"{self.GOOGLE_AUTH_URL}?{urlencode(params)}"
         return url, state
 
+    @with_circuit_breaker("google-token-exchange", service_type="oauth")
     async def exchange_google_code(self, code: str, redirect_uri: str = None) -> GoogleTokenResponse:
         """
         Troca o authorization code por tokens
+        Protegido por Circuit Breaker
         """
         if not settings.GOOGLE_CLIENT_ID or not settings.GOOGLE_CLIENT_SECRET:
             raise ValueError("Credenciais Google não configuradas")
@@ -120,9 +124,11 @@ class OAuthService:
             data = response.json()
             return GoogleTokenResponse(**data)
 
+    @with_circuit_breaker("google-userinfo", service_type="oauth")
     async def get_google_user_info(self, access_token: str) -> GoogleUserInfo:
         """
         Obtém informações do usuário do Google
+        Protegido por Circuit Breaker
         """
         async with httpx.AsyncClient() as client:
             response = await client.get(
@@ -136,9 +142,11 @@ class OAuthService:
             data = response.json()
             return GoogleUserInfo(**data)
 
+    @with_circuit_breaker("google-token-refresh", service_type="oauth")
     async def refresh_google_token(self, refresh_token: str) -> GoogleTokenResponse:
         """
         Renova o access token usando refresh token
+        Protegido por Circuit Breaker
         """
         if not settings.GOOGLE_CLIENT_ID or not settings.GOOGLE_CLIENT_SECRET:
             raise ValueError("Credenciais Google não configuradas")
@@ -187,9 +195,11 @@ class OAuthService:
         url = f"{base_url}?{urlencode(params)}"
         return url, state
 
+    @with_circuit_breaker("microsoft-token-exchange", service_type="oauth")
     async def exchange_microsoft_code(self, code: str, redirect_uri: str = None) -> dict:
         """
         Troca o authorization code por tokens do Microsoft
+        Protegido por Circuit Breaker
         """
         if not settings.MICROSOFT_CLIENT_ID or not settings.MICROSOFT_CLIENT_SECRET:
             raise ValueError("Credenciais Microsoft não configuradas")
@@ -216,9 +226,11 @@ class OAuthService:
 
             return response.json()
 
+    @with_circuit_breaker("microsoft-userinfo", service_type="oauth")
     async def get_microsoft_user_info(self, access_token: str) -> MicrosoftUserInfo:
         """
         Obtém informações do usuário do Microsoft Graph
+        Protegido por Circuit Breaker
         """
         async with httpx.AsyncClient() as client:
             response = await client.get(

@@ -1,0 +1,106 @@
+# ============================================
+# Conecta Plus - PostgreSQL Streaming Replica
+# Configuracao de Alta Disponibilidade
+# ============================================
+#
+# IMPORTANTE: Este arquivo NAO deve ser iniciado automaticamente.
+# Use apenas quando precisar ativar a replica.
+#
+# Modo de uso:
+# 1. Primeiro, certifique-se que o master esta configurado e rodando
+# 2. Execute o script de inicializacao da replica
+# 3. Inicie este compose com: docker compose -f docker-compose.replica.yml up -d
+#
+# ============================================
+
+version: '3.8'
+
+services:
+  # PostgreSQL Replica - Hot Standby
+  postgres-replica:
+    image: postgres:16-alpine
+    container_name: conecta-postgres-replica
+    restart: unless-stopped
+    environment:
+      # Credenciais da replica (deve usar as mesmas do master)
+      POSTGRES_USER: ${POSTGRES_USER:-conecta_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB:-conecta_db}
+
+      # Configuracao de replicacao
+      PGUSER: replicator
+      PGPASSWORD: repl_conecta_2024_secure
+
+      # Timezone
+      TZ: America/Sao_Paulo
+
+    volumes:
+      # Dados da replica (volume separado do master)
+      - postgres_replica_data:/var/lib/postgresql/data
+
+      # Configuracao customizada para replica
+      - ./config/postgres-replica/postgresql.conf:/etc/postgresql/postgresql.conf:ro
+
+      # Script de inicializacao da replica
+      - ./config/postgres-replica/init-replica.sh:/docker-entrypoint-initdb.d/init-replica.sh:ro
+
+      # Backups compartilhados (somente leitura)
+      - ../../shared/backups/postgres:/backups:ro
+
+    ports:
+      # Porta diferente do master para evitar conflito
+      - "5433:5432"
+
+    networks:
+      - conecta-network
+
+    # Comando customizado para iniciar como replica
+    command: ["bash", "/docker-entrypoint-initdb.d/init-replica.sh"]
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-conecta_user} -d ${POSTGRES_DB:-conecta_db}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+
+    labels:
+      - "com.conectaplus.service=postgres-replica"
+      - "com.conectaplus.role=standby"
+      - "com.conectaplus.replication=streaming"
+
+  # PgBouncer para load balancing (opcional)
+  pgbouncer:
+    image: edoburu/pgbouncer:latest
+    container_name: conecta-pgbouncer
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: "postgres://${POSTGRES_USER:-conecta_user}:${POSTGRES_PASSWORD}@conecta-postgres:5432/${POSTGRES_DB:-conecta_db}"
+      POOL_MODE: transaction
+      MAX_CLIENT_CONN: 1000
+      DEFAULT_POOL_SIZE: 50
+      RESERVE_POOL_SIZE: 25
+      SERVER_RESET_QUERY: "DISCARD ALL"
+    ports:
+      - "6432:5432"
+    networks:
+      - conecta-network
+    depends_on:
+      - postgres-replica
+    healthcheck:
+      test: ["CMD", "pg_isready", "-h", "localhost", "-p", "5432"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    labels:
+      - "com.conectaplus.service=pgbouncer"
+      - "com.conectaplus.role=connection-pooler"
+
+networks:
+  conecta-network:
+    external: true
+    name: conecta-network
+
+volumes:
+  postgres_replica_data:
+    name: conecta-postgres-replica-data

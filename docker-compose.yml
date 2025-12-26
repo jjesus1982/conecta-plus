@@ -10,7 +10,8 @@ services:
   # INFRAESTRUTURA BASE
   # ==========================================
 
-  # PostgreSQL - Banco de Dados Principal
+  # PostgreSQL - Banco de Dados Principal (Master)
+  # Configurado para Streaming Replication
   postgres:
     image: postgres:16-alpine
     container_name: conecta-postgres
@@ -24,17 +25,25 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./config/postgres/init:/docker-entrypoint-initdb.d:ro
+      - ./config/postgres/postgresql.conf:/etc/postgresql/postgresql.conf:ro
+      - ./config/postgres/pg_hba.conf:/etc/postgresql/pg_hba.conf:ro
       - ./shared/backups/postgres:/backups
     ports:
       - "5432:5432"
     networks:
       - conecta-network
+    # Usar configuracao customizada para replicacao
+    command: postgres -c config_file=/etc/postgresql/postgresql.conf -c hba_file=/etc/postgresql/pg_hba.conf
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-conecta_user} -d ${POSTGRES_DB:-conecta_db}"]
       interval: 10s
       timeout: 5s
       retries: 5
       start_period: 30s
+    labels:
+      - "com.conectaplus.service=postgres"
+      - "com.conectaplus.role=master"
+      - "com.conectaplus.replication=enabled"
 
   # Redis - Cache e Filas
   redis:

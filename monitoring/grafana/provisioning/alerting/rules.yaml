@@ -1,0 +1,86 @@
+apiVersion: 1
+groups:
+  - orgId: 1
+    name: conecta-plus-alerts
+    folder: Alertas
+    interval: 1m
+    rules:
+      - uid: backend-down
+        title: Backend DOWN
+        condition: C
+        data:
+          - refId: A
+            relativeTimeRange:
+              from: 300
+              to: 0
+            datasourceUid: prometheus
+            model:
+              expr: up{job=~".*backend.*"} == 0
+              instant: true
+        noDataState: Alerting
+        execErrState: Alerting
+        for: 1m
+        annotations:
+          summary: Backend não está respondendo
+        labels:
+          severity: critical
+
+      - uid: high-latency
+        title: Alta Latência P95
+        condition: C
+        data:
+          - refId: A
+            relativeTimeRange:
+              from: 300
+              to: 0
+            datasourceUid: prometheus
+            model:
+              expr: histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m])) > 0.5
+              instant: true
+        noDataState: OK
+        execErrState: Error
+        for: 5m
+        annotations:
+          summary: Latência P95 acima de 500ms
+        labels:
+          severity: warning
+
+      - uid: high-error-rate
+        title: Taxa de Erro Alta
+        condition: C
+        data:
+          - refId: A
+            relativeTimeRange:
+              from: 300
+              to: 0
+            datasourceUid: prometheus
+            model:
+              expr: (sum(rate(http_requests_total{status=~"5.."}[5m])) / sum(rate(http_requests_total[5m]))) * 100 > 1
+              instant: true
+        noDataState: OK
+        execErrState: Error
+        for: 2m
+        annotations:
+          summary: Taxa de erro acima de 1%
+        labels:
+          severity: critical
+
+      - uid: high-cpu
+        title: CPU Alta
+        condition: C
+        data:
+          - refId: A
+            relativeTimeRange:
+              from: 300
+              to: 0
+            datasourceUid: prometheus
+            model:
+              expr: process_cpu_seconds_total > 0.8
+              instant: true
+        noDataState: OK
+        execErrState: Error
+        for: 5m
+        annotations:
+          summary: Uso de CPU acima de 80%
+        labels:
+          severity: warning

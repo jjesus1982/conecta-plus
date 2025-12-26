@@ -1,16 +1,22 @@
 """
 Conecta Plus - Health Check Unificado
 Endpoint de saúde com status de todos os componentes
+Inclui monitoramento de Circuit Breakers
 """
 
 from fastapi import APIRouter, Response
 from datetime import datetime
 import time
 import asyncio
+import json
 from typing import Dict, Any, Optional
 
 from ..services.observability import logger
-from ..services.resilience import get_all_circuit_breaker_stats
+from ..services.resilience import (
+    get_all_circuit_breaker_stats,
+    get_all_resilience_stats,
+    CircuitState,
+)
 
 router = APIRouter(tags=["Health"])
 
@@ -85,6 +91,38 @@ def check_event_stream() -> Dict[str, Any]:
         }
 
 
+def check_circuit_breakers() -> Dict[str, Any]:
+    """Verifica estado dos circuit breakers."""
+    try:
+        stats = get_all_circuit_breaker_stats()
+        total = len(stats)
+        open_count = sum(1 for s in stats.values() if s.get("state") == "OPEN")
+        half_open_count = sum(1 for s in stats.values() if s.get("state") == "HALF_OPEN")
+        closed_count = total - open_count - half_open_count
+
+        # Se mais de 50% dos circuits estao abertos, considerar degradado
+        if total > 0 and (open_count / total) > 0.5:
+            status = "degraded"
+        elif open_count > 0:
+            status = "warning"
+        else:
+            status = "healthy"
+
+        return {
+            "status": status,
+            "total": total,
+            "closed": closed_count,
+            "open": open_count,
+            "half_open": half_open_count,
+            "circuits": stats
+        }
+    except Exception as e:
+        return {
+            "status": "unknown",
+            "error": str(e)
+        }
+
+
 @router.get("/health")
 async def health_check():
     """
@@ -93,6 +131,7 @@ async def health_check():
     Retorna:
     - status: "healthy" | "degraded" | "unhealthy"
     - components: status individual de cada componente
+    - circuit_breakers: estado de todos os circuit breakers
     - timestamp: momento da verificação
     """
     start = time.time()
@@ -111,12 +150,22 @@ async def health_check():
         redis_check = {"status": "unhealthy", "error": str(redis_check)}
 
     event_check = check_event_stream()
+    circuit_check = check_circuit_breakers()
 
     components = {
         "api": {"status": "healthy"},
         "database": db_check,
         "redis": redis_check,
-        "event_stream": event_check
+        "event_stream": event_check,
+        "circuit_breakers": {
+            "status": circuit_check["status"],
+            "summary": {
+                "total": circuit_check.get("total", 0),
+                "open": circuit_check.get("open", 0),
+                "half_open": circuit_check.get("half_open", 0),
+                "closed": circuit_check.get("closed", 0),
+            }
+        }
     }
 
     # Determinar status geral
@@ -129,6 +178,9 @@ async def health_check():
         # Componentes críticos
         overall_status = "unhealthy"
         status_code = 503
+    elif any(s in ["degraded", "warning"] for s in statuses):
+        overall_status = "degraded"
+        status_code = 200
     else:
         overall_status = "degraded"
         status_code = 200
@@ -142,17 +194,18 @@ async def health_check():
         "uptime_seconds": int(time.time() - _startup_time),
         "check_duration_ms": round(duration_ms, 2),
         "components": components,
-        "circuit_breakers": get_all_circuit_breaker_stats()
+        "circuit_breakers": circuit_check.get("circuits", {})
     }
 
     logger.info(
         "Health check completed",
         status=overall_status,
-        duration_ms=round(duration_ms, 2)
+        duration_ms=round(duration_ms, 2),
+        circuits_open=circuit_check.get("open", 0)
     )
 
     return Response(
-        content=__import__('json').dumps(response_data),
+        content=json.dumps(response_data),
         media_type="application/json",
         status_code=status_code
     )
@@ -191,6 +244,114 @@ async def readiness_probe():
         media_type="application/json",
         status_code=503
     )
+
+
+@router.get("/health/circuits")
+async def circuit_breakers_status():
+    """
+    Status detalhado de todos os circuit breakers.
+
+    Retorna informacoes completas sobre cada circuit breaker:
+    - Estado atual (CLOSED, OPEN, HALF_OPEN)
+    - Contadores de falha/sucesso
+    - Estatisticas de chamadas
+    """
+    circuit_check = check_circuit_breakers()
+
+    return {
+        "timestamp": datetime.utcnow().isoformat() + "Z",
+        "summary": {
+            "status": circuit_check["status"],
+            "total": circuit_check.get("total", 0),
+            "closed": circuit_check.get("closed", 0),
+            "open": circuit_check.get("open", 0),
+            "half_open": circuit_check.get("half_open", 0),
+        },
+        "circuits": circuit_check.get("circuits", {})
+    }
+
+
+@router.get("/health/circuits/{circuit_name}")
+async def circuit_breaker_detail(circuit_name: str):
+    """
+    Detalhes de um circuit breaker especifico.
+    """
+    from ..services.resilience import get_circuit_breaker
+
+    try:
+        # Buscar nas estatisticas globais
+        all_stats = get_all_circuit_breaker_stats()
+
+        if circuit_name in all_stats:
+            return {
+                "name": circuit_name,
+                "timestamp": datetime.utcnow().isoformat() + "Z",
+                **all_stats[circuit_name]
+            }
+
+        return Response(
+            content=json.dumps({
+                "error": "Circuit breaker not found",
+                "name": circuit_name,
+                "available": list(all_stats.keys())
+            }),
+            media_type="application/json",
+            status_code=404
+        )
+    except Exception as e:
+        return Response(
+            content=json.dumps({"error": str(e)}),
+            media_type="application/json",
+            status_code=500
+        )
+
+
+@router.post("/health/circuits/{circuit_name}/reset")
+async def reset_circuit_breaker(circuit_name: str):
+    """
+    Reset manual de um circuit breaker.
+    CUIDADO: Use apenas quando tiver certeza que o servico esta saudavel.
+    """
+    from ..services.resilience import get_circuit_breaker
+
+    try:
+        all_stats = get_all_circuit_breaker_stats()
+
+        if circuit_name not in all_stats:
+            return Response(
+                content=json.dumps({
+                    "error": "Circuit breaker not found",
+                    "name": circuit_name
+                }),
+                media_type="application/json",
+                status_code=404
+            )
+
+        # Obter o circuit breaker e resetar
+        circuit = get_circuit_breaker(circuit_name)
+        old_state = circuit.state.value
+        circuit.reset()
+
+        logger.warning(
+            f"Circuit breaker reset manualmente",
+            circuit=circuit_name,
+            old_state=old_state
+        )
+
+        return {
+            "success": True,
+            "circuit": circuit_name,
+            "old_state": old_state,
+            "new_state": "CLOSED",
+            "timestamp": datetime.utcnow().isoformat() + "Z"
+        }
+    except Exception as e:
+        logger.error(f"Erro ao resetar circuit breaker {circuit_name}", exc=e)
+        return Response(
+            content=json.dumps({"error": str(e)}),
+            media_type="application/json",
+            status_code=500
+        )
 
 
 # Tempo de inicialização

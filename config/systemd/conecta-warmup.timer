@@ -1,0 +1,15 @@
+[Unit]
+Description=Conecta Plus Cache Warmup Timer
+Documentation=https://github.com/conecta-plus/docs
+
+[Timer]
+# Executa 30 segundos apos boot
+OnBootSec=30sec
+# Executa a cada 4 horas
+OnUnitActiveSec=4h
+# Adiciona aleatoriedade de ate 5 minutos para evitar thundering herd
+RandomizedDelaySec=5min
+Persistent=true
+
+[Install]
+WantedBy=timers.target

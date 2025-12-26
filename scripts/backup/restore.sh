@@ -8,8 +8,8 @@ set -e
 # Configuracoes
 BACKUP_DIR="${BACKUP_DIR:-/opt/conecta-plus/backups}"
 POSTGRES_CONTAINER="${POSTGRES_CONTAINER:-conecta-postgres}"
-POSTGRES_USER="${POSTGRES_USER:-conecta_user}"
-POSTGRES_DB="${POSTGRES_DB:-conecta_db}"
+POSTGRES_USER="${POSTGRES_USER:-conecta}"
+POSTGRES_DB="${POSTGRES_DB:-conecta_plus}"
 
 # Cores
 RED='\033[0;31m'

@@ -2,6 +2,7 @@
 Conecta Plus - Serviço de Integração Frigate NVR
 Frigate é um NVR open-source com detecção de objetos em tempo real
 https://frigate.video/
+Com Circuit Breaker para resiliência
 """
 
 import httpx
@@ -11,6 +12,8 @@ from dataclasses import dataclass, field
 from enum import Enum
 
 from ..config import settings
+from .resilience import get_circuit_breaker, CircuitBreakerConfig, CircuitBreakerError
+from .observability import logger
 
 
 class ObjectLabel(str, Enum):
@@ -83,12 +86,26 @@ class FrigateRecording:
 
 
 class FrigateService:
-    """Serviço para integração com Frigate NVR"""
+    """Serviço para integração com Frigate NVR com Circuit Breaker"""
+
+    # Configuração do Circuit Breaker para Frigate
+    FRIGATE_CB_CONFIG = CircuitBreakerConfig(
+        failure_threshold=5,
+        success_threshold=2,
+        timeout=30.0,
+        reset_timeout=30.0,
+        half_open_max_calls=3
+    )
 
     def __init__(self, instance: FrigateInstance):
         self.instance = instance
         self.base_url = instance.url.rstrip('/')
         self._client: Optional[httpx.AsyncClient] = None
+        # Circuit breaker por instância
+        self._circuit = get_circuit_breaker(
+            f"frigate-{instance.id}",
+            self.FRIGATE_CB_CONFIG
+        )
 
     @property
     def client(self) -> httpx.AsyncClient:
@@ -103,16 +120,34 @@ class FrigateService:
             )
         return self._client
 
+    @property
+    def circuit_stats(self) -> Dict[str, Any]:
+        """Retorna estatísticas do circuit breaker."""
+        return self._circuit.stats
+
     async def close(self):
         if self._client:
             await self._client.aclose()
             self._client = None
 
     async def _request(self, method: str, endpoint: str, **kwargs) -> Any:
-        """Faz requisição à API do Frigate"""
-        response = await self.client.request(method, f"/api{endpoint}", **kwargs)
-        response.raise_for_status()
-        return response.json() if response.content else None
+        """
+        Faz requisição à API do Frigate protegida por Circuit Breaker.
+        """
+        async def do_request():
+            response = await self.client.request(method, f"/api{endpoint}", **kwargs)
+            response.raise_for_status()
+            return response.json() if response.content else None
+
+        try:
+            return await self._circuit.execute(do_request)
+        except CircuitBreakerError as e:
+            logger.warning(
+                f"Frigate circuit breaker open",
+                instance=self.instance.id,
+                state=e.state.value
+            )
+            raise
 
     # === System ===
 
