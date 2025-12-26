@@ -1,19 +1,19 @@
 {
-  "last_update": "2025-12-26T01:57:45.975847",
-  "iteration": 2413,
+  "last_update": "2025-12-26T01:59:06.345321",
+  "iteration": 2414,
   "total_errors_fixed": 1,
-  "total_gaps_detected": 28419,
+  "total_gaps_detected": 28437,
   "total_tests_run": 5543,
   "total_tests_passed": 2133,
   "last_cycle": {
-    "iteration": 2413,
-    "timestamp": "2025-12-26T01:56:55.604341",
+    "iteration": 2414,
+    "timestamp": "2025-12-26T01:58:15.977435",
     "log_analysis": {
-      "timestamp": "2025-12-26T01:56:55.604652",
+      "timestamp": "2025-12-26T01:58:15.978568",
       "logs": {
         "nextjs": {
           "log_path": "/tmp/nextjs-debug.log",
-          "timestamp": "2025-12-26T01:56:55.605967",
+          "timestamp": "2025-12-26T01:58:15.981844",
           "total_lines": 1000,
           "errors": [],
           "warnings": [],
@@ -45,7 +45,7 @@
       "critical_issues": []
     },
     "gaps": {
-      "timestamp": "2025-12-26T01:56:55.613272",
+      "timestamp": "2025-12-26T01:58:15.989065",
       "gaps": [
         {
           "category": "dependencies",
@@ -429,35 +429,35 @@
     },
     "fixes_applied": [],
     "metrics": {
-      "timestamp": "2025-12-26T01:56:59.608147",
+      "timestamp": "2025-12-26T01:58:19.977173",
       "cpu": {
-        "timestamp": "2025-12-26T01:56:59.608152",
-        "percent": 16.4,
+        "timestamp": "2025-12-26T01:58:19.977179",
+        "percent": 15.2,
         "per_cpu": [
-          2.9,
-          4.0,
-          3.0,
-          2.0
+          16.2,
+          31.4,
+          11.9,
+          13.1
         ],
         "count": 4,
         "load_avg": [
-          0.6103515625,
-          0.6953125,
-          0.55419921875
+          0.744140625,
+          0.66015625,
+          0.55029296875
         ]
       },
       "memory": {
-        "timestamp": "2025-12-26T01:57:01.609600",
+        "timestamp": "2025-12-26T01:58:21.978264",
         "total_mb": 15992,
-        "available_mb": 11870,
-        "used_mb": 3646,
-        "percent": 25.8,
+        "available_mb": 11942,
+        "used_mb": 3574,
+        "percent": 25.3,
         "swap_total_mb": 0,
         "swap_used_mb": 0,
         "swap_percent": 0.0
       },
       "disk": {
-        "timestamp": "2025-12-26T01:57:01.609639",
+        "timestamp": "2025-12-26T01:58:21.978298",
         "path": "/",
         "total_gb": 192,
         "used_gb": 144,
@@ -465,11 +465,11 @@
         "percent": 74.8
       },
       "network": {
-        "timestamp": "2025-12-26T01:57:01.610110",
-        "bytes_sent": 26910802331,
-        "bytes_recv": 25815146078,
-        "packets_sent": 22531583,
-        "packets_recv": 30608935,
+        "timestamp": "2025-12-26T01:58:21.978625",
+        "bytes_sent": 26913791856,
+        "bytes_recv": 25816502843,
+        "packets_sent": 22535483,
+        "packets_recv": 30612868,
         "errors_in": 0,
         "errors_out": 0,
         "drops_in": 0,
@@ -477,17 +477,10 @@
       },
       "uptime": {
         "boot_time": "2025-12-18T15:11:19",
-        "uptime_seconds": 643542,
-        "uptime_human": "7 days, 10:45:42"
+        "uptime_seconds": 643622,
+        "uptime_human": "7 days, 10:47:02"
       },
       "top_processes_cpu": [
-        {
-          "memory_percent": 0.3406928659187447,
-          "cpu_percent": 10.0,
-          "pid": 846567,
-          "username": "root",
-          "name": "python3"
-        },
         {
           "memory_percent": 0.0750364556999128,
           "cpu_percent": 0.0,
@@ -515,6 +508,13 @@
           "pid": 4,
           "username": "root",
           "name": "kworker/R-rcu_g"
+        },
+        {
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "pid": 5,
+          "username": "root",
+          "name": "kworker/R-rcu_p"
         }
       ],
       "top_processes_memory": [
@@ -533,14 +533,14 @@
           "name": "python"
         },
         {
-          "memory_percent": 1.9643088316833617,
-          "cpu_percent": 178.1,
+          "memory_percent": 1.6972357175483204,
+          "cpu_percent": 0.0,
           "pid": 3942113,
           "username": "root",
           "name": "claude"
         },
         {
-          "memory_percent": 1.5115498008065442,
+          "memory_percent": 1.5120871712575201,
           "cpu_percent": 0.0,
           "pid": 3549107,
           "username": "472",
@@ -557,7 +557,7 @@
     },
     "actions_taken": [],
     "safe_healing": {
-      "timestamp": "2025-12-26T01:56:59.478063",
+      "timestamp": "2025-12-26T01:58:19.818606",
       "total_issues": 18,
       "authorized": 0,
       "attempted": 0,
@@ -773,7 +773,7 @@
       }
     },
     "health_score": {
-      "timestamp": "2025-12-26T01:57:45.975723",
+      "timestamp": "2025-12-26T01:59:06.345066",
       "overall_score": 76,
       "health_level": "Good",
       "breakdown": {
@@ -788,11 +788,11 @@
           "score": 26,
           "max": 30,
           "cpu": {
-            "value": "16.4%",
+            "value": "15.2%",
             "score": 10
           },
           "memory": {
-            "value": "25.8%",
+            "value": "25.3%",
             "score": 10
           },
           "disk": {
@@ -813,6 +813,6 @@
         "\u26a0\ufe0f Address 18 total gaps detected"
       ]
     },
-    "duration_seconds": 50.371432
+    "duration_seconds": 50.367726
   }
 }

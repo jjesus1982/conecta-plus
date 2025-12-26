@@ -1,1089 +1,5 @@
 [
   {
-    "timestamp": "2025-12-26T01:38:01.935055",
-    "action": "ABORTED",
-    "issue": {
-      "category": "dependencies",
-      "type": "missing_pip_package",
-      "severity": "high",
-      "description": "Missing pip package: opentelemetry-instrumentation-redis",
-      "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
-      "package": "opentelemetry-instrumentation-redis",
-      "priority": "P2",
-      "priority_score": 2
-    },
-    "reason": "Prioridade P2 n\u00e3o autorizada para auto-healing"
-  },
-  {
-    "timestamp": "2025-12-26T01:38:01.941413",
-    "action": "ABORTED",
-    "issue": {
-      "category": "dependencies",
-      "type": "missing_pip_package",
-      "severity": "high",
-      "description": "Missing pip package: opentelemetry-instrumentation-sqlalchemy",
-      "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
-      "package": "opentelemetry-instrumentation-sqlalchemy",
-      "priority": "P2",
-      "priority_score": 2
-    },
-    "reason": "Prioridade P2 n\u00e3o autorizada para auto-healing"
-  },
-  {
-    "timestamp": "2025-12-26T01:38:01.947438",
-    "action": "ABORTED",
-    "issue": {
-      "category": "dependencies",
-      "type": "missing_pip_package",
-      "severity": "high",
-      "description": "Missing pip package: opentelemetry-sdk",
-      "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
-      "package": "opentelemetry-sdk",
-      "priority": "P2",
-      "priority_score": 2
-    },
-    "reason": "Prioridade P2 n\u00e3o autorizada para auto-healing"
-  },
-  {
-    "timestamp": "2025-12-26T01:38:01.953559",
-    "action": "ABORTED",
-    "issue": {
-      "category": "code_quality",
-      "type": "excessive_any",
-      "severity": "low",
-      "description": "Excessive use of \"any\" type in DashboardGraficos.tsx",
-      "count": 7,
-      "file": "/opt/conecta-plus/frontend/src/components/financeiro/DashboardGraficos.tsx",
-      "solution": "Replace \"any\" with proper types",
-      "priority": "P4",
-      "priority_score": 4
-    },
-    "reason": "Sem rollback definido para 'excessive_any'"
-  },
-  {
-    "timestamp": "2025-12-26T01:38:01.959640",
-    "action": "ABORTED",
-    "issue": {
-      "category": "unused_code",
-      "type": "unused_dependency",
-      "severity": "low",
-      "description": "Possibly unused dependency: @prisma/adapter-pg",
-      "package": "@prisma/adapter-pg",
-      "solution": "Remove if not needed: npm uninstall @prisma/adapter-pg",
-      "priority": "P4",
-      "priority_score": 4
-    },
-    "reason": "Sem rollback definido para 'unused_dependency'"
-  },
-  {
-    "timestamp": "2025-12-26T01:38:01.964784",
-    "action": "ABORTED",
-    "issue": {
-      "category": "unused_code",
-      "type": "unused_dependency",
-      "severity": "low",
-      "description": "Possibly unused dependency: @prisma/client",
-      "package": "@prisma/client",
-      "solution": "Remove if not needed: npm uninstall @prisma/client",
-      "priority": "P4",
-      "priority_score": 4
-    },
-    "reason": "Sem rollback definido para 'unused_dependency'"
-  },
-  {
-    "timestamp": "2025-12-26T01:38:01.970331",
-    "action": "ABORTED",
-    "issue": {
-      "category": "unused_code",
-      "type": "unused_dependency",
-      "severity": "low",
-      "description": "Possibly unused dependency: @radix-ui/react-avatar",
-      "package": "@radix-ui/react-avatar",
-      "solution": "Remove if not needed: npm uninstall @radix-ui/react-avatar",
-      "priority": "P4",
-      "priority_score": 4
-    },
-    "reason": "Sem rollback definido para 'unused_dependency'"
-  },
-  {
-    "timestamp": "2025-12-26T01:38:01.974587",
-    "action": "ABORTED",
-    "issue": {
-      "category": "unused_code",
-      "type": "unused_dependency",
-      "severity": "low",
-      "description": "Possibly unused dependency: @radix-ui/react-dialog",
-      "package": "@radix-ui/react-dialog",
-      "solution": "Remove if not needed: npm uninstall @radix-ui/react-dialog",
-      "priority": "P4",
-      "priority_score": 4
-    },
-    "reason": "Sem rollback definido para 'unused_dependency'"
-  },
-  {
-    "timestamp": "2025-12-26T01:38:01.980110",
-    "action": "ABORTED",
-    "issue": {
-      "category": "unused_code",
-      "type": "unused_dependency",
-      "severity": "low",
-      "description": "Possibly unused dependency: @radix-ui/react-dropdown-menu",
-      "package": "@radix-ui/react-dropdown-menu",
-      "solution": "Remove if not needed: npm uninstall @radix-ui/react-dropdown-menu",
-      "priority": "P4",
-      "priority_score": 4
-    },
-    "reason": "Sem rollback definido para 'unused_dependency'"
-  },
-  {
-    "timestamp": "2025-12-26T01:38:01.985913",
-    "action": "ABORTED",
-    "issue": {
-      "category": "unused_code",
-      "type": "unused_dependency",
-      "severity": "low",
-      "description": "Possibly unused dependency: @radix-ui/react-select",
-      "package": "@radix-ui/react-select",
-      "solution": "Remove if not needed: npm uninstall @radix-ui/react-select",
-      "priority": "P4",
-      "priority_score": 4
-    },
-    "reason": "Sem rollback definido para 'unused_dependency'"
-  },
-  {
-    "timestamp": "2025-12-26T01:38:01.992558",
-    "action": "ABORTED",
-    "issue": {
-      "category": "unused_code",
-      "type": "unused_dependency",
-      "severity": "low",
-      "description": "Possibly unused dependency: @radix-ui/react-slot",
-      "package": "@radix-ui/react-slot",
-      "solution": "Remove if not needed: npm uninstall @radix-ui/react-slot",
-      "priority": "P4",
-      "priority_score": 4
-    },
-    "reason": "Sem rollback definido para 'unused_dependency'"
-  },
-  {
-    "timestamp": "2025-12-26T01:38:01.998448",
-    "action": "ABORTED",
-    "issue": {
-      "category": "unused_code",
-      "type": "unused_dependency",
-      "severity": "low",
-      "description": "Possibly unused dependency: @radix-ui/react-tabs",
-      "package": "@radix-ui/react-tabs",
-      "solution": "Remove if not needed: npm uninstall @radix-ui/react-tabs",
-      "priority": "P4",
-      "priority_score": 4
-    },
-    "reason": "Sem rollback definido para 'unused_dependency'"
-  },
-  {
-    "timestamp": "2025-12-26T01:38:02.004085",
-    "action": "ABORTED",
-    "issue": {
-      "category": "unused_code",
-      "type": "unused_dependency",
-      "severity": "low",
-      "description": "Possibly unused dependency: @radix-ui/react-toast",
-      "package": "@radix-ui/react-toast",
-      "solution": "Remove if not needed: npm uninstall @radix-ui/react-toast",
-      "priority": "P4",
-      "priority_score": 4
-    },
-    "reason": "Sem rollback definido para 'unused_dependency'"
-  },
-  {
-    "timestamp": "2025-12-26T01:38:02.011640",
-    "action": "ABORTED",
-    "issue": {
-      "category": "unused_code",
-      "type": "unused_dependency",
-      "severity": "low",
-      "description": "Possibly unused dependency: @tanstack/react-query",
-      "package": "@tanstack/react-query",
-      "solution": "Remove if not needed: npm uninstall @tanstack/react-query",
-      "priority": "P4",
-      "priority_score": 4
-    },
-    "reason": "Sem rollback definido para 'unused_dependency'"
-  },
-  {
-    "timestamp": "2025-12-26T01:38:02.509986",
-    "action": "ABORTED",
-    "issue": {
-      "category": "dependencies",
-      "type": "missing_pip_package",
-      "severity": "high",
-      "description": "Missing pip package: opentelemetry-api",
-      "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
-      "package": "opentelemetry-api",
-      "priority": "P2",
-      "priority_score": 2
-    },
-    "reason": "Prioridade P2 n\u00e3o autorizada para auto-healing"
-  },
-  {
-    "timestamp": "2025-12-26T01:38:02.516507",
-    "action": "ABORTED",
-    "issue": {
-      "category": "dependencies",
-      "type": "missing_pip_package",
-      "severity": "high",
-      "description": "Missing pip package: opentelemetry-exporter-otlp",
-      "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
-      "package": "opentelemetry-exporter-otlp",
-      "priority": "P2",
-      "priority_score": 2
-    },
-    "reason": "Prioridade P2 n\u00e3o autorizada para auto-healing"
-  },
-  {
-    "timestamp": "2025-12-26T01:38:02.521480",
-    "action": "ABORTED",
-    "issue": {
-      "category": "dependencies",
-      "type": "missing_pip_package",
-      "severity": "high",
-      "description": "Missing pip package: opentelemetry-instrumentation-fastapi",
-      "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
-      "package": "opentelemetry-instrumentation-fastapi",
-      "priority": "P2",
-      "priority_score": 2
-    },
-    "reason": "Prioridade P2 n\u00e3o autorizada para auto-healing"
-  },
-  {
-    "timestamp": "2025-12-26T01:38:02.526515",
-    "action": "ABORTED",
-    "issue": {
-      "category": "dependencies",
-      "type": "missing_pip_package",
-      "severity": "high",
-      "description": "Missing pip package: opentelemetry-instrumentation-httpx",
-      "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
-      "package": "opentelemetry-instrumentation-httpx",
-      "priority": "P2",
-      "priority_score": 2
-    },
-    "reason": "Prioridade P2 n\u00e3o autorizada para auto-healing"
-  },
-  {
-    "timestamp": "2025-12-26T01:38:02.532223",
-    "action": "ABORTED",
-    "issue": {
-      "category": "dependencies",
-      "type": "missing_pip_package",
-      "severity": "high",
-      "description": "Missing pip package: opentelemetry-instrumentation-redis",
-      "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
-      "package": "opentelemetry-instrumentation-redis",
-      "priority": "P2",
-      "priority_score": 2
-    },
-    "reason": "Prioridade P2 n\u00e3o autorizada para auto-healing"
-  },
-  {
-    "timestamp": "2025-12-26T01:38:02.538297",
-    "action": "ABORTED",
-    "issue": {
-      "category": "dependencies",
-      "type": "missing_pip_package",
-      "severity": "high",
-      "description": "Missing pip package: opentelemetry-instrumentation-sqlalchemy",
-      "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
-      "package": "opentelemetry-instrumentation-sqlalchemy",
-      "priority": "P2",
-      "priority_score": 2
-    },
-    "reason": "Prioridade P2 n\u00e3o autorizada para auto-healing"
-  },
-  {
-    "timestamp": "2025-12-26T01:38:02.544069",
-    "action": "ABORTED",
-    "issue": {
-      "category": "dependencies",
-      "type": "missing_pip_package",
-      "severity": "high",
-      "description": "Missing pip package: opentelemetry-sdk",
-      "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
-      "package": "opentelemetry-sdk",
-      "priority": "P2",
-      "priority_score": 2
-    },
-    "reason": "Prioridade P2 n\u00e3o autorizada para auto-healing"
-  },
-  {
-    "timestamp": "2025-12-26T01:38:02.549831",
-    "action": "ABORTED",
-    "issue": {
-      "category": "code_quality",
-      "type": "excessive_any",
-      "severity": "low",
-      "description": "Excessive use of \"any\" type in DashboardGraficos.tsx",
-      "count": 7,
-      "file": "/opt/conecta-plus/frontend/src/components/financeiro/DashboardGraficos.tsx",
-      "solution": "Replace \"any\" with proper types",
-      "priority": "P4",
-      "priority_score": 4
-    },
-    "reason": "Sem rollback definido para 'excessive_any'"
-  },
-  {
-    "timestamp": "2025-12-26T01:38:02.555645",
-    "action": "ABORTED",
-    "issue": {
-      "category": "unused_code",
-      "type": "unused_dependency",
-      "severity": "low",
-      "description": "Possibly unused dependency: @prisma/adapter-pg",
-      "package": "@prisma/adapter-pg",
-      "solution": "Remove if not needed: npm uninstall @prisma/adapter-pg",
-      "priority": "P4",
-      "priority_score": 4
-    },
-    "reason": "Sem rollback definido para 'unused_dependency'"
-  },
-  {
-    "timestamp": "2025-12-26T01:38:02.561689",
-    "action": "ABORTED",
-    "issue": {
-      "category": "unused_code",
-      "type": "unused_dependency",
-      "severity": "low",
-      "description": "Possibly unused dependency: @prisma/client",
-      "package": "@prisma/client",
-      "solution": "Remove if not needed: npm uninstall @prisma/client",
-      "priority": "P4",
-      "priority_score": 4
-    },
-    "reason": "Sem rollback definido para 'unused_dependency'"
-  },
-  {
-    "timestamp": "2025-12-26T01:38:02.567934",
-    "action": "ABORTED",
-    "issue": {
-      "category": "unused_code",
-      "type": "unused_dependency",
-      "severity": "low",
-      "description": "Possibly unused dependency: @radix-ui/react-avatar",
-      "package": "@radix-ui/react-avatar",
-      "solution": "Remove if not needed: npm uninstall @radix-ui/react-avatar",
-      "priority": "P4",
-      "priority_score": 4
-    },
-    "reason": "Sem rollback definido para 'unused_dependency'"
-  },
-  {
-    "timestamp": "2025-12-26T01:38:02.573823",
-    "action": "ABORTED",
-    "issue": {
-      "category": "unused_code",
-      "type": "unused_dependency",
-      "severity": "low",
-      "description": "Possibly unused dependency: @radix-ui/react-dialog",
-      "package": "@radix-ui/react-dialog",
-      "solution": "Remove if not needed: npm uninstall @radix-ui/react-dialog",
-      "priority": "P4",
-      "priority_score": 4
-    },
-    "reason": "Sem rollback definido para 'unused_dependency'"
-  },
-  {
-    "timestamp": "2025-12-26T01:38:02.579973",
-    "action": "ABORTED",
-    "issue": {
-      "category": "unused_code",
-      "type": "unused_dependency",
-      "severity": "low",
-      "description": "Possibly unused dependency: @radix-ui/react-dropdown-menu",
-      "package": "@radix-ui/react-dropdown-menu",
-      "solution": "Remove if not needed: npm uninstall @radix-ui/react-dropdown-menu",
-      "priority": "P4",
-      "priority_score": 4
-    },
-    "reason": "Sem rollback definido para 'unused_dependency'"
-  },
-  {
-    "timestamp": "2025-12-26T01:38:02.585212",
-    "action": "ABORTED",
-    "issue": {
-      "category": "unused_code",
-      "type": "unused_dependency",
-      "severity": "low",
-      "description": "Possibly unused dependency: @radix-ui/react-select",
-      "package": "@radix-ui/react-select",
-      "solution": "Remove if not needed: npm uninstall @radix-ui/react-select",
-      "priority": "P4",
-      "priority_score": 4
-    },
-    "reason": "Sem rollback definido para 'unused_dependency'"
-  },
-  {
-    "timestamp": "2025-12-26T01:38:02.590524",
-    "action": "ABORTED",
-    "issue": {
-      "category": "unused_code",
-      "type": "unused_dependency",
-      "severity": "low",
-      "description": "Possibly unused dependency: @radix-ui/react-slot",
-      "package": "@radix-ui/react-slot",
-      "solution": "Remove if not needed: npm uninstall @radix-ui/react-slot",
-      "priority": "P4",
-      "priority_score": 4
-    },
-    "reason": "Sem rollback definido para 'unused_dependency'"
-  },
-  {
-    "timestamp": "2025-12-26T01:38:02.596266",
-    "action": "ABORTED",
-    "issue": {
-      "category": "unused_code",
-      "type": "unused_dependency",
-      "severity": "low",
-      "description": "Possibly unused dependency: @radix-ui/react-tabs",
-      "package": "@radix-ui/react-tabs",
-      "solution": "Remove if not needed: npm uninstall @radix-ui/react-tabs",
-      "priority": "P4",
-      "priority_score": 4
-    },
-    "reason": "Sem rollback definido para 'unused_dependency'"
-  },
-  {
-    "timestamp": "2025-12-26T01:38:02.601680",
-    "action": "ABORTED",
-    "issue": {
-      "category": "unused_code",
-      "type": "unused_dependency",
-      "severity": "low",
-      "description": "Possibly unused dependency: @radix-ui/react-toast",
-      "package": "@radix-ui/react-toast",
-      "solution": "Remove if not needed: npm uninstall @radix-ui/react-toast",
-      "priority": "P4",
-      "priority_score": 4
-    },
-    "reason": "Sem rollback definido para 'unused_dependency'"
-  },
-  {
-    "timestamp": "2025-12-26T01:38:02.606879",
-    "action": "ABORTED",
-    "issue": {
-      "category": "unused_code",
-      "type": "unused_dependency",
-      "severity": "low",
-      "description": "Possibly unused dependency: @tanstack/react-query",
-      "package": "@tanstack/react-query",
-      "solution": "Remove if not needed: npm uninstall @tanstack/react-query",
-      "priority": "P4",
-      "priority_score": 4
-    },
-    "reason": "Sem rollback definido para 'unused_dependency'"
-  },
-  {
-    "timestamp": "2025-12-26T01:40:08.298767",
-    "action": "ABORTED",
-    "issue": {
-      "category": "dependencies",
-      "type": "missing_pip_package",
-      "severity": "high",
-      "description": "Missing pip package: opentelemetry-api",
-      "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
-      "package": "opentelemetry-api",
-      "priority": "P2",
-      "priority_score": 2
-    },
-    "reason": "Prioridade P2 n\u00e3o autorizada para auto-healing"
-  },
-  {
-    "timestamp": "2025-12-26T01:40:08.306682",
-    "action": "ABORTED",
-    "issue": {
-      "category": "dependencies",
-      "type": "missing_pip_package",
-      "severity": "high",
-      "description": "Missing pip package: opentelemetry-exporter-otlp",
-      "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
-      "package": "opentelemetry-exporter-otlp",
-      "priority": "P2",
-      "priority_score": 2
-    },
-    "reason": "Prioridade P2 n\u00e3o autorizada para auto-healing"
-  },
-  {
-    "timestamp": "2025-12-26T01:40:08.311928",
-    "action": "ABORTED",
-    "issue": {
-      "category": "dependencies",
-      "type": "missing_pip_package",
-      "severity": "high",
-      "description": "Missing pip package: opentelemetry-instrumentation-fastapi",
-      "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
-      "package": "opentelemetry-instrumentation-fastapi",
-      "priority": "P2",
-      "priority_score": 2
-    },
-    "reason": "Prioridade P2 n\u00e3o autorizada para auto-healing"
-  },
-  {
-    "timestamp": "2025-12-26T01:40:08.317484",
-    "action": "ABORTED",
-    "issue": {
-      "category": "dependencies",
-      "type": "missing_pip_package",
-      "severity": "high",
-      "description": "Missing pip package: opentelemetry-instrumentation-httpx",
-      "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
-      "package": "opentelemetry-instrumentation-httpx",
-      "priority": "P2",
-      "priority_score": 2
-    },
-    "reason": "Prioridade P2 n\u00e3o autorizada para auto-healing"
-  },
-  {
-    "timestamp": "2025-12-26T01:40:08.323021",
-    "action": "ABORTED",
-    "issue": {
-      "category": "dependencies",
-      "type": "missing_pip_package",
-      "severity": "high",
-      "description": "Missing pip package: opentelemetry-instrumentation-redis",
-      "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
-      "package": "opentelemetry-instrumentation-redis",
-      "priority": "P2",
-      "priority_score": 2
-    },
-    "reason": "Prioridade P2 n\u00e3o autorizada para auto-healing"
-  },
-  {
-    "timestamp": "2025-12-26T01:40:08.327923",
-    "action": "ABORTED",
-    "issue": {
-      "category": "dependencies",
-      "type": "missing_pip_package",
-      "severity": "high",
-      "description": "Missing pip package: opentelemetry-instrumentation-sqlalchemy",
-      "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
-      "package": "opentelemetry-instrumentation-sqlalchemy",
-      "priority": "P2",
-      "priority_score": 2
-    },
-    "reason": "Prioridade P2 n\u00e3o autorizada para auto-healing"
-  },
-  {
-    "timestamp": "2025-12-26T01:40:08.332475",
-    "action": "ABORTED",
-    "issue": {
-      "category": "dependencies",
-      "type": "missing_pip_package",
-      "severity": "high",
-      "description": "Missing pip package: opentelemetry-sdk",
-      "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
-      "package": "opentelemetry-sdk",
-      "priority": "P2",
-      "priority_score": 2
-    },
-    "reason": "Prioridade P2 n\u00e3o autorizada para auto-healing"
-  },
-  {
-    "timestamp": "2025-12-26T01:40:08.338590",
-    "action": "ABORTED",
-    "issue": {
-      "category": "code_quality",
-      "type": "excessive_any",
-      "severity": "low",
-      "description": "Excessive use of \"any\" type in DashboardGraficos.tsx",
-      "count": 7,
-      "file": "/opt/conecta-plus/frontend/src/components/financeiro/DashboardGraficos.tsx",
-      "solution": "Replace \"any\" with proper types",
-      "priority": "P4",
-      "priority_score": 4
-    },
-    "reason": "Sem rollback definido para 'excessive_any'"
-  },
-  {
-    "timestamp": "2025-12-26T01:40:08.344839",
-    "action": "ABORTED",
-    "issue": {
-      "category": "unused_code",
-      "type": "unused_dependency",
-      "severity": "low",
-      "description": "Possibly unused dependency: @prisma/adapter-pg",
-      "package": "@prisma/adapter-pg",
-      "solution": "Remove if not needed: npm uninstall @prisma/adapter-pg",
-      "priority": "P4",
-      "priority_score": 4
-    },
-    "reason": "Sem rollback definido para 'unused_dependency'"
-  },
-  {
-    "timestamp": "2025-12-26T01:40:08.350644",
-    "action": "ABORTED",
-    "issue": {
-      "category": "unused_code",
-      "type": "unused_dependency",
-      "severity": "low",
-      "description": "Possibly unused dependency: @prisma/client",
-      "package": "@prisma/client",
-      "solution": "Remove if not needed: npm uninstall @prisma/client",
-      "priority": "P4",
-      "priority_score": 4
-    },
-    "reason": "Sem rollback definido para 'unused_dependency'"
-  },
-  {
-    "timestamp": "2025-12-26T01:40:08.355773",
-    "action": "ABORTED",
-    "issue": {
-      "category": "unused_code",
-      "type": "unused_dependency",
-      "severity": "low",
-      "description": "Possibly unused dependency: @radix-ui/react-avatar",
-      "package": "@radix-ui/react-avatar",
-      "solution": "Remove if not needed: npm uninstall @radix-ui/react-avatar",
-      "priority": "P4",
-      "priority_score": 4
-    },
-    "reason": "Sem rollback definido para 'unused_dependency'"
-  },
-  {
-    "timestamp": "2025-12-26T01:40:08.361637",
-    "action": "ABORTED",
-    "issue": {
-      "category": "unused_code",
-      "type": "unused_dependency",
-      "severity": "low",
-      "description": "Possibly unused dependency: @radix-ui/react-dialog",
-      "package": "@radix-ui/react-dialog",
-      "solution": "Remove if not needed: npm uninstall @radix-ui/react-dialog",
-      "priority": "P4",
-      "priority_score": 4
-    },
-    "reason": "Sem rollback definido para 'unused_dependency'"
-  },
-  {
-    "timestamp": "2025-12-26T01:40:08.368109",
-    "action": "ABORTED",
-    "issue": {
-      "category": "unused_code",
-      "type": "unused_dependency",
-      "severity": "low",
-      "description": "Possibly unused dependency: @radix-ui/react-dropdown-menu",
-      "package": "@radix-ui/react-dropdown-menu",
-      "solution": "Remove if not needed: npm uninstall @radix-ui/react-dropdown-menu",
-      "priority": "P4",
-      "priority_score": 4
-    },
-    "reason": "Sem rollback definido para 'unused_dependency'"
-  },
-  {
-    "timestamp": "2025-12-26T01:40:08.374441",
-    "action": "ABORTED",
-    "issue": {
-      "category": "unused_code",
-      "type": "unused_dependency",
-      "severity": "low",
-      "description": "Possibly unused dependency: @radix-ui/react-select",
-      "package": "@radix-ui/react-select",
-      "solution": "Remove if not needed: npm uninstall @radix-ui/react-select",
-      "priority": "P4",
-      "priority_score": 4
-    },
-    "reason": "Sem rollback definido para 'unused_dependency'"
-  },
-  {
-    "timestamp": "2025-12-26T01:40:08.380938",
-    "action": "ABORTED",
-    "issue": {
-      "category": "unused_code",
-      "type": "unused_dependency",
-      "severity": "low",
-      "description": "Possibly unused dependency: @radix-ui/react-slot",
-      "package": "@radix-ui/react-slot",
-      "solution": "Remove if not needed: npm uninstall @radix-ui/react-slot",
-      "priority": "P4",
-      "priority_score": 4
-    },
-    "reason": "Sem rollback definido para 'unused_dependency'"
-  },
-  {
-    "timestamp": "2025-12-26T01:40:08.387031",
-    "action": "ABORTED",
-    "issue": {
-      "category": "unused_code",
-      "type": "unused_dependency",
-      "severity": "low",
-      "description": "Possibly unused dependency: @radix-ui/react-tabs",
-      "package": "@radix-ui/react-tabs",
-      "solution": "Remove if not needed: npm uninstall @radix-ui/react-tabs",
-      "priority": "P4",
-      "priority_score": 4
-    },
-    "reason": "Sem rollback definido para 'unused_dependency'"
-  },
-  {
-    "timestamp": "2025-12-26T01:40:08.393622",
-    "action": "ABORTED",
-    "issue": {
-      "category": "unused_code",
-      "type": "unused_dependency",
-      "severity": "low",
-      "description": "Possibly unused dependency: @radix-ui/react-toast",
-      "package": "@radix-ui/react-toast",
-      "solution": "Remove if not needed: npm uninstall @radix-ui/react-toast",
-      "priority": "P4",
-      "priority_score": 4
-    },
-    "reason": "Sem rollback definido para 'unused_dependency'"
-  },
-  {
-    "timestamp": "2025-12-26T01:40:08.399147",
-    "action": "ABORTED",
-    "issue": {
-      "category": "unused_code",
-      "type": "unused_dependency",
-      "severity": "low",
-      "description": "Possibly unused dependency: @tanstack/react-query",
-      "package": "@tanstack/react-query",
-      "solution": "Remove if not needed: npm uninstall @tanstack/react-query",
-      "priority": "P4",
-      "priority_score": 4
-    },
-    "reason": "Sem rollback definido para 'unused_dependency'"
-  },
-  {
-    "timestamp": "2025-12-26T01:40:08.924833",
-    "action": "ABORTED",
-    "issue": {
-      "category": "dependencies",
-      "type": "missing_pip_package",
-      "severity": "high",
-      "description": "Missing pip package: opentelemetry-api",
-      "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
-      "package": "opentelemetry-api",
-      "priority": "P2",
-      "priority_score": 2
-    },
-    "reason": "Prioridade P2 n\u00e3o autorizada para auto-healing"
-  },
-  {
-    "timestamp": "2025-12-26T01:40:08.933095",
-    "action": "ABORTED",
-    "issue": {
-      "category": "dependencies",
-      "type": "missing_pip_package",
-      "severity": "high",
-      "description": "Missing pip package: opentelemetry-exporter-otlp",
-      "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
-      "package": "opentelemetry-exporter-otlp",
-      "priority": "P2",
-      "priority_score": 2
-    },
-    "reason": "Prioridade P2 n\u00e3o autorizada para auto-healing"
-  },
-  {
-    "timestamp": "2025-12-26T01:40:08.940296",
-    "action": "ABORTED",
-    "issue": {
-      "category": "dependencies",
-      "type": "missing_pip_package",
-      "severity": "high",
-      "description": "Missing pip package: opentelemetry-instrumentation-fastapi",
-      "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
-      "package": "opentelemetry-instrumentation-fastapi",
-      "priority": "P2",
-      "priority_score": 2
-    },
-    "reason": "Prioridade P2 n\u00e3o autorizada para auto-healing"
-  },
-  {
-    "timestamp": "2025-12-26T01:40:08.947086",
-    "action": "ABORTED",
-    "issue": {
-      "category": "dependencies",
-      "type": "missing_pip_package",
-      "severity": "high",
-      "description": "Missing pip package: opentelemetry-instrumentation-httpx",
-      "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
-      "package": "opentelemetry-instrumentation-httpx",
-      "priority": "P2",
-      "priority_score": 2
-    },
-    "reason": "Prioridade P2 n\u00e3o autorizada para auto-healing"
-  },
-  {
-    "timestamp": "2025-12-26T01:40:08.953952",
-    "action": "ABORTED",
-    "issue": {
-      "category": "dependencies",
-      "type": "missing_pip_package",
-      "severity": "high",
-      "description": "Missing pip package: opentelemetry-instrumentation-redis",
-      "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
-      "package": "opentelemetry-instrumentation-redis",
-      "priority": "P2",
-      "priority_score": 2
-    },
-    "reason": "Prioridade P2 n\u00e3o autorizada para auto-healing"
-  },
-  {
-    "timestamp": "2025-12-26T01:40:08.960002",
-    "action": "ABORTED",
-    "issue": {
-      "category": "dependencies",
-      "type": "missing_pip_package",
-      "severity": "high",
-      "description": "Missing pip package: opentelemetry-instrumentation-sqlalchemy",
-      "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
-      "package": "opentelemetry-instrumentation-sqlalchemy",
-      "priority": "P2",
-      "priority_score": 2
-    },
-    "reason": "Prioridade P2 n\u00e3o autorizada para auto-healing"
-  },
-  {
-    "timestamp": "2025-12-26T01:40:08.966174",
-    "action": "ABORTED",
-    "issue": {
-      "category": "dependencies",
-      "type": "missing_pip_package",
-      "severity": "high",
-      "description": "Missing pip package: opentelemetry-sdk",
-      "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
-      "package": "opentelemetry-sdk",
-      "priority": "P2",
-      "priority_score": 2
-    },
-    "reason": "Prioridade P2 n\u00e3o autorizada para auto-healing"
-  },
-  {
-    "timestamp": "2025-12-26T01:40:08.973511",
-    "action": "ABORTED",
-    "issue": {
-      "category": "code_quality",
-      "type": "excessive_any",
-      "severity": "low",
-      "description": "Excessive use of \"any\" type in DashboardGraficos.tsx",
-      "count": 7,
-      "file": "/opt/conecta-plus/frontend/src/components/financeiro/DashboardGraficos.tsx",
-      "solution": "Replace \"any\" with proper types",
-      "priority": "P4",
-      "priority_score": 4
-    },
-    "reason": "Sem rollback definido para 'excessive_any'"
-  },
-  {
-    "timestamp": "2025-12-26T01:40:08.980545",
-    "action": "ABORTED",
-    "issue": {
-      "category": "unused_code",
-      "type": "unused_dependency",
-      "severity": "low",
-      "description": "Possibly unused dependency: @prisma/adapter-pg",
-      "package": "@prisma/adapter-pg",
-      "solution": "Remove if not needed: npm uninstall @prisma/adapter-pg",
-      "priority": "P4",
-      "priority_score": 4
-    },
-    "reason": "Sem rollback definido para 'unused_dependency'"
-  },
-  {
-    "timestamp": "2025-12-26T01:40:08.986064",
-    "action": "ABORTED",
-    "issue": {
-      "category": "unused_code",
-      "type": "unused_dependency",
-      "severity": "low",
-      "description": "Possibly unused dependency: @prisma/client",
-      "package": "@prisma/client",
-      "solution": "Remove if not needed: npm uninstall @prisma/client",
-      "priority": "P4",
-      "priority_score": 4
-    },
-    "reason": "Sem rollback definido para 'unused_dependency'"
-  },
-  {
-    "timestamp": "2025-12-26T01:40:08.991913",
-    "action": "ABORTED",
-    "issue": {
-      "category": "unused_code",
-      "type": "unused_dependency",
-      "severity": "low",
-      "description": "Possibly unused dependency: @radix-ui/react-avatar",
-      "package": "@radix-ui/react-avatar",
-      "solution": "Remove if not needed: npm uninstall @radix-ui/react-avatar",
-      "priority": "P4",
-      "priority_score": 4
-    },
-    "reason": "Sem rollback definido para 'unused_dependency'"
-  },
-  {
-    "timestamp": "2025-12-26T01:40:08.997787",
-    "action": "ABORTED",
-    "issue": {
-      "category": "unused_code",
-      "type": "unused_dependency",
-      "severity": "low",
-      "description": "Possibly unused dependency: @radix-ui/react-dialog",
-      "package": "@radix-ui/react-dialog",
-      "solution": "Remove if not needed: npm uninstall @radix-ui/react-dialog",
-      "priority": "P4",
-      "priority_score": 4
-    },
-    "reason": "Sem rollback definido para 'unused_dependency'"
-  },
-  {
-    "timestamp": "2025-12-26T01:40:09.004611",
-    "action": "ABORTED",
-    "issue": {
-      "category": "unused_code",
-      "type": "unused_dependency",
-      "severity": "low",
-      "description": "Possibly unused dependency: @radix-ui/react-dropdown-menu",
-      "package": "@radix-ui/react-dropdown-menu",
-      "solution": "Remove if not needed: npm uninstall @radix-ui/react-dropdown-menu",
-      "priority": "P4",
-      "priority_score": 4
-    },
-    "reason": "Sem rollback definido para 'unused_dependency'"
-  },
-  {
-    "timestamp": "2025-12-26T01:40:09.011140",
-    "action": "ABORTED",
-    "issue": {
-      "category": "unused_code",
-      "type": "unused_dependency",
-      "severity": "low",
-      "description": "Possibly unused dependency: @radix-ui/react-select",
-      "package": "@radix-ui/react-select",
-      "solution": "Remove if not needed: npm uninstall @radix-ui/react-select",
-      "priority": "P4",
-      "priority_score": 4
-    },
-    "reason": "Sem rollback definido para 'unused_dependency'"
-  },
-  {
-    "timestamp": "2025-12-26T01:40:09.016478",
-    "action": "ABORTED",
-    "issue": {
-      "category": "unused_code",
-      "type": "unused_dependency",
-      "severity": "low",
-      "description": "Possibly unused dependency: @radix-ui/react-slot",
-      "package": "@radix-ui/react-slot",
-      "solution": "Remove if not needed: npm uninstall @radix-ui/react-slot",
-      "priority": "P4",
-      "priority_score": 4
-    },
-    "reason": "Sem rollback definido para 'unused_dependency'"
-  },
-  {
-    "timestamp": "2025-12-26T01:40:09.022442",
-    "action": "ABORTED",
-    "issue": {
-      "category": "unused_code",
-      "type": "unused_dependency",
-      "severity": "low",
-      "description": "Possibly unused dependency: @radix-ui/react-tabs",
-      "package": "@radix-ui/react-tabs",
-      "solution": "Remove if not needed: npm uninstall @radix-ui/react-tabs",
-      "priority": "P4",
-      "priority_score": 4
-    },
-    "reason": "Sem rollback definido para 'unused_dependency'"
-  },
-  {
-    "timestamp": "2025-12-26T01:40:09.028310",
-    "action": "ABORTED",
-    "issue": {
-      "category": "unused_code",
-      "type": "unused_dependency",
-      "severity": "low",
-      "description": "Possibly unused dependency: @radix-ui/react-toast",
-      "package": "@radix-ui/react-toast",
-      "solution": "Remove if not needed: npm uninstall @radix-ui/react-toast",
-      "priority": "P4",
-      "priority_score": 4
-    },
-    "reason": "Sem rollback definido para 'unused_dependency'"
-  },
-  {
-    "timestamp": "2025-12-26T01:40:09.034205",
-    "action": "ABORTED",
-    "issue": {
-      "category": "unused_code",
-      "type": "unused_dependency",
-      "severity": "low",
-      "description": "Possibly unused dependency: @tanstack/react-query",
-      "package": "@tanstack/react-query",
-      "solution": "Remove if not needed: npm uninstall @tanstack/react-query",
-      "priority": "P4",
-      "priority_score": 4
-    },
-    "reason": "Sem rollback definido para 'unused_dependency'"
-  },
-  {
-    "timestamp": "2025-12-26T01:41:28.190068",
-    "action": "ABORTED",
-    "issue": {
-      "category": "dependencies",
-      "type": "missing_pip_package",
-      "severity": "high",
-      "description": "Missing pip package: opentelemetry-api",
-      "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
-      "package": "opentelemetry-api",
-      "priority": "P2",
-      "priority_score": 2
-    },
-    "reason": "Prioridade P2 n\u00e3o autorizada para auto-healing"
-  },
-  {
-    "timestamp": "2025-12-26T01:41:28.197548",
-    "action": "ABORTED",
-    "issue": {
-      "category": "dependencies",
-      "type": "missing_pip_package",
-      "severity": "high",
-      "description": "Missing pip package: opentelemetry-exporter-otlp",
-      "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
-      "package": "opentelemetry-exporter-otlp",
-      "priority": "P2",
-      "priority_score": 2
-    },
-    "reason": "Prioridade P2 n\u00e3o autorizada para auto-healing"
-  },
-  {
-    "timestamp": "2025-12-26T01:41:28.204093",
-    "action": "ABORTED",
-    "issue": {
-      "category": "dependencies",
-      "type": "missing_pip_package",
-      "severity": "high",
-      "description": "Missing pip package: opentelemetry-instrumentation-fastapi",
-      "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
-      "package": "opentelemetry-instrumentation-fastapi",
-      "priority": "P2",
-      "priority_score": 2
-    },
-    "reason": "Prioridade P2 n\u00e3o autorizada para auto-healing"
-  },
-  {
-    "timestamp": "2025-12-26T01:41:28.210272",
-    "action": "ABORTED",
-    "issue": {
-      "category": "dependencies",
-      "type": "missing_pip_package",
-      "severity": "high",
-      "description": "Missing pip package: opentelemetry-instrumentation-httpx",
-      "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
-      "package": "opentelemetry-instrumentation-httpx",
-      "priority": "P2",
-      "priority_score": 2
-    },
-    "reason": "Prioridade P2 n\u00e3o autorizada para auto-healing"
-  },
-  {
     "timestamp": "2025-12-26T01:41:28.215750",
     "action": "ABORTED",
     "issue": {
@@ -7514,6 +6430,1090 @@
   },
   {
     "timestamp": "2025-12-26T01:56:59.601628",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @tanstack/react-query",
+      "package": "@tanstack/react-query",
+      "solution": "Remove if not needed: npm uninstall @tanstack/react-query",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-26T01:58:19.569904",
+    "action": "ABORTED",
+    "issue": {
+      "category": "dependencies",
+      "type": "missing_pip_package",
+      "severity": "high",
+      "description": "Missing pip package: opentelemetry-api",
+      "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
+      "package": "opentelemetry-api",
+      "priority": "P2",
+      "priority_score": 2
+    },
+    "reason": "Prioridade P2 n\u00e3o autorizada para auto-healing"
+  },
+  {
+    "timestamp": "2025-12-26T01:58:19.577469",
+    "action": "ABORTED",
+    "issue": {
+      "category": "dependencies",
+      "type": "missing_pip_package",
+      "severity": "high",
+      "description": "Missing pip package: opentelemetry-exporter-otlp",
+      "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
+      "package": "opentelemetry-exporter-otlp",
+      "priority": "P2",
+      "priority_score": 2
+    },
+    "reason": "Prioridade P2 n\u00e3o autorizada para auto-healing"
+  },
+  {
+    "timestamp": "2025-12-26T01:58:19.583468",
+    "action": "ABORTED",
+    "issue": {
+      "category": "dependencies",
+      "type": "missing_pip_package",
+      "severity": "high",
+      "description": "Missing pip package: opentelemetry-instrumentation-fastapi",
+      "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
+      "package": "opentelemetry-instrumentation-fastapi",
+      "priority": "P2",
+      "priority_score": 2
+    },
+    "reason": "Prioridade P2 n\u00e3o autorizada para auto-healing"
+  },
+  {
+    "timestamp": "2025-12-26T01:58:19.589220",
+    "action": "ABORTED",
+    "issue": {
+      "category": "dependencies",
+      "type": "missing_pip_package",
+      "severity": "high",
+      "description": "Missing pip package: opentelemetry-instrumentation-httpx",
+      "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
+      "package": "opentelemetry-instrumentation-httpx",
+      "priority": "P2",
+      "priority_score": 2
+    },
+    "reason": "Prioridade P2 n\u00e3o autorizada para auto-healing"
+  },
+  {
+    "timestamp": "2025-12-26T01:58:19.596151",
+    "action": "ABORTED",
+    "issue": {
+      "category": "dependencies",
+      "type": "missing_pip_package",
+      "severity": "high",
+      "description": "Missing pip package: opentelemetry-instrumentation-redis",
+      "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
+      "package": "opentelemetry-instrumentation-redis",
+      "priority": "P2",
+      "priority_score": 2
+    },
+    "reason": "Prioridade P2 n\u00e3o autorizada para auto-healing"
+  },
+  {
+    "timestamp": "2025-12-26T01:58:19.602342",
+    "action": "ABORTED",
+    "issue": {
+      "category": "dependencies",
+      "type": "missing_pip_package",
+      "severity": "high",
+      "description": "Missing pip package: opentelemetry-instrumentation-sqlalchemy",
+      "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
+      "package": "opentelemetry-instrumentation-sqlalchemy",
+      "priority": "P2",
+      "priority_score": 2
+    },
+    "reason": "Prioridade P2 n\u00e3o autorizada para auto-healing"
+  },
+  {
+    "timestamp": "2025-12-26T01:58:19.609580",
+    "action": "ABORTED",
+    "issue": {
+      "category": "dependencies",
+      "type": "missing_pip_package",
+      "severity": "high",
+      "description": "Missing pip package: opentelemetry-sdk",
+      "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
+      "package": "opentelemetry-sdk",
+      "priority": "P2",
+      "priority_score": 2
+    },
+    "reason": "Prioridade P2 n\u00e3o autorizada para auto-healing"
+  },
+  {
+    "timestamp": "2025-12-26T01:58:19.617847",
+    "action": "ABORTED",
+    "issue": {
+      "category": "code_quality",
+      "type": "excessive_any",
+      "severity": "low",
+      "description": "Excessive use of \"any\" type in DashboardGraficos.tsx",
+      "count": 7,
+      "file": "/opt/conecta-plus/frontend/src/components/financeiro/DashboardGraficos.tsx",
+      "solution": "Replace \"any\" with proper types",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'excessive_any'"
+  },
+  {
+    "timestamp": "2025-12-26T01:58:19.624608",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @prisma/adapter-pg",
+      "package": "@prisma/adapter-pg",
+      "solution": "Remove if not needed: npm uninstall @prisma/adapter-pg",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-26T01:58:19.631394",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @prisma/client",
+      "package": "@prisma/client",
+      "solution": "Remove if not needed: npm uninstall @prisma/client",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-26T01:58:19.638359",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-avatar",
+      "package": "@radix-ui/react-avatar",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-avatar",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-26T01:58:19.646143",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-dialog",
+      "package": "@radix-ui/react-dialog",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-dialog",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-26T01:58:19.653420",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-dropdown-menu",
+      "package": "@radix-ui/react-dropdown-menu",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-dropdown-menu",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-26T01:58:19.660959",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-select",
+      "package": "@radix-ui/react-select",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-select",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-26T01:58:19.700399",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-slot",
+      "package": "@radix-ui/react-slot",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-slot",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-26T01:58:19.707500",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-tabs",
+      "package": "@radix-ui/react-tabs",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-tabs",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-26T01:58:19.714987",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-toast",
+      "package": "@radix-ui/react-toast",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-toast",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-26T01:58:19.722659",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @tanstack/react-query",
+      "package": "@tanstack/react-query",
+      "solution": "Remove if not needed: npm uninstall @tanstack/react-query",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-26T01:58:19.820310",
+    "action": "ABORTED",
+    "issue": {
+      "category": "dependencies",
+      "type": "missing_pip_package",
+      "severity": "high",
+      "description": "Missing pip package: opentelemetry-api",
+      "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
+      "package": "opentelemetry-api",
+      "priority": "P2",
+      "priority_score": 2
+    },
+    "reason": "Prioridade P2 n\u00e3o autorizada para auto-healing"
+  },
+  {
+    "timestamp": "2025-12-26T01:58:19.829270",
+    "action": "ABORTED",
+    "issue": {
+      "category": "dependencies",
+      "type": "missing_pip_package",
+      "severity": "high",
+      "description": "Missing pip package: opentelemetry-exporter-otlp",
+      "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
+      "package": "opentelemetry-exporter-otlp",
+      "priority": "P2",
+      "priority_score": 2
+    },
+    "reason": "Prioridade P2 n\u00e3o autorizada para auto-healing"
+  },
+  {
+    "timestamp": "2025-12-26T01:58:19.836448",
+    "action": "ABORTED",
+    "issue": {
+      "category": "dependencies",
+      "type": "missing_pip_package",
+      "severity": "high",
+      "description": "Missing pip package: opentelemetry-instrumentation-fastapi",
+      "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
+      "package": "opentelemetry-instrumentation-fastapi",
+      "priority": "P2",
+      "priority_score": 2
+    },
+    "reason": "Prioridade P2 n\u00e3o autorizada para auto-healing"
+  },
+  {
+    "timestamp": "2025-12-26T01:58:19.842919",
+    "action": "ABORTED",
+    "issue": {
+      "category": "dependencies",
+      "type": "missing_pip_package",
+      "severity": "high",
+      "description": "Missing pip package: opentelemetry-instrumentation-httpx",
+      "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
+      "package": "opentelemetry-instrumentation-httpx",
+      "priority": "P2",
+      "priority_score": 2
+    },
+    "reason": "Prioridade P2 n\u00e3o autorizada para auto-healing"
+  },
+  {
+    "timestamp": "2025-12-26T01:58:19.849667",
+    "action": "ABORTED",
+    "issue": {
+      "category": "dependencies",
+      "type": "missing_pip_package",
+      "severity": "high",
+      "description": "Missing pip package: opentelemetry-instrumentation-redis",
+      "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
+      "package": "opentelemetry-instrumentation-redis",
+      "priority": "P2",
+      "priority_score": 2
+    },
+    "reason": "Prioridade P2 n\u00e3o autorizada para auto-healing"
+  },
+  {
+    "timestamp": "2025-12-26T01:58:19.856052",
+    "action": "ABORTED",
+    "issue": {
+      "category": "dependencies",
+      "type": "missing_pip_package",
+      "severity": "high",
+      "description": "Missing pip package: opentelemetry-instrumentation-sqlalchemy",
+      "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
+      "package": "opentelemetry-instrumentation-sqlalchemy",
+      "priority": "P2",
+      "priority_score": 2
+    },
+    "reason": "Prioridade P2 n\u00e3o autorizada para auto-healing"
+  },
+  {
+    "timestamp": "2025-12-26T01:58:19.862853",
+    "action": "ABORTED",
+    "issue": {
+      "category": "dependencies",
+      "type": "missing_pip_package",
+      "severity": "high",
+      "description": "Missing pip package: opentelemetry-sdk",
+      "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
+      "package": "opentelemetry-sdk",
+      "priority": "P2",
+      "priority_score": 2
+    },
+    "reason": "Prioridade P2 n\u00e3o autorizada para auto-healing"
+  },
+  {
+    "timestamp": "2025-12-26T01:58:19.870263",
+    "action": "ABORTED",
+    "issue": {
+      "category": "code_quality",
+      "type": "excessive_any",
+      "severity": "low",
+      "description": "Excessive use of \"any\" type in DashboardGraficos.tsx",
+      "count": 7,
+      "file": "/opt/conecta-plus/frontend/src/components/financeiro/DashboardGraficos.tsx",
+      "solution": "Replace \"any\" with proper types",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'excessive_any'"
+  },
+  {
+    "timestamp": "2025-12-26T01:58:19.877403",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @prisma/adapter-pg",
+      "package": "@prisma/adapter-pg",
+      "solution": "Remove if not needed: npm uninstall @prisma/adapter-pg",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-26T01:58:19.884365",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @prisma/client",
+      "package": "@prisma/client",
+      "solution": "Remove if not needed: npm uninstall @prisma/client",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-26T01:58:19.890685",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-avatar",
+      "package": "@radix-ui/react-avatar",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-avatar",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-26T01:58:19.896822",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-dialog",
+      "package": "@radix-ui/react-dialog",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-dialog",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-26T01:58:19.902963",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-dropdown-menu",
+      "package": "@radix-ui/react-dropdown-menu",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-dropdown-menu",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-26T01:58:19.909930",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-select",
+      "package": "@radix-ui/react-select",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-select",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-26T01:58:19.916631",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-slot",
+      "package": "@radix-ui/react-slot",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-slot",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-26T01:58:19.954574",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-tabs",
+      "package": "@radix-ui/react-tabs",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-tabs",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-26T01:58:19.962805",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-toast",
+      "package": "@radix-ui/react-toast",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-toast",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-26T01:58:19.970290",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @tanstack/react-query",
+      "package": "@tanstack/react-query",
+      "solution": "Remove if not needed: npm uninstall @tanstack/react-query",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-26T01:59:39.789579",
+    "action": "ABORTED",
+    "issue": {
+      "category": "dependencies",
+      "type": "missing_pip_package",
+      "severity": "high",
+      "description": "Missing pip package: opentelemetry-api",
+      "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
+      "package": "opentelemetry-api",
+      "priority": "P2",
+      "priority_score": 2
+    },
+    "reason": "Prioridade P2 n\u00e3o autorizada para auto-healing"
+  },
+  {
+    "timestamp": "2025-12-26T01:59:39.797784",
+    "action": "ABORTED",
+    "issue": {
+      "category": "dependencies",
+      "type": "missing_pip_package",
+      "severity": "high",
+      "description": "Missing pip package: opentelemetry-exporter-otlp",
+      "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
+      "package": "opentelemetry-exporter-otlp",
+      "priority": "P2",
+      "priority_score": 2
+    },
+    "reason": "Prioridade P2 n\u00e3o autorizada para auto-healing"
+  },
+  {
+    "timestamp": "2025-12-26T01:59:39.804412",
+    "action": "ABORTED",
+    "issue": {
+      "category": "dependencies",
+      "type": "missing_pip_package",
+      "severity": "high",
+      "description": "Missing pip package: opentelemetry-instrumentation-fastapi",
+      "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
+      "package": "opentelemetry-instrumentation-fastapi",
+      "priority": "P2",
+      "priority_score": 2
+    },
+    "reason": "Prioridade P2 n\u00e3o autorizada para auto-healing"
+  },
+  {
+    "timestamp": "2025-12-26T01:59:39.811499",
+    "action": "ABORTED",
+    "issue": {
+      "category": "dependencies",
+      "type": "missing_pip_package",
+      "severity": "high",
+      "description": "Missing pip package: opentelemetry-instrumentation-httpx",
+      "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
+      "package": "opentelemetry-instrumentation-httpx",
+      "priority": "P2",
+      "priority_score": 2
+    },
+    "reason": "Prioridade P2 n\u00e3o autorizada para auto-healing"
+  },
+  {
+    "timestamp": "2025-12-26T01:59:39.818772",
+    "action": "ABORTED",
+    "issue": {
+      "category": "dependencies",
+      "type": "missing_pip_package",
+      "severity": "high",
+      "description": "Missing pip package: opentelemetry-instrumentation-redis",
+      "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
+      "package": "opentelemetry-instrumentation-redis",
+      "priority": "P2",
+      "priority_score": 2
+    },
+    "reason": "Prioridade P2 n\u00e3o autorizada para auto-healing"
+  },
+  {
+    "timestamp": "2025-12-26T01:59:39.825503",
+    "action": "ABORTED",
+    "issue": {
+      "category": "dependencies",
+      "type": "missing_pip_package",
+      "severity": "high",
+      "description": "Missing pip package: opentelemetry-instrumentation-sqlalchemy",
+      "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
+      "package": "opentelemetry-instrumentation-sqlalchemy",
+      "priority": "P2",
+      "priority_score": 2
+    },
+    "reason": "Prioridade P2 n\u00e3o autorizada para auto-healing"
+  },
+  {
+    "timestamp": "2025-12-26T01:59:39.832415",
+    "action": "ABORTED",
+    "issue": {
+      "category": "dependencies",
+      "type": "missing_pip_package",
+      "severity": "high",
+      "description": "Missing pip package: opentelemetry-sdk",
+      "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
+      "package": "opentelemetry-sdk",
+      "priority": "P2",
+      "priority_score": 2
+    },
+    "reason": "Prioridade P2 n\u00e3o autorizada para auto-healing"
+  },
+  {
+    "timestamp": "2025-12-26T01:59:39.838926",
+    "action": "ABORTED",
+    "issue": {
+      "category": "code_quality",
+      "type": "excessive_any",
+      "severity": "low",
+      "description": "Excessive use of \"any\" type in DashboardGraficos.tsx",
+      "count": 7,
+      "file": "/opt/conecta-plus/frontend/src/components/financeiro/DashboardGraficos.tsx",
+      "solution": "Replace \"any\" with proper types",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'excessive_any'"
+  },
+  {
+    "timestamp": "2025-12-26T01:59:39.845770",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @prisma/adapter-pg",
+      "package": "@prisma/adapter-pg",
+      "solution": "Remove if not needed: npm uninstall @prisma/adapter-pg",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-26T01:59:39.853542",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @prisma/client",
+      "package": "@prisma/client",
+      "solution": "Remove if not needed: npm uninstall @prisma/client",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-26T01:59:39.861306",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-avatar",
+      "package": "@radix-ui/react-avatar",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-avatar",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-26T01:59:39.869074",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-dialog",
+      "package": "@radix-ui/react-dialog",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-dialog",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-26T01:59:39.875744",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-dropdown-menu",
+      "package": "@radix-ui/react-dropdown-menu",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-dropdown-menu",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-26T01:59:39.882584",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-select",
+      "package": "@radix-ui/react-select",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-select",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-26T01:59:39.888992",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-slot",
+      "package": "@radix-ui/react-slot",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-slot",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-26T01:59:39.897176",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-tabs",
+      "package": "@radix-ui/react-tabs",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-tabs",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-26T01:59:39.903808",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-toast",
+      "package": "@radix-ui/react-toast",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-toast",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-26T01:59:39.910387",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @tanstack/react-query",
+      "package": "@tanstack/react-query",
+      "solution": "Remove if not needed: npm uninstall @tanstack/react-query",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-26T01:59:39.990824",
+    "action": "ABORTED",
+    "issue": {
+      "category": "dependencies",
+      "type": "missing_pip_package",
+      "severity": "high",
+      "description": "Missing pip package: opentelemetry-api",
+      "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
+      "package": "opentelemetry-api",
+      "priority": "P2",
+      "priority_score": 2
+    },
+    "reason": "Prioridade P2 n\u00e3o autorizada para auto-healing"
+  },
+  {
+    "timestamp": "2025-12-26T01:59:39.999014",
+    "action": "ABORTED",
+    "issue": {
+      "category": "dependencies",
+      "type": "missing_pip_package",
+      "severity": "high",
+      "description": "Missing pip package: opentelemetry-exporter-otlp",
+      "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
+      "package": "opentelemetry-exporter-otlp",
+      "priority": "P2",
+      "priority_score": 2
+    },
+    "reason": "Prioridade P2 n\u00e3o autorizada para auto-healing"
+  },
+  {
+    "timestamp": "2025-12-26T01:59:40.006198",
+    "action": "ABORTED",
+    "issue": {
+      "category": "dependencies",
+      "type": "missing_pip_package",
+      "severity": "high",
+      "description": "Missing pip package: opentelemetry-instrumentation-fastapi",
+      "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
+      "package": "opentelemetry-instrumentation-fastapi",
+      "priority": "P2",
+      "priority_score": 2
+    },
+    "reason": "Prioridade P2 n\u00e3o autorizada para auto-healing"
+  },
+  {
+    "timestamp": "2025-12-26T01:59:40.014082",
+    "action": "ABORTED",
+    "issue": {
+      "category": "dependencies",
+      "type": "missing_pip_package",
+      "severity": "high",
+      "description": "Missing pip package: opentelemetry-instrumentation-httpx",
+      "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
+      "package": "opentelemetry-instrumentation-httpx",
+      "priority": "P2",
+      "priority_score": 2
+    },
+    "reason": "Prioridade P2 n\u00e3o autorizada para auto-healing"
+  },
+  {
+    "timestamp": "2025-12-26T01:59:40.021689",
+    "action": "ABORTED",
+    "issue": {
+      "category": "dependencies",
+      "type": "missing_pip_package",
+      "severity": "high",
+      "description": "Missing pip package: opentelemetry-instrumentation-redis",
+      "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
+      "package": "opentelemetry-instrumentation-redis",
+      "priority": "P2",
+      "priority_score": 2
+    },
+    "reason": "Prioridade P2 n\u00e3o autorizada para auto-healing"
+  },
+  {
+    "timestamp": "2025-12-26T01:59:40.028596",
+    "action": "ABORTED",
+    "issue": {
+      "category": "dependencies",
+      "type": "missing_pip_package",
+      "severity": "high",
+      "description": "Missing pip package: opentelemetry-instrumentation-sqlalchemy",
+      "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
+      "package": "opentelemetry-instrumentation-sqlalchemy",
+      "priority": "P2",
+      "priority_score": 2
+    },
+    "reason": "Prioridade P2 n\u00e3o autorizada para auto-healing"
+  },
+  {
+    "timestamp": "2025-12-26T01:59:40.035107",
+    "action": "ABORTED",
+    "issue": {
+      "category": "dependencies",
+      "type": "missing_pip_package",
+      "severity": "high",
+      "description": "Missing pip package: opentelemetry-sdk",
+      "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
+      "package": "opentelemetry-sdk",
+      "priority": "P2",
+      "priority_score": 2
+    },
+    "reason": "Prioridade P2 n\u00e3o autorizada para auto-healing"
+  },
+  {
+    "timestamp": "2025-12-26T01:59:40.042732",
+    "action": "ABORTED",
+    "issue": {
+      "category": "code_quality",
+      "type": "excessive_any",
+      "severity": "low",
+      "description": "Excessive use of \"any\" type in DashboardGraficos.tsx",
+      "count": 7,
+      "file": "/opt/conecta-plus/frontend/src/components/financeiro/DashboardGraficos.tsx",
+      "solution": "Replace \"any\" with proper types",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'excessive_any'"
+  },
+  {
+    "timestamp": "2025-12-26T01:59:40.049678",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @prisma/adapter-pg",
+      "package": "@prisma/adapter-pg",
+      "solution": "Remove if not needed: npm uninstall @prisma/adapter-pg",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-26T01:59:40.056794",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @prisma/client",
+      "package": "@prisma/client",
+      "solution": "Remove if not needed: npm uninstall @prisma/client",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-26T01:59:40.063696",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-avatar",
+      "package": "@radix-ui/react-avatar",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-avatar",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-26T01:59:40.070490",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-dialog",
+      "package": "@radix-ui/react-dialog",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-dialog",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-26T01:59:40.077198",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-dropdown-menu",
+      "package": "@radix-ui/react-dropdown-menu",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-dropdown-menu",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-26T01:59:40.086160",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-select",
+      "package": "@radix-ui/react-select",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-select",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-26T01:59:40.094074",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-slot",
+      "package": "@radix-ui/react-slot",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-slot",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-26T01:59:40.102030",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-tabs",
+      "package": "@radix-ui/react-tabs",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-tabs",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-26T01:59:40.109612",
+    "action": "ABORTED",
+    "issue": {
+      "category": "unused_code",
+      "type": "unused_dependency",
+      "severity": "low",
+      "description": "Possibly unused dependency: @radix-ui/react-toast",
+      "package": "@radix-ui/react-toast",
+      "solution": "Remove if not needed: npm uninstall @radix-ui/react-toast",
+      "priority": "P4",
+      "priority_score": 4
+    },
+    "reason": "Sem rollback definido para 'unused_dependency'"
+  },
+  {
+    "timestamp": "2025-12-26T01:59:40.118713",
     "action": "ABORTED",
     "issue": {
       "category": "unused_code",

@@ -1,230 +1,14 @@
 {
   "current_score": 0.5,
   "max_score": 10.0,
-  "total_attempts": 28430,
+  "total_attempts": 28466,
   "total_successes": 1,
   "total_failures": 0,
-  "total_aborted": 28429,
+  "total_aborted": 28465,
   "p4_successes": 1,
   "p3_enabled": false,
-  "last_update": "2025-12-26T01:56:59.601157",
+  "last_update": "2025-12-26T01:59:40.117952",
   "history": [
-    {
-      "timestamp": "2025-12-26T01:49:34.626700",
-      "result": "aborted",
-      "priority": "P4",
-      "score_after": 0.5
-    },
-    {
-      "timestamp": "2025-12-26T01:49:34.634235",
-      "result": "aborted",
-      "priority": "P4",
-      "score_after": 0.5
-    },
-    {
-      "timestamp": "2025-12-26T01:49:34.641252",
-      "result": "aborted",
-      "priority": "P4",
-      "score_after": 0.5
-    },
-    {
-      "timestamp": "2025-12-26T01:49:34.648801",
-      "result": "aborted",
-      "priority": "P4",
-      "score_after": 0.5
-    },
-    {
-      "timestamp": "2025-12-26T01:49:34.656429",
-      "result": "aborted",
-      "priority": "P4",
-      "score_after": 0.5
-    },
-    {
-      "timestamp": "2025-12-26T01:49:34.665143",
-      "result": "aborted",
-      "priority": "P4",
-      "score_after": 0.5
-    },
-    {
-      "timestamp": "2025-12-26T01:49:34.672156",
-      "result": "aborted",
-      "priority": "P4",
-      "score_after": 0.5
-    },
-    {
-      "timestamp": "2025-12-26T01:49:34.679689",
-      "result": "aborted",
-      "priority": "P4",
-      "score_after": 0.5
-    },
-    {
-      "timestamp": "2025-12-26T01:49:34.686767",
-      "result": "aborted",
-      "priority": "P4",
-      "score_after": 0.5
-    },
-    {
-      "timestamp": "2025-12-26T01:49:34.694248",
-      "result": "aborted",
-      "priority": "P4",
-      "score_after": 0.5
-    },
-    {
-      "timestamp": "2025-12-26T01:50:54.269954",
-      "result": "aborted",
-      "priority": "P2",
-      "score_after": 0.5
-    },
-    {
-      "timestamp": "2025-12-26T01:50:54.280855",
-      "result": "aborted",
-      "priority": "P2",
-      "score_after": 0.5
-    },
-    {
-      "timestamp": "2025-12-26T01:50:54.289229",
-      "result": "aborted",
-      "priority": "P2",
-      "score_after": 0.5
-    },
-    {
-      "timestamp": "2025-12-26T01:50:54.299579",
-      "result": "aborted",
-      "priority": "P2",
-      "score_after": 0.5
-    },
-    {
-      "timestamp": "2025-12-26T01:50:54.307178",
-      "result": "aborted",
-      "priority": "P2",
-      "score_after": 0.5
-    },
-    {
-      "timestamp": "2025-12-26T01:50:54.314860",
-      "result": "aborted",
-      "priority": "P2",
-      "score_after": 0.5
-    },
-    {
-      "timestamp": "2025-12-26T01:50:54.322772",
-      "result": "aborted",
-      "priority": "P2",
-      "score_after": 0.5
-    },
-    {
-      "timestamp": "2025-12-26T01:50:54.329834",
-      "result": "aborted",
-      "priority": "P4",
-      "score_after": 0.5
-    },
-    {
-      "timestamp": "2025-12-26T01:50:54.336834",
-      "result": "aborted",
-      "priority": "P4",
-      "score_after": 0.5
-    },
-    {
-      "timestamp": "2025-12-26T01:50:54.345331",
-      "result": "aborted",
-      "priority": "P4",
-      "score_after": 0.5
-    },
-    {
-      "timestamp": "2025-12-26T01:50:54.353546",
-      "result": "aborted",
-      "priority": "P4",
-      "score_after": 0.5
-    },
-    {
-      "timestamp": "2025-12-26T01:50:54.359699",
-      "result": "aborted",
-      "priority": "P4",
-      "score_after": 0.5
-    },
-    {
-      "timestamp": "2025-12-26T01:50:54.365957",
-      "result": "aborted",
-      "priority": "P4",
-      "score_after": 0.5
-    },
-    {
-      "timestamp": "2025-12-26T01:50:54.373677",
-      "result": "aborted",
-      "priority": "P4",
-      "score_after": 0.5
-    },
-    {
-      "timestamp": "2025-12-26T01:50:54.381017",
-      "result": "aborted",
-      "priority": "P4",
-      "score_after": 0.5
-    },
-    {
-      "timestamp": "2025-12-26T01:50:54.389180",
-      "result": "aborted",
-      "priority": "P4",
-      "score_after": 0.5
-    },
-    {
-      "timestamp": "2025-12-26T01:50:54.396932",
-      "result": "aborted",
-      "priority": "P4",
-      "score_after": 0.5
-    },
-    {
-      "timestamp": "2025-12-26T01:50:54.406106",
-      "result": "aborted",
-      "priority": "P4",
-      "score_after": 0.5
-    },
-    {
-      "timestamp": "2025-12-26T01:52:14.331002",
-      "result": "aborted",
-      "priority": "P2",
-      "score_after": 0.5
-    },
-    {
-      "timestamp": "2025-12-26T01:52:14.339748",
-      "result": "aborted",
-      "priority": "P2",
-      "score_after": 0.5
-    },
-    {
-      "timestamp": "2025-12-26T01:52:14.347468",
-      "result": "aborted",
-      "priority": "P2",
-      "score_after": 0.5
-    },
-    {
-      "timestamp": "2025-12-26T01:52:14.355238",
-      "result": "aborted",
-      "priority": "P2",
-      "score_after": 0.5
-    },
-    {
-      "timestamp": "2025-12-26T01:52:14.362562",
-      "result": "aborted",
-      "priority": "P2",
-      "score_after": 0.5
-    },
-    {
-      "timestamp": "2025-12-26T01:52:14.369408",
-      "result": "aborted",
-      "priority": "P2",
-      "score_after": 0.5
-    },
-    {
-      "timestamp": "2025-12-26T01:52:14.376696",
-      "result": "aborted",
-      "priority": "P2",
-      "score_after": 0.5
-    },
-    {
-      "timestamp": "2025-12-26T01:52:14.384593",
-      "result": "aborted",
-      "priority": "P4",
-      "score_after": 0.5
-    },
     {
       "timestamp": "2025-12-26T01:52:14.392116",
       "result": "aborted",
@@ -605,6 +389,222 @@
     },
     {
       "timestamp": "2025-12-26T01:56:59.601149",
+      "result": "aborted",
+      "priority": "P4",
+      "score_after": 0.5
+    },
+    {
+      "timestamp": "2025-12-26T01:58:19.818677",
+      "result": "aborted",
+      "priority": "P2",
+      "score_after": 0.5
+    },
+    {
+      "timestamp": "2025-12-26T01:58:19.828665",
+      "result": "aborted",
+      "priority": "P2",
+      "score_after": 0.5
+    },
+    {
+      "timestamp": "2025-12-26T01:58:19.835849",
+      "result": "aborted",
+      "priority": "P2",
+      "score_after": 0.5
+    },
+    {
+      "timestamp": "2025-12-26T01:58:19.842353",
+      "result": "aborted",
+      "priority": "P2",
+      "score_after": 0.5
+    },
+    {
+      "timestamp": "2025-12-26T01:58:19.849096",
+      "result": "aborted",
+      "priority": "P2",
+      "score_after": 0.5
+    },
+    {
+      "timestamp": "2025-12-26T01:58:19.855478",
+      "result": "aborted",
+      "priority": "P2",
+      "score_after": 0.5
+    },
+    {
+      "timestamp": "2025-12-26T01:58:19.862184",
+      "result": "aborted",
+      "priority": "P2",
+      "score_after": 0.5
+    },
+    {
+      "timestamp": "2025-12-26T01:58:19.869685",
+      "result": "aborted",
+      "priority": "P4",
+      "score_after": 0.5
+    },
+    {
+      "timestamp": "2025-12-26T01:58:19.876801",
+      "result": "aborted",
+      "priority": "P4",
+      "score_after": 0.5
+    },
+    {
+      "timestamp": "2025-12-26T01:58:19.883771",
+      "result": "aborted",
+      "priority": "P4",
+      "score_after": 0.5
+    },
+    {
+      "timestamp": "2025-12-26T01:58:19.890125",
+      "result": "aborted",
+      "priority": "P4",
+      "score_after": 0.5
+    },
+    {
+      "timestamp": "2025-12-26T01:58:19.896302",
+      "result": "aborted",
+      "priority": "P4",
+      "score_after": 0.5
+    },
+    {
+      "timestamp": "2025-12-26T01:58:19.902490",
+      "result": "aborted",
+      "priority": "P4",
+      "score_after": 0.5
+    },
+    {
+      "timestamp": "2025-12-26T01:58:19.909264",
+      "result": "aborted",
+      "priority": "P4",
+      "score_after": 0.5
+    },
+    {
+      "timestamp": "2025-12-26T01:58:19.915958",
+      "result": "aborted",
+      "priority": "P4",
+      "score_after": 0.5
+    },
+    {
+      "timestamp": "2025-12-26T01:58:19.953968",
+      "result": "aborted",
+      "priority": "P4",
+      "score_after": 0.5
+    },
+    {
+      "timestamp": "2025-12-26T01:58:19.962110",
+      "result": "aborted",
+      "priority": "P4",
+      "score_after": 0.5
+    },
+    {
+      "timestamp": "2025-12-26T01:58:19.969582",
+      "result": "aborted",
+      "priority": "P4",
+      "score_after": 0.5
+    },
+    {
+      "timestamp": "2025-12-26T01:59:39.989988",
+      "result": "aborted",
+      "priority": "P2",
+      "score_after": 0.5
+    },
+    {
+      "timestamp": "2025-12-26T01:59:39.998491",
+      "result": "aborted",
+      "priority": "P2",
+      "score_after": 0.5
+    },
+    {
+      "timestamp": "2025-12-26T01:59:40.005573",
+      "result": "aborted",
+      "priority": "P2",
+      "score_after": 0.5
+    },
+    {
+      "timestamp": "2025-12-26T01:59:40.013311",
+      "result": "aborted",
+      "priority": "P2",
+      "score_after": 0.5
+    },
+    {
+      "timestamp": "2025-12-26T01:59:40.021008",
+      "result": "aborted",
+      "priority": "P2",
+      "score_after": 0.5
+    },
+    {
+      "timestamp": "2025-12-26T01:59:40.027956",
+      "result": "aborted",
+      "priority": "P2",
+      "score_after": 0.5
+    },
+    {
+      "timestamp": "2025-12-26T01:59:40.034433",
+      "result": "aborted",
+      "priority": "P2",
+      "score_after": 0.5
+    },
+    {
+      "timestamp": "2025-12-26T01:59:40.042077",
+      "result": "aborted",
+      "priority": "P4",
+      "score_after": 0.5
+    },
+    {
+      "timestamp": "2025-12-26T01:59:40.049119",
+      "result": "aborted",
+      "priority": "P4",
+      "score_after": 0.5
+    },
+    {
+      "timestamp": "2025-12-26T01:59:40.056199",
+      "result": "aborted",
+      "priority": "P4",
+      "score_after": 0.5
+    },
+    {
+      "timestamp": "2025-12-26T01:59:40.063123",
+      "result": "aborted",
+      "priority": "P4",
+      "score_after": 0.5
+    },
+    {
+      "timestamp": "2025-12-26T01:59:40.069892",
+      "result": "aborted",
+      "priority": "P4",
+      "score_after": 0.5
+    },
+    {
+      "timestamp": "2025-12-26T01:59:40.076554",
+      "result": "aborted",
+      "priority": "P4",
+      "score_after": 0.5
+    },
+    {
+      "timestamp": "2025-12-26T01:59:40.085351",
+      "result": "aborted",
+      "priority": "P4",
+      "score_after": 0.5
+    },
+    {
+      "timestamp": "2025-12-26T01:59:40.093425",
+      "result": "aborted",
+      "priority": "P4",
+      "score_after": 0.5
+    },
+    {
+      "timestamp": "2025-12-26T01:59:40.101309",
+      "result": "aborted",
+      "priority": "P4",
+      "score_after": 0.5
+    },
+    {
+      "timestamp": "2025-12-26T01:59:40.109031",
+      "result": "aborted",
+      "priority": "P4",
+      "score_after": 0.5
+    },
+    {
+      "timestamp": "2025-12-26T01:59:40.117943",
       "result": "aborted",
       "priority": "P4",
       "score_after": 0.5
