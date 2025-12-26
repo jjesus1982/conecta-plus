@@ -45,6 +45,112 @@ services:
       - "com.conectaplus.role=master"
       - "com.conectaplus.replication=enabled"
 
+  # PostgreSQL Replica - Streaming Replication (Hot Standby)
+  # Inicia fazendo pg_basebackup do master e entra em modo standby
+  postgres-replica:
+    image: postgres:16-alpine
+    container_name: conecta-postgres-replica
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-conecta_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB:-conecta_db}
+      PGUSER: ${POSTGRES_USER:-conecta_user}
+      PGPASSWORD: ${POSTGRES_PASSWORD}
+      # Senha do usuario replicator (definida no script de init do master)
+      REPLICATOR_PASSWORD: ${REPLICATOR_PASSWORD:-repl_conecta_2024_secure}
+      TZ: America/Sao_Paulo
+    volumes:
+      - postgres_replica_data:/var/lib/postgresql/data
+      - ./config/postgres/replica:/docker-entrypoint-initdb.d:ro
+      - ./shared/backups/postgres:/backups:ro
+    ports:
+      - "5433:5432"
+    networks:
+      - conecta-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+    # Script de inicializacao: faz basebackup se necessario, configura standby
+    command: >
+      bash -c "
+        set -e
+
+        # Se o diretorio de dados estiver vazio, fazer basebackup
+        if [ ! -f /var/lib/postgresql/data/PG_VERSION ]; then
+          echo '[REPLICA] Diretorio vazio. Iniciando pg_basebackup do master...'
+
+          # Aguarda master estar pronto
+          until PGPASSWORD=$$REPLICATOR_PASSWORD pg_isready -h postgres -p 5432 -U replicator; do
+            echo '[REPLICA] Aguardando master...'
+            sleep 2
+          done
+
+          echo '[REPLICA] Master disponivel. Executando pg_basebackup...'
+
+          # Executa backup base
+          PGPASSWORD=$$REPLICATOR_PASSWORD pg_basebackup \
+            -h postgres \
+            -p 5432 \
+            -U replicator \
+            -D /var/lib/postgresql/data \
+            -Fp \
+            -Xs \
+            -P \
+            -R \
+            -S replica_slot
+
+          echo '[REPLICA] Basebackup concluido!'
+
+          # Cria standby.signal (modo standby)
+          touch /var/lib/postgresql/data/standby.signal
+
+          # Configura conexao com master
+          cat > /var/lib/postgresql/data/postgresql.auto.conf << EOF
+        primary_conninfo = 'host=postgres port=5432 user=replicator password=$$REPLICATOR_PASSWORD application_name=postgres_replica'
+        primary_slot_name = 'replica_slot'
+        hot_standby = on
+        hot_standby_feedback = on
+        EOF
+
+          # Ajusta permissoes
+          chown -R postgres:postgres /var/lib/postgresql/data
+          chmod 700 /var/lib/postgresql/data
+
+          echo '[REPLICA] Configuracao de standby concluida!'
+        else
+          echo '[REPLICA] Dados existentes encontrados. Verificando modo...'
+
+          # Verifica se esta em modo standby
+          if [ -f /var/lib/postgresql/data/standby.signal ]; then
+            echo '[REPLICA] Modo standby ativo.'
+          else
+            echo '[REPLICA] AVISO: Nao esta em modo standby. Pode ter sido promovido.'
+          fi
+        fi
+
+        echo '[REPLICA] Iniciando PostgreSQL em modo replica...'
+        exec docker-entrypoint.sh postgres
+      "
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-conecta_user} -d ${POSTGRES_DB:-conecta_db}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+    labels:
+      - "com.conectaplus.service=postgres"
+      - "com.conectaplus.role=replica"
+      - "com.conectaplus.replication=standby"
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 1G
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+
   # Redis - Cache e Filas
   redis:
     image: redis:7-alpine
@@ -476,6 +582,8 @@ networks:
 volumes:
   postgres_data:
     name: conecta-postgres-data
+  postgres_replica_data:
+    name: conecta-postgres-replica-data
   redis_data:
     name: conecta-redis-data
   mongodb_data:

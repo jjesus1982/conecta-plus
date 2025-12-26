@@ -9,6 +9,7 @@ from .logger import (
     StructuredLogger,
     LogContext,
     with_correlation_id,
+    ObservabilityMiddleware,
 )
 
 __all__ = [
@@ -17,4 +18,5 @@ __all__ = [
     'StructuredLogger',
     'LogContext',
     'with_correlation_id',
+    'ObservabilityMiddleware',
 ]

@@ -135,26 +135,51 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
 
 class LoginRateLimitMiddleware(BaseHTTPMiddleware):
     """
-    Rate limiting especifico para endpoints de login.
+    Rate limiting especifico para endpoints de autenticacao e endpoints criticos.
     Mais restritivo para prevenir ataques de forca bruta.
 
-    Limites:
+    Limites para Login:
     - 5 tentativas por minuto por IP
     - 20 tentativas por hora por IP
     - Bloqueio progressivo apos falhas consecutivas
+
+    Limites para Endpoints Criticos (password reset, LDAP, OAuth):
+    - 3 tentativas por minuto por IP
+    - 10 tentativas por hora por IP
     """
 
-    def __init__(self, app, login_paths: Optional[list] = None):
+    def __init__(self, app, login_paths: Optional[list] = None, critical_paths: Optional[list] = None):
         super().__init__(app)
-        self.login_paths = login_paths or ["/api/v1/auth/login", "/api/v1/auth/token"]
+        # Endpoints de login
+        self.login_paths = login_paths or [
+            "/api/v1/auth/login",
+            "/api/v1/auth/login/json",
+            "/api/v1/auth/token",
+        ]
 
-        # Contadores por minuto e hora
+        # Endpoints criticos (password reset, SSO, etc)
+        self.critical_paths = critical_paths or [
+            "/api/v1/auth/change-password",
+            "/api/v1/auth/ldap/login",
+            "/api/v1/auth/refresh",
+        ]
+
+        # Contadores por minuto e hora para login
         self._minute_requests: Dict[str, list] = defaultdict(list)
         self._hour_requests: Dict[str, list] = defaultdict(list)
         self._failed_attempts: Dict[str, int] = defaultdict(int)
 
+        # Contadores separados para endpoints criticos
+        self._critical_minute: Dict[str, list] = defaultdict(list)
+        self._critical_hour: Dict[str, list] = defaultdict(list)
+
+        # Limites para login
         self.minute_limit = 5
         self.hour_limit = 20
+
+        # Limites para endpoints criticos (mais restritivos)
+        self.critical_minute_limit = 3
+        self.critical_hour_limit = 10
 
     def _get_ip(self, request: Request) -> str:
         """Extrai IP do cliente."""
@@ -174,52 +199,133 @@ class LoginRateLimitMiddleware(BaseHTTPMiddleware):
         self._hour_requests[ip] = [
             ts for ts in self._hour_requests[ip] if ts > hour_cutoff
         ]
+        self._critical_minute[ip] = [
+            ts for ts in self._critical_minute[ip] if ts > minute_cutoff
+        ]
+        self._critical_hour[ip] = [
+            ts for ts in self._critical_hour[ip] if ts > hour_cutoff
+        ]
+
+    def _is_login_path(self, path: str) -> bool:
+        """Verifica se path e de login."""
+        return any(path.startswith(p) for p in self.login_paths)
+
+    def _is_critical_path(self, path: str) -> bool:
+        """Verifica se path e critico."""
+        return any(path.startswith(p) for p in self.critical_paths)
 
     async def dispatch(self, request: Request, call_next: Callable) -> Response:
-        # Apenas verificar paths de login
-        if not any(request.url.path.startswith(path) for path in self.login_paths):
+        path = request.url.path
+        is_login = self._is_login_path(path)
+        is_critical = self._is_critical_path(path)
+
+        # Se nao e login nem critico, passa direto
+        if not is_login and not is_critical:
             return await call_next(request)
 
         ip = self._get_ip(request)
         current_time = time.time()
         self._clean_old(ip, current_time)
 
-        # Verificar limite por minuto
-        if len(self._minute_requests[ip]) >= self.minute_limit:
-            logger.warning(f"Login rate limit (minuto) excedido para IP {ip}")
-            return JSONResponse(
-                status_code=429,
-                content={
-                    "detail": "Muitas tentativas de login. Aguarde 1 minuto.",
-                    "retry_after": 60,
-                },
-                headers={"Retry-After": "60"},
-            )
+        # Rate limiting para endpoints de login
+        if is_login:
+            # Verificar limite por minuto
+            if len(self._minute_requests[ip]) >= self.minute_limit:
+                logger.warning(f"Login rate limit (minuto) excedido para IP {ip}")
+                return JSONResponse(
+                    status_code=429,
+                    content={
+                        "detail": "Muitas tentativas de login. Aguarde 1 minuto.",
+                        "retry_after": 60,
+                    },
+                    headers={
+                        "Retry-After": "60",
+                        "X-RateLimit-Limit": str(self.minute_limit),
+                        "X-RateLimit-Remaining": "0",
+                        "X-RateLimit-Reset": "60",
+                    },
+                )
 
-        # Verificar limite por hora
-        if len(self._hour_requests[ip]) >= self.hour_limit:
-            logger.warning(f"Login rate limit (hora) excedido para IP {ip}")
-            return JSONResponse(
-                status_code=429,
-                content={
-                    "detail": "Muitas tentativas de login. Aguarde 1 hora.",
-                    "retry_after": 3600,
-                },
-                headers={"Retry-After": "3600"},
-            )
+            # Verificar limite por hora
+            if len(self._hour_requests[ip]) >= self.hour_limit:
+                logger.warning(f"Login rate limit (hora) excedido para IP {ip}")
+                return JSONResponse(
+                    status_code=429,
+                    content={
+                        "detail": "Muitas tentativas de login. Aguarde 1 hora.",
+                        "retry_after": 3600,
+                    },
+                    headers={
+                        "Retry-After": "3600",
+                        "X-RateLimit-Limit": str(self.hour_limit),
+                        "X-RateLimit-Remaining": "0",
+                        "X-RateLimit-Reset": "3600",
+                    },
+                )
 
-        # Registrar tentativa
-        self._minute_requests[ip].append(current_time)
-        self._hour_requests[ip].append(current_time)
+            # Registrar tentativa
+            self._minute_requests[ip].append(current_time)
+            self._hour_requests[ip].append(current_time)
+
+        # Rate limiting para endpoints criticos
+        if is_critical:
+            # Verificar limite por minuto
+            if len(self._critical_minute[ip]) >= self.critical_minute_limit:
+                logger.warning(f"Critical endpoint rate limit (minuto) excedido para IP {ip} - Path: {path}")
+                return JSONResponse(
+                    status_code=429,
+                    content={
+                        "detail": "Muitas requisicoes. Aguarde 1 minuto.",
+                        "retry_after": 60,
+                    },
+                    headers={
+                        "Retry-After": "60",
+                        "X-RateLimit-Limit": str(self.critical_minute_limit),
+                        "X-RateLimit-Remaining": "0",
+                        "X-RateLimit-Reset": "60",
+                    },
+                )
+
+            # Verificar limite por hora
+            if len(self._critical_hour[ip]) >= self.critical_hour_limit:
+                logger.warning(f"Critical endpoint rate limit (hora) excedido para IP {ip} - Path: {path}")
+                return JSONResponse(
+                    status_code=429,
+                    content={
+                        "detail": "Muitas requisicoes. Aguarde 1 hora.",
+                        "retry_after": 3600,
+                    },
+                    headers={
+                        "Retry-After": "3600",
+                        "X-RateLimit-Limit": str(self.critical_hour_limit),
+                        "X-RateLimit-Remaining": "0",
+                        "X-RateLimit-Reset": "3600",
+                    },
+                )
+
+            # Registrar tentativa
+            self._critical_minute[ip].append(current_time)
+            self._critical_hour[ip].append(current_time)
 
         response = await call_next(request)
 
-        # Rastrear falhas para bloqueio progressivo
-        if response.status_code == 401:
-            self._failed_attempts[ip] += 1
-            if self._failed_attempts[ip] >= 10:
-                logger.error(f"Multiplas falhas de login para IP {ip} - possivel ataque")
-        elif response.status_code == 200:
-            self._failed_attempts[ip] = 0
+        # Rastrear falhas para bloqueio progressivo (apenas login)
+        if is_login:
+            if response.status_code == 401:
+                self._failed_attempts[ip] += 1
+                if self._failed_attempts[ip] >= 10:
+                    logger.error(f"Multiplas falhas de login para IP {ip} - possivel ataque")
+            elif response.status_code == 200:
+                self._failed_attempts[ip] = 0
+
+        # Adicionar headers de rate limit na resposta
+        if is_login:
+            remaining = max(0, self.minute_limit - len(self._minute_requests[ip]))
+            response.headers["X-RateLimit-Limit"] = str(self.minute_limit)
+            response.headers["X-RateLimit-Remaining"] = str(remaining)
+        elif is_critical:
+            remaining = max(0, self.critical_minute_limit - len(self._critical_minute[ip]))
+            response.headers["X-RateLimit-Limit"] = str(self.critical_minute_limit)
+            response.headers["X-RateLimit-Remaining"] = str(remaining)
 
         return response

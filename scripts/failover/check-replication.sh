@@ -15,6 +15,7 @@ NC='\033[0m'
 
 MASTER_CONTAINER="conecta-postgres"
 REPLICA_CONTAINER="conecta-postgres-replica"
+# NOTA: O banco real usa conecta_user/conecta_db (verificado via pg_roles/pg_database)
 POSTGRES_USER="${POSTGRES_USER:-conecta_user}"
 POSTGRES_DB="${POSTGRES_DB:-conecta_db}"
 

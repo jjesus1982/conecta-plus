@@ -1,7 +1,8 @@
 [Unit]
 Description=Conecta Plus Cache Warmup Service
 Documentation=https://github.com/conecta-plus/docs
-After=docker.service
+After=docker.service network-online.target
+Wants=network-online.target
 Requires=docker.service
 ConditionPathExists=/opt/conecta-plus/scripts/warmup.py
 
@@ -10,16 +11,29 @@ Type=oneshot
 User=root
 Group=root
 WorkingDirectory=/opt/conecta-plus
+
+# Variaveis de ambiente
 Environment=BACKEND_URL=http://localhost:8000
 Environment=REDIS_HOST=localhost
 Environment=REDIS_PORT=6379
-Environment=REDIS_URL=redis://:redis_secret_2024@localhost:6379/0
-ExecStartPre=/bin/sleep 30
-ExecStart=/opt/conecta-plus/scripts/warmup-service.sh
+Environment=PYTHONPATH=/opt/conecta-plus
+
+# Aguarda servicos estarem prontos antes de executar
+ExecStartPre=/bin/bash -c 'for i in {1..30}; do curl -sf http://localhost:8000/health && break || sleep 2; done'
+
+# Executa o warmup
+ExecStart=/usr/bin/python3 /opt/conecta-plus/scripts/warmup.py --verbose
+
+# Logging
 StandardOutput=append:/opt/conecta-plus/logs/warmup-service.log
 StandardError=append:/opt/conecta-plus/logs/warmup-service.log
+
+# Nao reiniciar automaticamente
 Restart=no
 RemainAfterExit=yes
+
+# Timeout para o warmup
+TimeoutStartSec=120
 
 [Install]
 WantedBy=multi-user.target

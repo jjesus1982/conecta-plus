@@ -1,7 +1,7 @@
 """
 Conecta Plus - Health Check Unificado
 Endpoint de saúde com status de todos os componentes
-Inclui monitoramento de Circuit Breakers
+Inclui monitoramento de Circuit Breakers e métricas de sistema
 """
 
 from fastapi import APIRouter, Response
@@ -9,6 +9,7 @@ from datetime import datetime
 import time
 import asyncio
 import json
+import psutil
 from typing import Dict, Any, Optional
 
 from ..services.observability import logger
@@ -17,6 +18,7 @@ from ..services.resilience import (
     get_all_resilience_stats,
     CircuitState,
 )
+from ..config import settings
 
 router = APIRouter(tags=["Health"])
 
@@ -123,6 +125,36 @@ def check_circuit_breakers() -> Dict[str, Any]:
         }
 
 
+def check_memory() -> Dict[str, Any]:
+    """Verifica uso de memória do processo e do sistema."""
+    try:
+        # Memória do processo atual
+        process = psutil.Process()
+        process_memory = process.memory_info()
+
+        # Memória do sistema
+        system_memory = psutil.virtual_memory()
+
+        return {
+            "status": "healthy",
+            "process": {
+                "used_mb": round(process_memory.rss / (1024 * 1024), 2),
+                "percent": round(process_memory.rss / system_memory.total * 100, 2)
+            },
+            "system": {
+                "total_mb": round(system_memory.total / (1024 * 1024), 2),
+                "available_mb": round(system_memory.available / (1024 * 1024), 2),
+                "used_mb": round(system_memory.used / (1024 * 1024), 2),
+                "percent": round(system_memory.percent, 2)
+            }
+        }
+    except Exception as e:
+        return {
+            "status": "unknown",
+            "error": str(e)
+        }
+
+
 @router.get("/health")
 async def health_check():
     """
@@ -130,9 +162,12 @@ async def health_check():
 
     Retorna:
     - status: "healthy" | "degraded" | "unhealthy"
+    - timestamp: momento da verificação (ISO8601)
+    - version: versão da aplicação
+    - uptime_seconds: tempo desde o início
     - components: status individual de cada componente
+    - memory: uso de memória do processo e sistema
     - circuit_breakers: estado de todos os circuit breakers
-    - timestamp: momento da verificação
     """
     start = time.time()
 
@@ -151,12 +186,23 @@ async def health_check():
 
     event_check = check_event_stream()
     circuit_check = check_circuit_breakers()
+    memory_check = check_memory()
 
+    # Componentes principais com latência
     components = {
+        "database": {
+            "status": db_check.get("status", "unknown"),
+            "latency_ms": db_check.get("latency_ms", 0)
+        },
+        "redis": {
+            "status": redis_check.get("status", "unknown"),
+            "latency_ms": redis_check.get("latency_ms", 0)
+        },
         "api": {"status": "healthy"},
-        "database": db_check,
-        "redis": redis_check,
-        "event_stream": event_check,
+        "event_stream": {
+            "status": event_check.get("status", "unknown"),
+            "subscribers": event_check.get("subscribers", 0)
+        },
         "circuit_breakers": {
             "status": circuit_check["status"],
             "summary": {
@@ -168,18 +214,32 @@ async def health_check():
         }
     }
 
-    # Determinar status geral
-    statuses = [c.get("status", "unknown") for c in components.values()]
+    # Adicionar erros se existirem
+    if "error" in db_check:
+        components["database"]["error"] = db_check["error"]
+    if "error" in redis_check:
+        components["redis"]["error"] = redis_check["error"]
 
-    if all(s == "healthy" for s in statuses):
-        overall_status = "healthy"
-        status_code = 200
-    elif any(s == "unhealthy" for s in ["database", "api"]):
-        # Componentes críticos
+    # Determinar status geral baseado em componentes críticos
+    db_status = components["database"]["status"]
+    redis_status = components["redis"]["status"]
+    circuit_status = circuit_check["status"]
+
+    if db_status == "unhealthy":
         overall_status = "unhealthy"
         status_code = 503
-    elif any(s in ["degraded", "warning"] for s in statuses):
+    elif redis_status == "unhealthy":
         overall_status = "degraded"
+        status_code = 200
+    elif circuit_status in ["degraded", "warning"]:
+        overall_status = "degraded"
+        status_code = 200
+    elif all(c.get("status") == "healthy" for c in [
+        components["database"],
+        components["redis"],
+        components["api"]
+    ]):
+        overall_status = "healthy"
         status_code = 200
     else:
         overall_status = "degraded"
@@ -187,13 +247,20 @@ async def health_check():
 
     duration_ms = (time.time() - start) * 1000
 
+    # Formato de memória simplificado no nível raiz
+    memory_simplified = {
+        "used_mb": memory_check.get("process", {}).get("used_mb", 0),
+        "percent": memory_check.get("process", {}).get("percent", 0)
+    }
+
     response_data = {
         "status": overall_status,
         "timestamp": datetime.utcnow().isoformat() + "Z",
-        "version": "2.0.0",
+        "version": settings.APP_VERSION,
         "uptime_seconds": int(time.time() - _startup_time),
-        "check_duration_ms": round(duration_ms, 2),
         "components": components,
+        "memory": memory_simplified,
+        "check_duration_ms": round(duration_ms, 2),
         "circuit_breakers": circuit_check.get("circuits", {})
     }
 
@@ -201,7 +268,8 @@ async def health_check():
         "Health check completed",
         status=overall_status,
         duration_ms=round(duration_ms, 2),
-        circuits_open=circuit_check.get("open", 0)
+        circuits_open=circuit_check.get("open", 0),
+        memory_mb=memory_simplified["used_mb"]
     )
 
     return Response(
@@ -352,6 +420,60 @@ async def reset_circuit_breaker(circuit_name: str):
             media_type="application/json",
             status_code=500
         )
+
+
+@router.get("/health/memory")
+async def memory_status():
+    """
+    Status detalhado de uso de memória.
+
+    Retorna métricas do processo atual e do sistema:
+    - Memória RSS do processo
+    - Memória total/disponível do sistema
+    - Percentuais de uso
+    """
+    memory_check = check_memory()
+
+    return {
+        "timestamp": datetime.utcnow().isoformat() + "Z",
+        "status": memory_check.get("status", "unknown"),
+        "process": memory_check.get("process", {}),
+        "system": memory_check.get("system", {})
+    }
+
+
+@router.get("/health/warmup")
+async def warmup_status():
+    """
+    Status do ultimo warmup executado.
+
+    Retorna informacoes sobre o warmup de startup:
+    - Timestamp de execucao
+    - Duracao total
+    - Status de cada componente (database, redis, cache)
+    """
+    try:
+        from ..services.warmup import get_last_warmup_report
+
+        report = get_last_warmup_report()
+        if report:
+            return {
+                "status": "available",
+                "timestamp": datetime.utcnow().isoformat() + "Z",
+                "warmup": report
+            }
+        else:
+            return {
+                "status": "not_executed",
+                "timestamp": datetime.utcnow().isoformat() + "Z",
+                "message": "Nenhum warmup executado ainda"
+            }
+    except Exception as e:
+        return {
+            "status": "error",
+            "timestamp": datetime.utcnow().isoformat() + "Z",
+            "error": str(e)
+        }
 
 
 # Tempo de inicialização

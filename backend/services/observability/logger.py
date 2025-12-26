@@ -245,19 +245,85 @@ from fastapi import Request
 from starlette.middleware.base import BaseHTTPMiddleware
 import time
 
+# Metricas Prometheus para logging
+try:
+    from prometheus_client import Counter
+
+    LOG_MESSAGES_TOTAL = Counter(
+        'log_messages_total',
+        'Total log messages by level',
+        ['level', 'service']
+    )
+
+    ERROR_LOGS_TOTAL = Counter(
+        'error_logs_total',
+        'Total error logs with details',
+        ['error_type', 'endpoint']
+    )
+
+    PROMETHEUS_AVAILABLE = True
+except ImportError:
+    PROMETHEUS_AVAILABLE = False
+
+
+def _extract_user_id(request: Request) -> Optional[str]:
+    """Extrai user_id do token JWT se disponivel."""
+    auth_header = request.headers.get("Authorization", "")
+    if auth_header.startswith("Bearer "):
+        try:
+            import jwt
+            token = auth_header[7:]
+            # Decodifica sem verificar (apenas para logging)
+            payload = jwt.decode(token, options={"verify_signature": False})
+            return str(payload.get("sub"))
+        except Exception:
+            pass
+    return None
+
+
+def _get_client_ip(request: Request) -> str:
+    """Extrai IP real do cliente considerando proxies."""
+    forwarded = request.headers.get("X-Forwarded-For")
+    if forwarded:
+        return forwarded.split(",")[0].strip()
+    real_ip = request.headers.get("X-Real-IP")
+    if real_ip:
+        return real_ip
+    return request.client.host if request.client else "unknown"
+
 
 class ObservabilityMiddleware(BaseHTTPMiddleware):
-    """Middleware para adicionar observabilidade às requests."""
+    """Middleware para adicionar observabilidade completa as requests."""
+
+    # Paths a ignorar no logging detalhado
+    EXCLUDE_PATHS = ["/health", "/health/live", "/health/ready", "/metrics", "/favicon.ico"]
 
     async def dispatch(self, request: Request, call_next):
+        path = str(request.url.path)
+
+        # Skip paths excluidos
+        if any(path.startswith(p) for p in self.EXCLUDE_PATHS):
+            return await call_next(request)
+
         # Gerar ou extrair correlation ID
         correlation_id = request.headers.get('X-Correlation-ID') or str(uuid.uuid4())
         LogContext.set_correlation_id(correlation_id)
 
+        # Extrair informacoes da request
+        client_ip = _get_client_ip(request)
+        user_id = _extract_user_id(request)
+        method = request.method
+
         # Adicionar contexto da request
-        LogContext.set_context('path', str(request.url.path))
-        LogContext.set_context('method', request.method)
-        LogContext.set_context('client_ip', request.client.host if request.client else 'unknown')
+        LogContext.set_context('path', path)
+        LogContext.set_context('method', method)
+        LogContext.set_context('client_ip', client_ip)
+        if user_id:
+            LogContext.set_context('user_id', user_id)
+
+        # Adicionar ao request.state para outros middlewares
+        request.state.correlation_id = correlation_id
+        request.state.user_id = user_id
 
         start_time = time.time()
 
@@ -266,25 +332,47 @@ class ObservabilityMiddleware(BaseHTTPMiddleware):
 
             # Log da request
             duration_ms = (time.time() - start_time) * 1000
+
+            # Log estruturado com todos os campos
             logger.api_request(
-                method=request.method,
-                path=str(request.url.path),
+                method=method,
+                path=path,
                 status_code=response.status_code,
-                duration_ms=round(duration_ms, 2)
+                duration_ms=round(duration_ms, 2),
+                user_id=user_id,
+                client_ip=client_ip
             )
 
-            # Adicionar correlation ID ao response
+            # Incrementar metrica Prometheus
+            if PROMETHEUS_AVAILABLE:
+                log_level = "error" if response.status_code >= 500 else "warning" if response.status_code >= 400 else "info"
+                LOG_MESSAGES_TOTAL.labels(level=log_level, service="conecta-plus").inc()
+
+            # Adicionar headers de rastreamento
             response.headers['X-Correlation-ID'] = correlation_id
+            response.headers['X-Response-Time'] = f"{duration_ms:.2f}ms"
 
             return response
 
         except Exception as e:
             duration_ms = (time.time() - start_time) * 1000
+            error_type = type(e).__name__
+
+            # Log erro com stack trace completo
             logger.error(
-                f"Request failed: {request.method} {request.url.path}",
+                f"Request failed: {method} {path}",
                 exc=e,
-                duration_ms=round(duration_ms, 2)
+                duration_ms=round(duration_ms, 2),
+                user_id=user_id,
+                client_ip=client_ip,
+                error_type=error_type
             )
+
+            # Incrementar metricas de erro
+            if PROMETHEUS_AVAILABLE:
+                LOG_MESSAGES_TOTAL.labels(level="error", service="conecta-plus").inc()
+                ERROR_LOGS_TOTAL.labels(error_type=error_type, endpoint=path).inc()
+
             raise
 
         finally:

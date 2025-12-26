@@ -11,24 +11,27 @@ Configuracao de alta disponibilidade usando PostgreSQL Streaming Replication.
 ## Arquitetura
 
 ```
-                    ┌─────────────────┐
-                    │   Aplicacoes    │
-                    │  (api-gateway,  │
-                    │   orchestrator) │
-                    └────────┬────────┘
-                             │
-                    ┌────────▼────────┐
-                    │    PgBouncer    │ (opcional)
-                    │    porta 6432   │
-                    └───────┬─┬───────┘
-                            │ │
-            ┌───────────────┘ └───────────────┐
-            │ WRITE                      READ │
-            ▼                                 ▼
-    ┌───────────────┐               ┌───────────────┐
-    │    MASTER     │──── WAL ─────>│   REPLICA     │
-    │  porta 5432   │   Streaming   │  porta 5433   │
-    └───────────────┘               └───────────────┘
+                    +-------------------+
+                    |    Aplicacoes     |
+                    |   (api-gateway,   |
+                    |   orchestrator)   |
+                    +--------+----------+
+                             |
+                    +--------v----------+
+                    |    Load Balancer  |
+                    |      (nginx)      |
+                    +--------+----------+
+                             |
+            +----------------+----------------+
+            |                                 |
+            v WRITE                      READ v
+    +---------------+               +---------------+
+    |    MASTER     |---- WAL ----->|   REPLICA     |
+    |  porta 5432   |   Streaming   |  porta 5433   |
+    | conecta-      |               | conecta-      |
+    | postgres      |               | postgres-     |
+    +---------------+               | replica       |
+                                    +---------------+
 ```
 
 ## Arquivos de Configuracao
@@ -38,223 +41,335 @@ Configuracao de alta disponibilidade usando PostgreSQL Streaming Replication.
 | `/opt/conecta-plus/config/postgres/postgresql.conf` | Config do master |
 | `/opt/conecta-plus/config/postgres/pg_hba.conf` | Regras de acesso |
 | `/opt/conecta-plus/config/postgres/init/02-setup-replication.sql` | Setup inicial |
-| `/opt/conecta-plus/infrastructure/docker/docker-compose.replica.yml` | Compose da replica |
-| `/opt/conecta-plus/infrastructure/docker/config/postgres-replica/postgresql.conf` | Config da replica |
+| `/opt/conecta-plus/docker-compose.yml` | Compose com master e replica |
 
 ## Scripts de Gerenciamento
 
 | Script | Descricao |
 |--------|-----------|
-| `./scripts/failover/setup-master.sh` | Configura master para replicacao |
-| `./scripts/failover/check-replication.sh` | Verifica status da replicacao |
-| `./scripts/failover/promote-replica.sh` | Promove replica para master (failover) |
+| `check-replication.sh` | Verifica status da replicacao |
+| `promote-replica.sh` | Promove replica para master (failover emergencial) |
+| `switchover.sh` | Troca planejada entre master e replica |
+| `rebuild-replica.sh` | Reconstroi replica a partir do master |
+| `auto-failover.sh` | Monitora e executa failover automatico |
+| `setup-master.sh` | Configura master para replicacao |
 
 ---
 
-## PASSO A PASSO: Ativar Replicacao
+## INICIO RAPIDO
 
-### 1. Preparar o Master
+### Iniciar Replicacao
 
 ```bash
 cd /opt/conecta-plus
 
-# Reiniciar postgres com nova configuracao
-docker compose down postgres
-docker compose up -d postgres
+# Iniciar master e replica
+docker compose up -d postgres postgres-replica
 
-# Aguardar inicializacao
-sleep 10
-
-# Executar setup do master
-./scripts/failover/setup-master.sh
+# Verificar status (aguarde 1-2 minutos para sincronizar)
+./scripts/failover/check-replication.sh
 ```
 
-### 2. Verificar Master
+A replica ira automaticamente:
+1. Detectar que nao tem dados
+2. Executar pg_basebackup do master
+3. Configurar-se como standby
+4. Iniciar streaming replication
+
+---
+
+## CENARIOS DE USO
+
+### 1. Failover de Emergencia (Master caiu)
 
 ```bash
-# Verificar se wal_level esta correto
-docker exec conecta-postgres psql -U conecta_user -d conecta_db -c "SHOW wal_level;"
-# Deve retornar: replica
+# 1. Verificar que master esta offline
+docker exec conecta-postgres pg_isready
+# Deve falhar
 
-# Verificar slots
-docker exec conecta-postgres psql -U conecta_user -d conecta_db -c "SELECT * FROM pg_replication_slots;"
-# Deve mostrar: replica_slot
+# 2. Verificar replica
+docker exec conecta-postgres-replica pg_isready
+# Deve responder
 
-# Verificar usuario replicator
-docker exec conecta-postgres psql -U conecta_user -d conecta_db -c "SELECT rolname, rolreplication FROM pg_roles WHERE rolname='replicator';"
+# 3. Modo dry-run primeiro
+./scripts/failover/promote-replica.sh --dry-run
+
+# 4. Executar failover
+./scripts/failover/promote-replica.sh
+
+# 5. Atualizar conexoes (ver secao "Atualizando Conexoes")
 ```
 
-### 3. Iniciar a Replica
+### 2. Switchover Planejado (Manutencao)
 
 ```bash
-cd /opt/conecta-plus/infrastructure/docker
+# Troca limpa entre master e replica
+./scripts/failover/switchover.sh
 
-# Iniciar replica
-docker compose -f docker-compose.replica.yml up -d postgres-replica
-
-# Aguardar inicializacao (pode demorar - faz pg_basebackup)
-docker logs -f conecta-postgres-replica
+# Isso ira:
+# - Bloquear novas conexoes
+# - Aguardar sincronizacao
+# - Promover replica
+# - Parar master antigo
 ```
 
-### 4. Verificar Replicacao
+### 3. Reconstruir Replica
 
 ```bash
-# Usar script de verificacao
-/opt/conecta-plus/scripts/failover/check-replication.sh
+# Apos failover ou problema na replica
+./scripts/failover/rebuild-replica.sh
 
-# Ou verificar manualmente no master
-docker exec conecta-postgres psql -U conecta_user -d conecta_db -c "SELECT * FROM pg_stat_replication;"
+# Isso ira:
+# - Parar replica
+# - Limpar dados
+# - Fazer novo basebackup
+# - Reconfigurar como standby
+```
 
-# Verificar na replica
-docker exec conecta-postgres-replica psql -U conecta_user -d conecta_db -c "SELECT pg_is_in_recovery();"
-# Deve retornar: t (true = esta em modo standby)
+### 4. Monitoramento Automatico
+
+```bash
+# Em foreground
+./scripts/failover/auto-failover.sh
+
+# Em background (daemon)
+./scripts/failover/auto-failover.sh --daemon --interval 15
+
+# Verificar logs
+tail -f /opt/conecta-plus/logs/auto-failover.log
 ```
 
 ---
 
-## PASSO A PASSO: Failover Manual
+## ATUALIZANDO CONEXOES APOS FAILOVER
 
-### Quando Usar
+Apos promover a replica, voce DEVE atualizar as conexoes dos servicos.
 
-- Master nao responde
-- Master precisa de manutencao prolongada
-- Desastre no servidor do master
-
-### Procedimento
+### Opcao 1: Editar .env
 
 ```bash
-# 1. Verificar status
-/opt/conecta-plus/scripts/failover/check-replication.sh
+# Antes (master)
+DATABASE_URL=postgresql://conecta:senha@postgres:5432/conecta_plus
 
-# 2. Executar failover (modo dry-run primeiro)
-/opt/conecta-plus/scripts/failover/promote-replica.sh --dry-run
+# Depois (replica promovida)
+DATABASE_URL=postgresql://conecta:senha@postgres-replica:5432/conecta_plus
+```
 
-# 3. Se OK, executar de verdade
-/opt/conecta-plus/scripts/failover/promote-replica.sh
+### Opcao 2: Usar porta externa
 
-# 4. Atualizar conexoes (MANUAL)
-# Editar .env ou docker-compose.yml para apontar para replica:
-# DATABASE_URL: postgresql://user:pass@postgres-replica:5432/db
+```bash
+# Antes
+DATABASE_URL=postgresql://conecta:senha@localhost:5432/conecta_plus
 
-# 5. Reiniciar servicos
+# Depois
+DATABASE_URL=postgresql://conecta:senha@localhost:5433/conecta_plus
+```
+
+### Reiniciar Servicos
+
+```bash
 docker compose restart api-gateway auth-service ai-orchestrator integration-hub
-
-# 6. Verificar logs
-docker compose logs -f api-gateway | grep -i postgres
 ```
-
-### Apos Failover
-
-1. **Parar antigo master** (se ainda rodando):
-   ```bash
-   docker stop conecta-postgres
-   ```
-
-2. **Reconstruir master como replica** (opcional):
-   ```bash
-   # Remover dados antigos
-   docker volume rm conecta-postgres-data
-
-   # Reconfigurar como replica do novo master
-   # (processo inverso)
-   ```
 
 ---
 
-## Monitoramento
+## VERIFICACAO DE STATUS
+
+### Script Automatico
+
+```bash
+./scripts/failover/check-replication.sh
+```
+
+### Comandos Manuais
+
+```bash
+# No MASTER - Ver replicas conectadas
+docker exec conecta-postgres psql -U conecta_user -d conecta_db -c \
+    "SELECT application_name, state, sent_lsn, replay_lsn
+     FROM pg_stat_replication;"
+
+# Na REPLICA - Verificar se esta em standby
+docker exec conecta-postgres-replica psql -U conecta_user -d conecta_db -c \
+    "SELECT pg_is_in_recovery();"
+# Deve retornar: t (true)
+
+# Na REPLICA - Ver lag
+docker exec conecta-postgres-replica psql -U conecta_user -d conecta_db -c \
+    "SELECT now() - pg_last_xact_replay_timestamp() as lag;"
+
+# Verificar slots de replicacao
+docker exec conecta-postgres psql -U conecta_user -d conecta_db -c \
+    "SELECT slot_name, active FROM pg_replication_slots;"
+```
+
+---
+
+## METRICAS E ALERTAS
 
 ### Metricas Importantes
 
 | Metrica | Query | Limite |
 |---------|-------|--------|
 | Lag em bytes | `SELECT pg_wal_lsn_diff(sent_lsn, replay_lsn) FROM pg_stat_replication;` | < 16MB |
-| Lag em segundos | `SELECT extract(epoch from now() - pg_last_xact_replay_timestamp());` (na replica) | < 30s |
-| Conexoes de replicacao | `SELECT count(*) FROM pg_stat_replication;` | >= 1 |
-| Slots ativos | `SELECT count(*) FROM pg_replication_slots WHERE active;` | >= 1 |
+| Lag em segundos | `SELECT extract(epoch from now() - pg_last_xact_replay_timestamp());` | < 30s |
+| Replicas ativas | `SELECT count(*) FROM pg_stat_replication;` | >= 1 |
 
-### Alertas Recomendados (Prometheus/Grafana)
+### Alertas Prometheus
+
+Adicione ao `/opt/conecta-plus/monitoring/prometheus/alert_rules.yml`:
 
 ```yaml
-# Adicionar ao prometheus/alert_rules.yml
 groups:
   - name: postgres_replication
     rules:
-      - alert: PostgresReplicaDown
-        expr: pg_stat_replication_pg_wal_lsn_diff == 0 or absent(pg_stat_replication_pg_wal_lsn_diff)
+      - alert: PostgresReplicaOffline
+        expr: absent(pg_stat_replication_replay_lsn)
         for: 2m
         labels:
           severity: critical
         annotations:
-          summary: "PostgreSQL replica offline"
+          summary: "Replica PostgreSQL offline"
+          description: "Nenhuma replica conectada ao master"
 
-      - alert: PostgresReplicationLag
-        expr: pg_stat_replication_pg_wal_lsn_diff > 16777216
+      - alert: PostgresReplicationLagHigh
+        expr: pg_replication_lag_seconds > 30
         for: 5m
         labels:
           severity: warning
         annotations:
-          summary: "PostgreSQL replication lag > 16MB"
+          summary: "Lag de replicacao alto"
+          description: "Lag: {{ $value }}s"
+
+      - alert: PostgresReplicationLagCritical
+        expr: pg_replication_lag_seconds > 300
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Lag de replicacao critico"
+          description: "Lag: {{ $value }}s - Risco de perda de dados em failover"
 ```
 
 ---
 
-## Troubleshooting
+## TROUBLESHOOTING
 
-### Replica nao conecta
+### Replica nao conecta ao master
 
 ```bash
-# Verificar logs da replica
+# 1. Verificar logs
 docker logs conecta-postgres-replica
 
-# Verificar conectividade
-docker exec conecta-postgres-replica pg_isready -h postgres -U replicator
+# 2. Testar conectividade
+docker exec conecta-postgres-replica pg_isready -h postgres -p 5432
 
-# Verificar pg_hba.conf no master
+# 3. Testar autenticacao do replicator
+docker exec conecta-postgres-replica psql \
+    "host=postgres port=5432 user=replicator password=repl_conecta_2024_secure dbname=replication" \
+    -c "IDENTIFY_SYSTEM"
+
+# 4. Verificar pg_hba.conf no master
 docker exec conecta-postgres cat /etc/postgresql/pg_hba.conf | grep replication
 ```
 
 ### Lag muito alto
 
 ```bash
-# Verificar I/O do disco
+# 1. Verificar I/O
 docker stats conecta-postgres conecta-postgres-replica
 
-# Aumentar wal_keep_size no master
-# Editar postgresql.conf: wal_keep_size = 256MB
+# 2. Verificar rede
+docker exec conecta-postgres-replica ping postgres
+
+# 3. Aumentar wal_keep_size
+# Editar /opt/conecta-plus/config/postgres/postgresql.conf
+# wal_keep_size = 256MB
 docker compose restart postgres
+```
+
+### Slot de replicacao nao existe
+
+```bash
+# Criar slot manualmente
+docker exec conecta-postgres psql -U conecta_user -d conecta_db -c \
+    "SELECT pg_create_physical_replication_slot('replica_slot');"
 ```
 
 ### Split-brain (dois masters)
 
-**CUIDADO**: Situacao critica!
+**SITUACAO CRITICA!**
 
-1. Identificar qual tem dados mais recentes
-2. Parar um deles imediatamente
-3. Reconciliar dados manualmente se necessario
-4. Reconstruir replicacao
+1. Identificar qual tem transacoes mais recentes:
+   ```bash
+   docker exec conecta-postgres psql -U conecta_user -d conecta_db -c \
+       "SELECT pg_current_wal_lsn();"
+
+   docker exec conecta-postgres-replica psql -U conecta_user -d conecta_db -c \
+       "SELECT pg_current_wal_lsn();"
+   ```
+
+2. Parar imediatamente o que tiver LSN menor
+
+3. Reconstruir como replica:
+   ```bash
+   ./scripts/failover/rebuild-replica.sh
+   ```
 
 ---
 
-## Credenciais
+## CREDENCIAIS
 
 | Usuario | Senha | Uso |
 |---------|-------|-----|
-| replicator | `repl_conecta_2024_secure` | Conexao de replicacao |
+| conecta_user | (veja .env) | Aplicacao |
+| replicator | `repl_conecta_2024_secure` | Replicacao |
 
-**IMPORTANTE**: Altere a senha em producao!
+**IMPORTANTE**: Em producao, altere a senha do replicator:
 
 ```bash
 # No master
 docker exec conecta-postgres psql -U conecta_user -d conecta_db -c \
-  "ALTER ROLE replicator WITH PASSWORD 'NOVA_SENHA_SEGURA';"
+    "ALTER ROLE replicator WITH PASSWORD 'NOVA_SENHA_SEGURA';"
 
-# Atualizar na replica (postgresql.auto.conf ou docker-compose)
+# Atualizar REPLICATOR_PASSWORD no .env
+# Reconstruir replica
+./scripts/failover/rebuild-replica.sh
 ```
 
 ---
 
-## Contato
+## BACKUP E RECOVERY
 
-Em caso de problemas criticos:
-- Verificar logs: `/opt/conecta-plus/logs/`
-- Script de failover cria log em: `/opt/conecta-plus/logs/failover-*.log`
+### Backup do Master
+
+```bash
+# Backup logico (pg_dump)
+docker exec conecta-postgres pg_dump -U conecta_user conecta_db > backup.sql
+
+# Backup fisico (pg_basebackup)
+docker exec conecta-postgres pg_basebackup -U replicator -D /backups/base -Fp -Xs -P
+```
+
+### Point-in-Time Recovery (PITR)
+
+Para habilitar PITR, ative archive_mode no master:
+
+```ini
+# postgresql.conf
+archive_mode = on
+archive_command = 'cp %p /backups/archive/%f'
+```
+
+---
+
+## LOGS
+
+| Local | Descricao |
+|-------|-----------|
+| `/opt/conecta-plus/logs/auto-failover.log` | Log do monitor automatico |
+| `/opt/conecta-plus/logs/failover-*.log` | Logs de failover executados |
+| `/opt/conecta-plus/logs/rebuild-replica-*.log` | Logs de reconstrucao |
+| `/opt/conecta-plus/logs/switchover-*.log` | Logs de switchover |
+| `docker logs conecta-postgres` | Logs do master |
+| `docker logs conecta-postgres-replica` | Logs da replica |

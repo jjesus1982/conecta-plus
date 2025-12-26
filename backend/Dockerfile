@@ -42,10 +42,12 @@ USER conecta
 # Expor porta
 EXPOSE 8000
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost:8000/health || exit 1
+# Health check com start_period maior para permitir warmup
+# O warmup interno leva ~15s, entao start_period deve ser >= 20s
+HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
+    CMD curl -sf http://localhost:8000/health | grep -q '"status":"healthy"' || exit 1
 
 # Comando para iniciar a aplicação
 # SEGURANÇA: --no-server-header para não expor versão do servidor
+# Warmup é executado automaticamente no lifespan do FastAPI
 CMD ["uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "4", "--no-server-header"]

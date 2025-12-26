@@ -1,19 +1,19 @@
 {
-  "last_update": "2025-12-26T03:52:35.794763",
-  "iteration": 2493,
-  "total_errors_fixed": 0,
-  "total_gaps_detected": 29697,
-  "total_tests_run": 5727,
-  "total_tests_passed": 2192,
+  "last_update": "2025-12-26T13:28:26.736821",
+  "iteration": 2885,
+  "total_errors_fixed": 1,
+  "total_gaps_detected": 34046,
+  "total_tests_run": 6624,
+  "total_tests_passed": 2471,
   "last_cycle": {
-    "iteration": 2493,
-    "timestamp": "2025-12-26T03:51:36.517091",
+    "iteration": 2885,
+    "timestamp": "2025-12-26T13:27:33.557768",
     "log_analysis": {
-      "timestamp": "2025-12-26T03:51:36.517435",
+      "timestamp": "2025-12-26T13:27:33.558224",
       "logs": {
         "nextjs": {
           "log_path": "/tmp/nextjs-debug.log",
-          "timestamp": "2025-12-26T03:51:36.519007",
+          "timestamp": "2025-12-26T13:27:33.561727",
           "total_lines": 1000,
           "errors": [],
           "warnings": [],
@@ -45,8 +45,18 @@
       "critical_issues": []
     },
     "gaps": {
-      "timestamp": "2025-12-26T03:51:36.528874",
+      "timestamp": "2025-12-26T13:27:33.568920",
       "gaps": [
+        {
+          "category": "dependencies",
+          "type": "missing_pip_package",
+          "severity": "high",
+          "description": "Missing pip package: psutil",
+          "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
+          "package": "psutil",
+          "priority": "P2",
+          "priority_score": 2
+        },
         {
           "category": "code_quality",
           "type": "excessive_any",
@@ -159,9 +169,21 @@
           "priority_score": 4
         }
       ],
-      "total_gaps": 11,
+      "total_gaps": 12,
       "critical_gaps": 0,
       "by_category": {
+        "dependencies": [
+          {
+            "category": "dependencies",
+            "type": "missing_pip_package",
+            "severity": "high",
+            "description": "Missing pip package: psutil",
+            "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
+            "package": "psutil",
+            "priority": "P2",
+            "priority_score": 2
+          }
+        ],
         "code_quality": [
           {
             "category": "code_quality",
@@ -280,54 +302,54 @@
       },
       "by_priority": {
         "P1": 0,
-        "P2": 0,
+        "P2": 1,
         "P3": 0,
         "P4": 11
       }
     },
     "fixes_applied": [],
     "metrics": {
-      "timestamp": "2025-12-26T03:51:40.311990",
+      "timestamp": "2025-12-26T13:27:37.515623",
       "cpu": {
-        "timestamp": "2025-12-26T03:51:40.311995",
-        "percent": 14.1,
+        "timestamp": "2025-12-26T13:27:37.515630",
+        "percent": 37.0,
         "per_cpu": [
-          3.0,
-          3.0,
-          3.0,
-          27.6
+          9.1,
+          29.3,
+          32.7,
+          13.0
         ],
         "count": 4,
         "load_avg": [
-          1.1240234375,
-          0.88916015625,
-          0.88134765625
+          1.78466796875,
+          2.36572265625,
+          1.79833984375
         ]
       },
       "memory": {
-        "timestamp": "2025-12-26T03:51:42.313169",
+        "timestamp": "2025-12-26T13:27:39.517066",
         "total_mb": 15992,
-        "available_mb": 11866,
-        "used_mb": 3743,
-        "percent": 25.8,
+        "available_mb": 11661,
+        "used_mb": 3647,
+        "percent": 27.1,
         "swap_total_mb": 0,
         "swap_used_mb": 0,
         "swap_percent": 0.0
       },
       "disk": {
-        "timestamp": "2025-12-26T03:51:42.313203",
+        "timestamp": "2025-12-26T13:27:39.517174",
         "path": "/",
         "total_gb": 192,
-        "used_gb": 144,
-        "free_gb": 48,
-        "percent": 75.0
+        "used_gb": 152,
+        "free_gb": 40,
+        "percent": 79.1
       },
       "network": {
-        "timestamp": "2025-12-26T03:51:42.313662",
-        "bytes_sent": 27945472989,
-        "bytes_recv": 26158757692,
-        "packets_sent": 23629939,
-        "packets_recv": 31578668,
+        "timestamp": "2025-12-26T13:27:39.517759",
+        "bytes_sent": 29826392144,
+        "bytes_recv": 27220237906,
+        "packets_sent": 23948929,
+        "packets_recv": 32635350,
         "errors_in": 0,
         "errors_out": 0,
         "drops_in": 0,
@@ -335,95 +357,106 @@
       },
       "uptime": {
         "boot_time": "2025-12-18T15:11:19",
-        "uptime_seconds": 650423,
-        "uptime_human": "7 days, 12:40:23"
+        "uptime_seconds": 684980,
+        "uptime_human": "7 days, 22:16:20"
       },
       "top_processes_cpu": [
         {
+          "memory_percent": 3.155927806722504,
+          "cpu_percent": 39.9,
+          "pid": 3942113,
+          "username": "root",
+          "name": "claude"
+        },
+        {
+          "memory_percent": 0.34186531053905583,
+          "cpu_percent": 10.0,
+          "pid": 3790,
+          "username": "root",
+          "name": "monarx-agent"
+        },
+        {
+          "memory_percent": 0.07501202977032298,
+          "cpu_percent": 0.0,
           "pid": 1,
-          "memory_percent": 0.0750364556999128,
-          "cpu_percent": 0.0,
-          "name": "systemd",
-          "username": "root"
+          "username": "root",
+          "name": "systemd"
         },
         {
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
           "pid": 2,
-          "memory_percent": 0.0,
-          "cpu_percent": 0.0,
-          "name": "kthreadd",
-          "username": "root"
+          "username": "root",
+          "name": "kthreadd"
         },
         {
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
           "pid": 3,
-          "memory_percent": 0.0,
-          "cpu_percent": 0.0,
-          "name": "pool_workqueue_release",
-          "username": "root"
-        },
-        {
-          "pid": 4,
-          "memory_percent": 0.0,
-          "cpu_percent": 0.0,
-          "name": "kworker/R-rcu_g",
-          "username": "root"
-        },
-        {
-          "pid": 5,
-          "memory_percent": 0.0,
-          "cpu_percent": 0.0,
-          "name": "kworker/R-rcu_p",
-          "username": "root"
+          "username": "root",
+          "name": "pool_workqueue_release"
         }
       ],
       "top_processes_memory": [
         {
+          "memory_percent": 6.852352583408443,
+          "cpu_percent": 0.0,
           "pid": 22398,
-          "memory_percent": 6.188089428213414,
-          "cpu_percent": 0.0,
-          "name": "dockerd",
-          "username": "root"
+          "username": "root",
+          "name": "dockerd"
         },
         {
-          "pid": 3942113,
-          "memory_percent": 2.7862902142398287,
-          "cpu_percent": 0.0,
-          "name": "claude",
-          "username": "root"
-        },
-        {
-          "pid": 3666842,
-          "memory_percent": 2.5662370145651816,
-          "cpu_percent": 0.0,
-          "name": "python",
-          "username": "ubuntu"
-        },
-        {
-          "pid": 4008070,
-          "memory_percent": 1.5774265329102761,
+          "memory_percent": 3.1192889123377814,
           "cpu_percent": 10.0,
-          "name": "grafana",
-          "username": "472"
+          "pid": 3942113,
+          "username": "root",
+          "name": "claude"
         },
         {
-          "pid": 879018,
-          "memory_percent": 1.1468950979601906,
+          "memory_percent": 2.1144550208719566,
           "cpu_percent": 0.0,
-          "name": "python3",
-          "username": "root"
+          "pid": 3666842,
+          "username": "ubuntu",
+          "name": "python"
+        },
+        {
+          "memory_percent": 1.1857079000784072,
+          "cpu_percent": 0.0,
+          "pid": 879018,
+          "username": "root",
+          "name": "python3"
+        },
+        {
+          "memory_percent": 0.8254987164174001,
+          "cpu_percent": 0.0,
+          "pid": 4008070,
+          "username": "472",
+          "name": "grafana"
         }
       ]
     },
     "actions_taken": [],
     "safe_healing": {
-      "timestamp": "2025-12-26T03:51:40.227209",
-      "total_issues": 11,
+      "timestamp": "2025-12-26T13:27:37.489703",
+      "total_issues": 12,
       "authorized": 0,
       "attempted": 0,
       "successful": 0,
       "partial": 0,
       "failed": 0,
-      "aborted": 11,
+      "aborted": 12,
       "actions": [
+        {
+          "issue": "Missing pip package: psutil",
+          "priority": "P2",
+          "authorized": false,
+          "authorization_reason": "Prioridade P2 n\u00e3o autorizada para auto-healing",
+          "state_before": null,
+          "execution": null,
+          "validation": null,
+          "rollback": null,
+          "final_result": "aborted"
+        },
         {
           "issue": "Excessive use of \"any\" type in DashboardGraficos.tsx",
           "priority": "P4",
@@ -547,21 +580,21 @@
         }
       ],
       "healing_score": {
-        "current": 0.0,
+        "current": 0.5,
         "max": 10.0,
-        "p4_successes": 0,
+        "p4_successes": 1,
         "p3_ready": false
       }
     },
     "health_score": {
-      "timestamp": "2025-12-26T03:52:35.794608",
+      "timestamp": "2025-12-26T13:28:26.736448",
       "overall_score": 81,
       "health_level": "Good",
       "breakdown": {
         "gaps": {
           "score": 30,
           "max": 40,
-          "total_gaps": 11,
+          "total_gaps": 12,
           "critical_gaps": 0,
           "status": "Good - Few gaps"
         },
@@ -569,15 +602,15 @@
           "score": 26,
           "max": 30,
           "cpu": {
-            "value": "14.1%",
+            "value": "37.0%",
             "score": 10
           },
           "memory": {
-            "value": "25.8%",
+            "value": "27.1%",
             "score": 10
           },
           "disk": {
-            "value": "75.0%",
+            "value": "79.1%",
             "score": 6
           }
         },
@@ -594,6 +627,6 @@
         "\u2705 System health is optimal - continue monitoring"
       ]
     },
-    "duration_seconds": 59.277587
+    "duration_seconds": 53.178784
   }
 }

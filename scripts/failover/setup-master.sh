@@ -14,6 +14,7 @@ BLUE='\033[0;34m'
 NC='\033[0m'
 
 MASTER_CONTAINER="conecta-postgres"
+# NOTA: O banco real usa conecta_user/conecta_db (verificado via pg_roles/pg_database)
 POSTGRES_USER="${POSTGRES_USER:-conecta_user}"
 POSTGRES_DB="${POSTGRES_DB:-conecta_db}"
 REPLICATOR_PASSWORD="${REPLICATOR_PASSWORD:-repl_conecta_2024_secure}"

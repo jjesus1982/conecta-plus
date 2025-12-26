@@ -13,6 +13,7 @@ import random
 sys.path.insert(0, '/opt/conecta-plus/backend')
 
 # Configurar DATABASE_URL
+# NOTA: O banco real usa conecta_user/conecta_db (verificado via pg_roles/pg_database)
 os.environ['DATABASE_URL'] = 'postgresql://conecta_user:conecta_secret_2024@localhost:5432/conecta_db'
 
 from sqlalchemy import create_engine, text

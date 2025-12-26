@@ -54,9 +54,10 @@ backup_postgres() {
     POSTGRES_BACKUP="$BACKUP_DIR/database/postgres_${DATE}.sql.gz"
 
     if docker ps | grep -q conecta-postgres; then
+        # NOTA: O banco real usa conecta_user/conecta_db (verificado via pg_roles/pg_database)
         docker exec conecta-postgres pg_dump \
-            -U "${POSTGRES_USER:-conecta}" \
-            -d "${POSTGRES_DB:-conecta_plus}" \
+            -U "${POSTGRES_USER:-conecta_user}" \
+            -d "${POSTGRES_DB:-conecta_db}" \
             --format=plain \
             --no-owner \
             --no-privileges \
@@ -254,9 +255,10 @@ restore_postgres() {
 
     echo -e "${YELLOW}Restaurando PostgreSQL de: $BACKUP_FILE${NC}"
 
+    # NOTA: O banco real usa conecta_user/conecta_db (verificado via pg_roles/pg_database)
     gunzip -c "$BACKUP_FILE" | docker exec -i conecta-postgres psql \
-        -U "${POSTGRES_USER:-conecta}" \
-        -d "${POSTGRES_DB:-conecta_plus}"
+        -U "${POSTGRES_USER:-conecta_user}" \
+        -d "${POSTGRES_DB:-conecta_db}"
 
     echo -e "${GREEN}✅ Restauração do PostgreSQL concluída${NC}"
 }

@@ -67,7 +67,11 @@ from .middleware import (
 from .middleware.rate_limit import LoginRateLimitMiddleware
 from .telemetry import setup_telemetry
 
-# Configurar logging estruturado
+# Configurar logging estruturado (JSON)
+from .services.observability import get_logger, LogContext
+from .services.observability.logger import ObservabilityMiddleware
+
+# Configurar root logger para capturar logs de bibliotecas
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s | %(levelname)s | %(name)s | %(message)s',
@@ -77,7 +81,9 @@ logging.basicConfig(
         logging.FileHandler(os.path.join(LOG_DIR, 'api.log'), encoding='utf-8'),
     ]
 )
-logger = logging.getLogger(__name__)
+
+# Logger estruturado para a aplicacao (JSON com correlation ID)
+logger = get_logger("conecta-plus.main")
 
 # Logger separado para auditoria
 audit_logger = logging.getLogger("audit")
@@ -118,6 +124,24 @@ async def lifespan(app: FastAPI):
         logger.info("Hardware Manager inicializado")
     except Exception as e:
         logger.warning(f"Hardware Manager nao disponivel: {e}")
+
+    # ==================== WARMUP ====================
+    # Elimina cold start pre-aquecendo conexoes e cache
+    try:
+        from .services.warmup import run_warmup
+        warmup_report = await run_warmup(
+            db_connections=3,           # Aquecer 3 conexoes do pool
+            enable_self_request=False,  # Servidor ainda nao esta pronto
+            enable_cache=True,          # Pre-carregar cache inicial
+            timeout=15.0                # Timeout de 15s para nao atrasar startup
+        )
+        if warmup_report.success:
+            logger.info(f"Warmup concluido com sucesso em {warmup_report.total_duration_ms:.0f}ms")
+        else:
+            logger.warning(f"Warmup parcial em {warmup_report.total_duration_ms:.0f}ms - alguns componentes falharam")
+    except Exception as e:
+        logger.warning(f"Warmup nao disponivel: {e}")
+    # ================================================
 
     logger.info("API pronta para receber requisicoes")
 
@@ -204,7 +228,11 @@ logger.info("Middleware: LoginRateLimit ativado")
 app.add_middleware(AuditLogMiddleware)
 logger.info("Middleware: AuditLog ativado")
 
-# 5. CORS (mais interno, perto da aplicacao)
+# 5. Observability - Logging estruturado com correlation ID
+app.add_middleware(ObservabilityMiddleware)
+logger.info("Middleware: Observability (structured logging) ativado")
+
+# 6. CORS (mais interno, perto da aplicacao)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.CORS_ORIGINS,
@@ -365,53 +393,8 @@ async def root():
     }
 
 
-@app.get("/health", tags=["Sistema"])
-async def health_check():
-    """
-    Verificacao de saude da API.
-
-    Retorna status dos componentes criticos:
-    - API: sempre healthy se responder
-    - Database: verificado via conexao
-    - Redis: verificado se configurado
-    """
-    health_status = {
-        "status": "healthy",
-        "timestamp": time.time(),
-        "version": settings.APP_VERSION,
-        "components": {
-            "api": "healthy",
-            "database": "unknown",
-            "redis": "unknown",
-        }
-    }
-
-    # Verificar banco de dados
-    try:
-        from .database import SessionLocal
-        from sqlalchemy import text
-        db = SessionLocal()
-        db.execute(text("SELECT 1"))
-        db.close()
-        health_status["components"]["database"] = "healthy"
-    except Exception as e:
-        health_status["components"]["database"] = "unhealthy"
-        health_status["status"] = "degraded"
-        logger.error(f"Health check - Database unhealthy: {e}")
-
-    # Verificar Redis
-    try:
-        import redis
-        redis_url = os.getenv('REDIS_URL', 'redis://localhost:6379')
-        client = redis.from_url(redis_url, socket_timeout=2)
-        client.ping()
-        health_status["components"]["redis"] = "healthy"
-    except Exception as e:
-        health_status["components"]["redis"] = "unhealthy"
-        health_status["status"] = "degraded"
-        logger.error(f"Health check - Redis unhealthy: {e}")
-
-    return health_status
+# NOTA: Health check principal movido para routers/health.py
+# Endpoints: /health, /health/live, /health/ready, /health/circuits, /health/memory
 
 
 @app.get(f"{settings.API_PREFIX}", tags=["Sistema"])

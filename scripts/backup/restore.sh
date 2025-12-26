@@ -8,8 +8,10 @@ set -e
 # Configuracoes
 BACKUP_DIR="${BACKUP_DIR:-/opt/conecta-plus/backups}"
 POSTGRES_CONTAINER="${POSTGRES_CONTAINER:-conecta-postgres}"
-POSTGRES_USER="${POSTGRES_USER:-conecta}"
-POSTGRES_DB="${POSTGRES_DB:-conecta_plus}"
+# NOTA: O banco real usa conecta_user/conecta_db (verificado via pg_roles/pg_database)
+POSTGRES_USER="${POSTGRES_USER:-conecta_user}"
+POSTGRES_PASSWORD="${POSTGRES_PASSWORD:-conecta_secret_2024}"
+POSTGRES_DB="${POSTGRES_DB:-conecta_db}"
 
 # Cores
 RED='\033[0;31m'
