@@ -1,0 +1,64 @@
+# ============================================
+# Conecta Plus - Alertmanager Configuration
+# ============================================
+
+global:
+  resolve_timeout: 5m
+
+# Roteamento de alertas
+route:
+  receiver: 'default-receiver'
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 4h
+  group_by: ['alertname', 'severity', 'job']
+
+  routes:
+    - match:
+        severity: critical
+      receiver: 'critical-receiver'
+      group_wait: 10s
+      repeat_interval: 1h
+
+    - match:
+        severity: warning
+      receiver: 'warning-receiver'
+      group_wait: 1m
+      repeat_interval: 4h
+
+# Receptores de alertas
+receivers:
+  - name: 'default-receiver'
+    webhook_configs:
+      - url: 'http://conecta-api-gateway-dev:3001/webhooks/alertmanager'
+        send_resolved: true
+
+  - name: 'critical-receiver'
+    webhook_configs:
+      - url: 'http://conecta-api-gateway-dev:3001/webhooks/alertmanager/critical'
+        send_resolved: true
+
+  - name: 'warning-receiver'
+    webhook_configs:
+      - url: 'http://conecta-api-gateway-dev:3001/webhooks/alertmanager/warning'
+        send_resolved: true
+
+# Regras de inibicao
+inhibit_rules:
+  - source_match:
+      alertname: 'BackendDown'
+    target_match:
+      alertname: 'HighLatencyP95'
+    equal: ['job']
+
+  - source_match:
+      alertname: 'PostgresDown'
+    target_match:
+      alertname: 'DatabaseConnectionIssues'
+    equal: ['job']
+
+  - source_match:
+      severity: 'critical'
+    target_match:
+      severity: 'warning'
+    equal: ['alertname', 'job']

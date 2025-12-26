@@ -1,36 +1,30 @@
-# Prometheus Configuration - Conecta Plus
 global:
   scrape_interval: 15s
   evaluation_interval: 15s
+  external_labels:
+    cluster: 'conecta-plus-prod'
+    environment: 'production'
 
+# Rule files
+rule_files:
+  - /etc/prometheus/alert_rules.yml
+
+# Alerting configuration
 alerting:
   alertmanagers:
     - static_configs:
-        - targets: []
+        - targets: ['conecta-alertmanager:9093']
 
-rule_files: []
-
+# Scrape configurations
 scrape_configs:
+  # Backend FastAPI (Principal) - via host network
+  - job_name: 'backend'
+    static_configs:
+      - targets: ['172.17.0.1:8000']
+    metrics_path: '/metrics'
+    scrape_interval: 10s
+
+  # Self-monitoring
   - job_name: 'prometheus'
     static_configs:
       - targets: ['localhost:9090']
-
-  - job_name: 'api-gateway'
-    static_configs:
-      - targets: ['api-gateway:8000']
-
-  - job_name: 'ai-orchestrator'
-    static_configs:
-      - targets: ['ai-orchestrator:8001']
-
-  - job_name: 'postgres'
-    static_configs:
-      - targets: ['postgres:5432']
-
-  - job_name: 'redis'
-    static_configs:
-      - targets: ['redis:6379']
-
-  - job_name: 'nginx'
-    static_configs:
-      - targets: ['nginx:80']

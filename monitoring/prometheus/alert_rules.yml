@@ -1,0 +1,96 @@
+groups:
+  - name: conecta-plus-alerts
+    interval: 30s
+    rules:
+      # Alta latência P95
+      - alert: HighLatencyP95
+        expr: histogram_quantile(0.95, rate(http_request_duration_seconds_bucket{job="backend"}[5m])) > 0.5
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Alta latência detectada no backend"
+          description: "P95 latency está acima de 500ms por mais de 5 minutos. Valor atual: {{ $value | humanizeDuration }}"
+          runbook_url: "https://docs.conectaplus.com.br/runbooks/high-latency"
+
+      # Alta taxa de erros
+      - alert: HighErrorRate
+        expr: sum(rate(http_requests_total{job="backend",status=~"5.."}[5m])) / sum(rate(http_requests_total{job="backend"}[5m])) > 0.01
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Alta taxa de erros no backend"
+          description: "Error rate está acima de 1% por mais de 2 minutos. Valor atual: {{ $value | humanizePercentage }}"
+          runbook_url: "https://docs.conectaplus.com.br/runbooks/high-error-rate"
+
+      # Serviço down
+      - alert: BackendDown
+        expr: up{job="backend"} == 0
+        for: 30s
+        labels:
+          severity: critical
+        annotations:
+          summary: "Backend está offline"
+          description: "O serviço backend não está respondendo há mais de 30 segundos"
+          runbook_url: "https://docs.conectaplus.com.br/runbooks/backend-down"
+
+      # Muitas requisições em andamento
+      - alert: HighRequestsInProgress
+        expr: http_requests_inprogress{job="backend"} > 100
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Muitas requisições simultâneas"
+          description: "Mais de 100 requisições em andamento por mais de 5 minutos. Valor atual: {{ $value }}"
+
+      # Database connection issues
+      - alert: DatabaseConnectionIssues
+        expr: increase(http_requests_total{job="backend",handler="/health",status="503"}[5m]) > 5
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Problemas de conexão com banco de dados"
+          description: "Health check está retornando erros de database"
+
+      # Redis down
+      - alert: RedisDown
+        expr: up{job="redis"} == 0
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Redis está offline"
+          description: "O serviço Redis não está respondendo há mais de 1 minuto"
+
+      # PostgreSQL down
+      - alert: PostgresDown
+        expr: up{job="postgres"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "PostgreSQL está offline"
+          description: "O banco de dados PostgreSQL não está respondendo há mais de 1 minuto"
+
+      # Alto uso de memória
+      - alert: HighMemoryUsage
+        expr: process_resident_memory_bytes{job="backend"} > 1073741824
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Alto uso de memória no backend"
+          description: "Uso de memória está acima de 1GB por mais de 10 minutos. Valor atual: {{ $value | humanize1024 }}B"
+
+      # Poucas requisições (possível problema)
+      - alert: LowTraffic
+        expr: sum(rate(http_requests_total{job="backend"}[5m])) < 0.1
+        for: 15m
+        labels:
+          severity: info
+        annotations:
+          summary: "Tráfego muito baixo"
+          description: "Menos de 0.1 RPS nos últimos 15 minutos - verificar se é esperado"

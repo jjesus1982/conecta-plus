@@ -1,19 +1,19 @@
 {
-  "last_update": "2025-12-25T18:12:04.819936",
-  "iteration": 2078,
+  "last_update": "2025-12-26T01:57:45.975847",
+  "iteration": 2413,
   "total_errors_fixed": 1,
-  "total_gaps_detected": 22862,
-  "total_tests_run": 4761,
-  "total_tests_passed": 1831,
+  "total_gaps_detected": 28419,
+  "total_tests_run": 5543,
+  "total_tests_passed": 2133,
   "last_cycle": {
-    "iteration": 2078,
-    "timestamp": "2025-12-25T18:11:18.962929",
+    "iteration": 2413,
+    "timestamp": "2025-12-26T01:56:55.604341",
     "log_analysis": {
-      "timestamp": "2025-12-25T18:11:18.963533",
+      "timestamp": "2025-12-26T01:56:55.604652",
       "logs": {
         "nextjs": {
           "log_path": "/tmp/nextjs-debug.log",
-          "timestamp": "2025-12-25T18:11:18.967176",
+          "timestamp": "2025-12-26T01:56:55.605967",
           "total_lines": 1000,
           "errors": [],
           "warnings": [],
@@ -45,8 +45,78 @@
       "critical_issues": []
     },
     "gaps": {
-      "timestamp": "2025-12-25T18:11:18.976162",
+      "timestamp": "2025-12-26T01:56:55.613272",
       "gaps": [
+        {
+          "category": "dependencies",
+          "type": "missing_pip_package",
+          "severity": "high",
+          "description": "Missing pip package: opentelemetry-api",
+          "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
+          "package": "opentelemetry-api",
+          "priority": "P2",
+          "priority_score": 2
+        },
+        {
+          "category": "dependencies",
+          "type": "missing_pip_package",
+          "severity": "high",
+          "description": "Missing pip package: opentelemetry-exporter-otlp",
+          "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
+          "package": "opentelemetry-exporter-otlp",
+          "priority": "P2",
+          "priority_score": 2
+        },
+        {
+          "category": "dependencies",
+          "type": "missing_pip_package",
+          "severity": "high",
+          "description": "Missing pip package: opentelemetry-instrumentation-fastapi",
+          "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
+          "package": "opentelemetry-instrumentation-fastapi",
+          "priority": "P2",
+          "priority_score": 2
+        },
+        {
+          "category": "dependencies",
+          "type": "missing_pip_package",
+          "severity": "high",
+          "description": "Missing pip package: opentelemetry-instrumentation-httpx",
+          "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
+          "package": "opentelemetry-instrumentation-httpx",
+          "priority": "P2",
+          "priority_score": 2
+        },
+        {
+          "category": "dependencies",
+          "type": "missing_pip_package",
+          "severity": "high",
+          "description": "Missing pip package: opentelemetry-instrumentation-redis",
+          "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
+          "package": "opentelemetry-instrumentation-redis",
+          "priority": "P2",
+          "priority_score": 2
+        },
+        {
+          "category": "dependencies",
+          "type": "missing_pip_package",
+          "severity": "high",
+          "description": "Missing pip package: opentelemetry-instrumentation-sqlalchemy",
+          "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
+          "package": "opentelemetry-instrumentation-sqlalchemy",
+          "priority": "P2",
+          "priority_score": 2
+        },
+        {
+          "category": "dependencies",
+          "type": "missing_pip_package",
+          "severity": "high",
+          "description": "Missing pip package: opentelemetry-sdk",
+          "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
+          "package": "opentelemetry-sdk",
+          "priority": "P2",
+          "priority_score": 2
+        },
         {
           "category": "code_quality",
           "type": "excessive_any",
@@ -159,9 +229,81 @@
           "priority_score": 4
         }
       ],
-      "total_gaps": 11,
+      "total_gaps": 18,
       "critical_gaps": 0,
       "by_category": {
+        "dependencies": [
+          {
+            "category": "dependencies",
+            "type": "missing_pip_package",
+            "severity": "high",
+            "description": "Missing pip package: opentelemetry-instrumentation-httpx",
+            "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
+            "package": "opentelemetry-instrumentation-httpx",
+            "priority": "P2",
+            "priority_score": 2
+          },
+          {
+            "category": "dependencies",
+            "type": "missing_pip_package",
+            "severity": "high",
+            "description": "Missing pip package: opentelemetry-exporter-otlp",
+            "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
+            "package": "opentelemetry-exporter-otlp",
+            "priority": "P2",
+            "priority_score": 2
+          },
+          {
+            "category": "dependencies",
+            "type": "missing_pip_package",
+            "severity": "high",
+            "description": "Missing pip package: opentelemetry-instrumentation-redis",
+            "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
+            "package": "opentelemetry-instrumentation-redis",
+            "priority": "P2",
+            "priority_score": 2
+          },
+          {
+            "category": "dependencies",
+            "type": "missing_pip_package",
+            "severity": "high",
+            "description": "Missing pip package: opentelemetry-instrumentation-fastapi",
+            "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
+            "package": "opentelemetry-instrumentation-fastapi",
+            "priority": "P2",
+            "priority_score": 2
+          },
+          {
+            "category": "dependencies",
+            "type": "missing_pip_package",
+            "severity": "high",
+            "description": "Missing pip package: opentelemetry-instrumentation-sqlalchemy",
+            "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
+            "package": "opentelemetry-instrumentation-sqlalchemy",
+            "priority": "P2",
+            "priority_score": 2
+          },
+          {
+            "category": "dependencies",
+            "type": "missing_pip_package",
+            "severity": "high",
+            "description": "Missing pip package: opentelemetry-api",
+            "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
+            "package": "opentelemetry-api",
+            "priority": "P2",
+            "priority_score": 2
+          },
+          {
+            "category": "dependencies",
+            "type": "missing_pip_package",
+            "severity": "high",
+            "description": "Missing pip package: opentelemetry-sdk",
+            "solution": "Run: docker exec conecta-backend-q1 pip3 install -r requirements.txt",
+            "package": "opentelemetry-sdk",
+            "priority": "P2",
+            "priority_score": 2
+          }
+        ],
         "code_quality": [
           {
             "category": "code_quality",
@@ -280,54 +422,54 @@
       },
       "by_priority": {
         "P1": 0,
-        "P2": 0,
+        "P2": 7,
         "P3": 0,
         "P4": 11
       }
     },
     "fixes_applied": [],
     "metrics": {
-      "timestamp": "2025-12-25T18:11:23.248635",
+      "timestamp": "2025-12-26T01:56:59.608147",
       "cpu": {
-        "timestamp": "2025-12-25T18:11:23.248642",
-        "percent": 28.5,
+        "timestamp": "2025-12-26T01:56:59.608152",
+        "percent": 16.4,
         "per_cpu": [
-          10.1,
-          16.2,
-          6.1,
-          19.2
+          2.9,
+          4.0,
+          3.0,
+          2.0
         ],
         "count": 4,
         "load_avg": [
-          0.55029296875,
-          0.52099609375,
-          0.55908203125
+          0.6103515625,
+          0.6953125,
+          0.55419921875
         ]
       },
       "memory": {
-        "timestamp": "2025-12-25T18:11:25.249813",
+        "timestamp": "2025-12-26T01:57:01.609600",
         "total_mb": 15992,
-        "available_mb": 11899,
-        "used_mb": 3584,
-        "percent": 25.6,
+        "available_mb": 11870,
+        "used_mb": 3646,
+        "percent": 25.8,
         "swap_total_mb": 0,
         "swap_used_mb": 0,
         "swap_percent": 0.0
       },
       "disk": {
-        "timestamp": "2025-12-25T18:11:25.249907",
+        "timestamp": "2025-12-26T01:57:01.609639",
         "path": "/",
         "total_gb": 192,
-        "used_gb": 143,
+        "used_gb": 144,
         "free_gb": 48,
-        "percent": 74.7
+        "percent": 74.8
       },
       "network": {
-        "timestamp": "2025-12-25T18:11:25.250394",
-        "bytes_sent": 26167165844,
-        "bytes_recv": 24963053792,
-        "packets_sent": 21127797,
-        "packets_recv": 29244775,
+        "timestamp": "2025-12-26T01:57:01.610110",
+        "bytes_sent": 26910802331,
+        "bytes_recv": 25815146078,
+        "packets_sent": 22531583,
+        "packets_recv": 30608935,
         "errors_in": 0,
         "errors_out": 0,
         "drops_in": 0,
@@ -335,95 +477,172 @@
       },
       "uptime": {
         "boot_time": "2025-12-18T15:11:19",
-        "uptime_seconds": 615606,
-        "uptime_human": "7 days, 3:00:06"
+        "uptime_seconds": 643542,
+        "uptime_human": "7 days, 10:45:42"
       },
       "top_processes_cpu": [
         {
-          "pid": 3439413,
-          "memory_percent": 3.596693706170723,
-          "cpu_percent": 20.0,
-          "name": "claude",
-          "username": "root"
+          "memory_percent": 0.3406928659187447,
+          "cpu_percent": 10.0,
+          "pid": 846567,
+          "username": "root",
+          "name": "python3"
         },
         {
-          "pid": 1,
           "memory_percent": 0.0750364556999128,
           "cpu_percent": 0.0,
-          "name": "systemd",
-          "username": "root"
+          "pid": 1,
+          "username": "root",
+          "name": "systemd"
         },
         {
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
           "pid": 2,
-          "memory_percent": 0.0,
-          "cpu_percent": 0.0,
-          "name": "kthreadd",
-          "username": "root"
+          "username": "root",
+          "name": "kthreadd"
         },
         {
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
           "pid": 3,
-          "memory_percent": 0.0,
-          "cpu_percent": 0.0,
-          "name": "pool_workqueue_release",
-          "username": "root"
+          "username": "root",
+          "name": "pool_workqueue_release"
         },
         {
-          "pid": 4,
           "memory_percent": 0.0,
           "cpu_percent": 0.0,
-          "name": "kworker/R-rcu_g",
-          "username": "root"
+          "pid": 4,
+          "username": "root",
+          "name": "kworker/R-rcu_g"
         }
       ],
       "top_processes_memory": [
         {
-          "pid": 22398,
-          "memory_percent": 5.5713347060705765,
+          "memory_percent": 5.610465045273461,
           "cpu_percent": 0.0,
-          "name": "dockerd",
-          "username": "root"
+          "pid": 22398,
+          "username": "root",
+          "name": "dockerd"
         },
         {
-          "pid": 3666842,
           "memory_percent": 2.5662370145651816,
           "cpu_percent": 0.0,
-          "name": "python",
-          "username": "ubuntu"
+          "pid": 3666842,
+          "username": "ubuntu",
+          "name": "python"
         },
         {
-          "pid": 3439413,
-          "memory_percent": 2.0794038119105718,
-          "cpu_percent": 89.9,
-          "name": "claude",
-          "username": "root"
+          "memory_percent": 1.9643088316833617,
+          "cpu_percent": 178.1,
+          "pid": 3942113,
+          "username": "root",
+          "name": "claude"
         },
         {
+          "memory_percent": 1.5115498008065442,
+          "cpu_percent": 0.0,
+          "pid": 3549107,
+          "username": "472",
+          "name": "grafana"
+        },
+        {
+          "memory_percent": 1.1410573007882248,
+          "cpu_percent": 0.0,
           "pid": 879018,
-          "memory_percent": 1.141155004506584,
-          "cpu_percent": 0.0,
-          "name": "python3",
-          "username": "root"
-        },
-        {
-          "pid": 3231802,
-          "memory_percent": 0.8281611427426899,
-          "cpu_percent": 0.0,
-          "name": "python3.11",
-          "username": "ubuntu"
+          "username": "root",
+          "name": "python3"
         }
       ]
     },
     "actions_taken": [],
     "safe_healing": {
-      "timestamp": "2025-12-25T18:11:23.236706",
-      "total_issues": 11,
+      "timestamp": "2025-12-26T01:56:59.478063",
+      "total_issues": 18,
       "authorized": 0,
       "attempted": 0,
       "successful": 0,
       "partial": 0,
       "failed": 0,
-      "aborted": 11,
+      "aborted": 18,
       "actions": [
+        {
+          "issue": "Missing pip package: opentelemetry-api",
+          "priority": "P2",
+          "authorized": false,
+          "authorization_reason": "Prioridade P2 n\u00e3o autorizada para auto-healing",
+          "state_before": null,
+          "execution": null,
+          "validation": null,
+          "rollback": null,
+          "final_result": "aborted"
+        },
+        {
+          "issue": "Missing pip package: opentelemetry-exporter-otlp",
+          "priority": "P2",
+          "authorized": false,
+          "authorization_reason": "Prioridade P2 n\u00e3o autorizada para auto-healing",
+          "state_before": null,
+          "execution": null,
+          "validation": null,
+          "rollback": null,
+          "final_result": "aborted"
+        },
+        {
+          "issue": "Missing pip package: opentelemetry-instrumentation-fastapi",
+          "priority": "P2",
+          "authorized": false,
+          "authorization_reason": "Prioridade P2 n\u00e3o autorizada para auto-healing",
+          "state_before": null,
+          "execution": null,
+          "validation": null,
+          "rollback": null,
+          "final_result": "aborted"
+        },
+        {
+          "issue": "Missing pip package: opentelemetry-instrumentation-httpx",
+          "priority": "P2",
+          "authorized": false,
+          "authorization_reason": "Prioridade P2 n\u00e3o autorizada para auto-healing",
+          "state_before": null,
+          "execution": null,
+          "validation": null,
+          "rollback": null,
+          "final_result": "aborted"
+        },
+        {
+          "issue": "Missing pip package: opentelemetry-instrumentation-redis",
+          "priority": "P2",
+          "authorized": false,
+          "authorization_reason": "Prioridade P2 n\u00e3o autorizada para auto-healing",
+          "state_before": null,
+          "execution": null,
+          "validation": null,
+          "rollback": null,
+          "final_result": "aborted"
+        },
+        {
+          "issue": "Missing pip package: opentelemetry-instrumentation-sqlalchemy",
+          "priority": "P2",
+          "authorized": false,
+          "authorization_reason": "Prioridade P2 n\u00e3o autorizada para auto-healing",
+          "state_before": null,
+          "execution": null,
+          "validation": null,
+          "rollback": null,
+          "final_result": "aborted"
+        },
+        {
+          "issue": "Missing pip package: opentelemetry-sdk",
+          "priority": "P2",
+          "authorized": false,
+          "authorization_reason": "Prioridade P2 n\u00e3o autorizada para auto-healing",
+          "state_before": null,
+          "execution": null,
+          "validation": null,
+          "rollback": null,
+          "final_result": "aborted"
+        },
         {
           "issue": "Excessive use of \"any\" type in DashboardGraficos.tsx",
           "priority": "P4",
@@ -554,30 +773,30 @@
       }
     },
     "health_score": {
-      "timestamp": "2025-12-25T18:12:04.819616",
-      "overall_score": 81,
+      "timestamp": "2025-12-26T01:57:45.975723",
+      "overall_score": 76,
       "health_level": "Good",
       "breakdown": {
         "gaps": {
-          "score": 30,
+          "score": 25,
           "max": 40,
-          "total_gaps": 11,
+          "total_gaps": 18,
           "critical_gaps": 0,
-          "status": "Good - Few gaps"
+          "status": "Fair - Moderate gaps"
         },
         "metrics": {
           "score": 26,
           "max": 30,
           "cpu": {
-            "value": "28.8%",
+            "value": "16.4%",
             "score": 10
           },
           "memory": {
-            "value": "25.6%",
+            "value": "25.8%",
             "score": 10
           },
           "disk": {
-            "value": "74.7%",
+            "value": "74.8%",
             "score": 6
           }
         },
@@ -591,9 +810,9 @@
         }
       },
       "recommendations": [
-        "\u2705 System health is optimal - continue monitoring"
+        "\u26a0\ufe0f Address 18 total gaps detected"
       ]
     },
-    "duration_seconds": 45.856836
+    "duration_seconds": 50.371432
   }
 }

@@ -65,6 +65,7 @@ from .middleware import (
     AuditLogMiddleware,
 )
 from .middleware.rate_limit import LoginRateLimitMiddleware
+from .telemetry import setup_telemetry
 
 # Configurar logging estruturado
 logging.basicConfig(
@@ -102,6 +103,14 @@ async def lifespan(app: FastAPI):
     # Inicializar banco
     init_db()
     logger.info("Banco de dados inicializado")
+
+    # Inicializar OpenTelemetry (distributed tracing)
+    try:
+        from .database import engine
+        setup_telemetry(app=app, engine=engine)
+        logger.info("OpenTelemetry/Jaeger inicializado")
+    except Exception as e:
+        logger.warning(f"OpenTelemetry nao disponivel: {e}")
 
     # Inicializar hardware manager
     try:
@@ -274,6 +283,70 @@ app.include_router(tranquilidade_router, prefix=settings.API_PREFIX)
 app.include_router(inteligencia_router, prefix=settings.API_PREFIX)
 app.include_router(health_router, prefix="")  # /health, /health/live, /health/ready
 app.include_router(events_router, prefix=settings.API_PREFIX)  # /api/v1/events/stream
+
+
+# ==================== PROMETHEUS METRICS ====================
+
+from prometheus_client import Counter, Histogram, Gauge, generate_latest, CONTENT_TYPE_LATEST
+from starlette.responses import Response
+
+# Métricas customizadas
+REQUEST_COUNT = Counter(
+    'http_requests_total',
+    'Total HTTP requests',
+    ['method', 'endpoint', 'status']
+)
+
+REQUEST_LATENCY = Histogram(
+    'http_request_duration_seconds',
+    'HTTP request latency in seconds',
+    ['method', 'endpoint'],
+    buckets=[0.01, 0.025, 0.05, 0.075, 0.1, 0.25, 0.5, 0.75, 1.0, 2.5, 5.0]
+)
+
+REQUESTS_IN_PROGRESS = Gauge(
+    'http_requests_inprogress',
+    'Number of HTTP requests in progress',
+    ['method', 'endpoint']
+)
+
+# Middleware para coletar métricas
+@app.middleware("http")
+async def prometheus_middleware(request: Request, call_next):
+    method = request.method
+    endpoint = request.url.path
+
+    # Não medir /metrics e /health
+    if endpoint in ["/metrics", "/health", "/health/live", "/health/ready"]:
+        return await call_next(request)
+
+    REQUESTS_IN_PROGRESS.labels(method=method, endpoint=endpoint).inc()
+    start_time = time.time()
+
+    try:
+        response = await call_next(request)
+        status = response.status_code
+    except Exception as e:
+        status = 500
+        raise
+    finally:
+        duration = time.time() - start_time
+        REQUEST_COUNT.labels(method=method, endpoint=endpoint, status=status).inc()
+        REQUEST_LATENCY.labels(method=method, endpoint=endpoint).observe(duration)
+        REQUESTS_IN_PROGRESS.labels(method=method, endpoint=endpoint).dec()
+
+    return response
+
+# Endpoint de métricas
+@app.get("/metrics", tags=["Monitoring"], include_in_schema=True)
+async def metrics():
+    """Endpoint de métricas Prometheus."""
+    return Response(
+        content=generate_latest(),
+        media_type=CONTENT_TYPE_LATEST
+    )
+
+logger.info("Prometheus metrics habilitado em /metrics")
 
 
 # ==================== ROTAS DE SISTEMA ====================

@@ -187,13 +187,13 @@
     "auto_resolved": 0,
     "manual_resolved": 0,
     "prevention_success": 0,
-    "learning_cycles": 8322
+    "learning_cycles": 8784
   },
   "learned_thresholds": {
-    "cpu_warning": 20.49909401596628,
-    "cpu_critical": 53.30036469178388,
-    "memory_warning": 23.26591598578947,
-    "memory_critical": 25.621004390667366,
+    "cpu_warning": 19.857579040563756,
+    "cpu_critical": 52.92170477985191,
+    "memory_warning": 23.519329975638424,
+    "memory_critical": 25.365517820524268,
     "response_time_warning": 100,
     "response_time_critical": 500,
     "failure_count_before_action": 2
@@ -204,8 +204,8 @@
       "success": 36
     },
     "preventive_cpu_optimization": {
-      "attempts": 692,
-      "success": 692
+      "attempts": 735,
+      "success": 735
     }
   }
 }

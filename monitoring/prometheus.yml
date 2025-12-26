@@ -5,6 +5,10 @@ global:
     cluster: 'conecta-plus-prod'
     environment: 'production'
 
+# Rule files
+rule_files:
+  - /etc/prometheus/alert_rules.yml
+
 # Alerting configuration
 alerting:
   alertmanagers:
@@ -13,6 +17,13 @@ alerting:
 
 # Scrape configurations
 scrape_configs:
+  # Backend FastAPI (Principal)
+  - job_name: 'backend'
+    static_configs:
+      - targets: ['conecta-backend-q1:8000']
+    metrics_path: '/metrics'
+    scrape_interval: 10s
+
   # API Gateway
   - job_name: 'api-gateway'
     static_configs:

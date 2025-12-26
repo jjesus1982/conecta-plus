@@ -73,3 +73,7 @@ temp/
 .claude/settings.local.json
 .claude/.session
 .claude/cache/
+# Reports gerados automaticamente
+agents/system-monitor/reports/*.html
+agents/system-monitor/reports/*.json
+agents/system-monitor/reports/*.md

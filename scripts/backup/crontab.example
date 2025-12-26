@@ -1,0 +1,15 @@
+# ============================================
+# Conecta Plus - Backup Cron Jobs
+# ============================================
+# Instalar com: crontab -e (e colar as linhas abaixo)
+# ou: cat /opt/conecta-plus/scripts/backup/crontab.example >> /etc/cron.d/conecta-backup
+# ============================================
+
+# Backup diario as 02:00
+0 2 * * * /opt/conecta-plus/scripts/backup/backup.sh >> /opt/conecta-plus/logs/backup.log 2>&1
+
+# Backup adicional as 14:00 (dias uteis)
+0 14 * * 1-5 /opt/conecta-plus/scripts/backup/backup.sh >> /opt/conecta-plus/logs/backup.log 2>&1
+
+# Limpeza de logs antigos (domingo as 03:00)
+0 3 * * 0 find /opt/conecta-plus/logs -name "*.log" -mtime +30 -delete
