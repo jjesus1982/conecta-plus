@@ -77,3 +77,8 @@ temp/
 agents/system-monitor/reports/*.html
 agents/system-monitor/reports/*.json
 agents/system-monitor/reports/*.md
+
+# SSL certificates
+config/nginx/ssl/*.pem
+config/nginx/ssl/*.key
+config/nginx/ssl/*.crt

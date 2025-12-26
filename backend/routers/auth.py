@@ -19,7 +19,7 @@ from ..models.usuario import Usuario, AuthProvider
 from ..schemas.auth import (
     Token, LoginRequest, RefreshTokenRequest, PasswordChangeRequest,
     OAuthCallbackRequest, LDAPLoginRequest, SSOConfigResponse,
-    AuthProviderEnum
+    AuthProviderEnum, LoginResponse, UserLoginInfo, CondominioLoginInfo
 )
 from ..schemas.usuario import UsuarioResponse
 from ..schemas.condominio import CondominioResponse
@@ -85,22 +85,24 @@ async def login(
     )
 
 
-@router.post("/login/json", response_model=Token)
+@router.post("/login/json", response_model=LoginResponse)
 async def login_json(
     login_data: LoginRequest,
     db: Session = Depends(get_db)
 ):
     """
     Login com JSON body (alternativa ao form).
+    Retorna token e dados do usuário/condomínio.
     """
     user = db.query(Usuario).filter(Usuario.email == login_data.email).first()
 
     # SEGURANÇA: Sempre executar verificação de senha para prevenir timing attacks
     DUMMY_HASH = "$2b$12$lh4Q02DK9hPlsMXGs9jwQ.u5AiJZZWQf0iGjVwFV/MVosNvcO7RiC"
+    password = login_data.effective_password
     if user:
-        password_valid = verify_password(login_data.password, user.senha_hash)
+        password_valid = verify_password(password, user.senha_hash)
     else:
-        verify_password(login_data.password, DUMMY_HASH)
+        verify_password(password, DUMMY_HASH)
         password_valid = False
 
     if not user or not password_valid:
@@ -125,11 +127,35 @@ async def login_json(
         data={"sub": str(user.id)}
     ) if login_data.remember_me else None
 
-    return Token(
+    # Preparar dados do usuário
+    user_info = UserLoginInfo(
+        id=str(user.id),
+        email=user.email,
+        nome=user.nome or "",
+        role=user.role.value,
+        condominioId=str(user.condominio_id) if user.condominio_id else None
+    )
+
+    # Preparar dados do condomínio se existir
+    condominio_info = None
+    if user.condominio:
+        condominio_info = CondominioLoginInfo(
+            id=str(user.condominio.id),
+            nome=user.condominio.nome,
+            cnpj=user.condominio.cnpj,
+            endereco=user.condominio.endereco,
+            telefone=user.condominio.telefone,
+            email=user.condominio.email,
+            configuracoes=user.condominio.configuracoes if hasattr(user.condominio, 'configuracoes') else None
+        )
+
+    return LoginResponse(
         access_token=access_token,
         refresh_token=refresh_token,
         token_type="bearer",
-        expires_in=settings.ACCESS_TOKEN_EXPIRE_MINUTES * 60
+        expires_in=settings.ACCESS_TOKEN_EXPIRE_MINUTES * 60,
+        user=user_info,
+        condominio=condominio_info
     )
 
 
